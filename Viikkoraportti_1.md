@@ -1,0 +1,1 @@
+Tällä viikolla olen luonut repositorion, valinnut aiheen, ja tutustunut Minimax-algoritmiin ja alpha-beta-karsintaan. Olen myöskin suunnitellut hieman pääni sisällä pelin logiikkaa. Seuraavaksi alan toteuttamaan itse peliä pygame-kirjaston avulla.
