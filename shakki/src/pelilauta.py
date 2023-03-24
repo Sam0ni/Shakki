@@ -1,6 +1,7 @@
 import pygame
 from spritet.sotilas import Sotilas
 from spritet.torni import Torni
+from spritet.ratsu import Ratsu
 
 
 class Pelilauta:

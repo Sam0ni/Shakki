@@ -15,7 +15,7 @@ class Pelisilmukka:
         self.vuoro_valkoinen = True
         self.mahdolliset_liikkeet = []
         self.tausta = pygame.image.load(
-            os.path.join(hakemisto, "assetit", "shakkilauta.png")
+            os.path.join(hakemisto, "assetit_isommat", "shakkilauta.png")
         )
 
     def aloita(self):

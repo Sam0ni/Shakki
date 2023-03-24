@@ -15,7 +15,7 @@ class Sotilas(pygame.sprite.Sprite):
             vari = "musta_sotilas.png"
 
         self.image = pygame.image.load(
-            os.path.join(hakemisto, "..", "assetit", vari)
+            os.path.join(hakemisto, "..", "assetit_isommat", vari)
         )
 
         self.rect = self.image.get_rect()

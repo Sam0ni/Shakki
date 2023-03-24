@@ -11,7 +11,7 @@ lauta = [[0,0,0,0,0,0,0,0],
 [0,0,0,0,0,0,0,0],
 [0,0,0,0,0,0,0,0]]
 
-ruudun_koko = 50
+ruudun_koko = 125
 
 def main():
     korkeus_ja_leveys = 8
