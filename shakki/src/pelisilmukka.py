@@ -53,6 +53,9 @@ class Pelisilmukka:
                             self.mahdolliset_liikkeet = self._pelilauta.tarkista_liikkeet_valkoinen()
                             self.vuoro_valkoinen = True
                         self.valittu_nappula = ""
+            elif syote.type == pygame.KEYDOWN:
+                if syote.key == pygame.K_d:
+                    self.valittu_nappula = ""
             elif syote.type == pygame.QUIT:
                 return False
 
