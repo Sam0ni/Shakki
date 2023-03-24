@@ -20,7 +20,6 @@ class Pelisilmukka:
 
     def aloita(self):
         self.mahdolliset_liikkeet = self._pelilauta.tarkista_liikkeet_valkoinen()
-        print(self.mahdolliset_liikkeet)
         while True:
             if self._syotteet() == False:
                 break
@@ -40,22 +39,20 @@ class Pelisilmukka:
                         if self.vuoro_valkoinen:
                             if self._pelilauta.lauta[y][x].valkoinen:
                                 self.valittu_nappula = self._pelilauta.lauta[y][x]
-                                print("helloust")
                         else:
                             if not self._pelilauta.lauta[y][x].valkoinen:
                                 self.valittu_nappula = self._pelilauta.lauta[y][x]
                 else:
                     if (self.valittu_nappula, (x, y)) in self.mahdolliset_liikkeet:
-                        print("nahkarutle")
                         if self.valittu_nappula.valkoinen:
-                            print("rutles")
                             self._pelilauta.liiku_valkoinen(self.valittu_nappula, (x, y))
                             self.mahdolliset_liikkeet = self._pelilauta.tarkista_liikkeet_musta()
+                            self.vuoro_valkoinen = False
                         else:
                             self._pelilauta.liiku_musta(self.valittu_nappula, (x, y))
                             self.mahdolliset_liikkeet = self._pelilauta.tarkista_liikkeet_valkoinen()
+                            self.vuoro_valkoinen = True
                         self.valittu_nappula = ""
-                        print("hellou")
             elif syote.type == pygame.QUIT:
                 return False
 
