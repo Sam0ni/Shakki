@@ -76,12 +76,11 @@ class Pelilauta:
             List: Siäsltää kaikki mahdolliset liikkeet tupleina jossa on nappula ja loppusijainti
         """
         mahdolliset_liikkeet = []
-        mones = 1
         for sotilas in self.valkoiset_sotilaat:
             alkup_x = 0 + sotilas.rect.x
             alkup_y = 0 + sotilas.rect.y
             sotilas.rect.move_ip(0, -self.ruudun_koko)
-            if self.lauta[int(sotilas.rect.y / self.ruudun_koko)][int(sotilas.rect.x / self.ruudun_koko)] == 0:
+            if alkup_y >= 1*self.ruudun_koko and self.lauta[int(sotilas.rect.y / self.ruudun_koko)][int(sotilas.rect.x / self.ruudun_koko)] == 0:
                 mahdolliset_liikkeet.append((sotilas, (int(sotilas.rect.x / self.ruudun_koko), int(sotilas.rect.y / self.ruudun_koko))))
                 if not sotilas.liikutettu:
                     sotilas.rect.move_ip(0, -self.ruudun_koko)
@@ -312,7 +311,7 @@ class Pelilauta:
             alkup_x = 0 + sotilas.rect.x
             alkup_y = 0 + sotilas.rect.y
             sotilas.rect.move_ip(0, self.ruudun_koko)
-            if self.lauta[int(sotilas.rect.y / self.ruudun_koko)][int(sotilas.rect.x / self.ruudun_koko)] == 0:
+            if alkup_y <= 6*self.ruudun_koko and self.lauta[int(sotilas.rect.y / self.ruudun_koko)][int(sotilas.rect.x / self.ruudun_koko)] == 0:
                 mahdolliset_liikkeet.append((sotilas, (int(sotilas.rect.x / self.ruudun_koko), int(sotilas.rect.y / self.ruudun_koko))))
                 if not sotilas.liikutettu:
                     sotilas.rect.move_ip(0, self.ruudun_koko)
