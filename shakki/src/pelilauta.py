@@ -141,9 +141,6 @@ class Pelilauta:
                     torni.rect.x = alkup_x
                     torni.rect.y = alkup_y
                     break
-                if i == 0:
-                    torni.rect.x = alkup_x
-                    torni.rect.y = alkup_y
             torni.rect.x = alkup_x
             torni.rect.y = alkup_y
             for i in range(int(alkup_x / self.ruudun_koko), 7):
@@ -373,9 +370,6 @@ class Pelilauta:
                     torni.rect.x = alkup_x
                     torni.rect.y = alkup_y
                     break
-                if i == 0:
-                    torni.rect.x = alkup_x
-                    torni.rect.y = alkup_y
             torni.rect.x = alkup_x
             torni.rect.y = alkup_y
             for i in range(int(alkup_x / self.ruudun_koko), 7):
