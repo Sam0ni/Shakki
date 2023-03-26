@@ -19,12 +19,9 @@ jobs:
         run: pip install poetry
       - name: Install dependencies
         run: poetry install
-        working-directory: ./shakki
       - name: Run tests
         run: poetry run coverage run --branch -m pytest
-        working-directory: ./shakki
       - name: Coverage report
         run: poetry run coverage xml
-        working-directory: ./shakki
       - name: Coverage report to Codecov
         run: bash <(curl -s https://codecov.io/bash)
