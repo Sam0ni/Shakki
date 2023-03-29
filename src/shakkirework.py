@@ -1,7 +1,6 @@
 import pygame
-from pelilauta import Pelilauta
-from pelisilmukka import Pelisilmukka
-from alustaja import Alustaja
+from pelilautarework import Pelilauta
+from pelisilmukkarework import Pelisilmukka
 
 lauta = [[8,9,10,11,12,10,9,8],
 [7,7,7,7,7,7,7,7],
@@ -26,7 +25,7 @@ def main():
 
     pygame.display.set_caption("Shakki")
 
-    pelilauta = Pelilauta(lauta, ruudun_koko, Alustajatesti6(ruudun_koko))
+    pelilauta = Pelilauta(lauta, ruudun_koko)
     
     silmukka = Pelisilmukka(pelilauta, ruudun_koko, naytto)
 
