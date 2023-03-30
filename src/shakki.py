@@ -1,6 +1,6 @@
 import pygame
-from pelilautarework import Pelilauta
-from pelisilmukkarework import Pelisilmukka
+from pelilauta import Pelilauta
+from pelisilmukka import Pelisilmukka
 
 lauta = [[8,9,10,11,12,10,9,8],
 [7,7,7,7,7,7,7,7],

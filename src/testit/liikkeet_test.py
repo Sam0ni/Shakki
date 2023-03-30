@@ -1,5 +1,5 @@
 import unittest
-from pelilautarework import Pelilauta
+from pelilauta import Pelilauta
 
 
 class TestLiikkeet(unittest.TestCase):
