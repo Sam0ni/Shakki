@@ -475,6 +475,7 @@ class Pelilauta:
             if liike[0] in poistettavat:
                 mahdolliset.remove(liike)
         uudet = list(set(poistettavat))
+        print(uudet)
         for nappula in uudet:
             nappulan_uudet_liikkeet, nappulan_uudet_blokit = self.tarkista_liikkeet(nappula[0], nappula[1], nappula[2])
             mahdolliset = mahdolliset + nappulan_uudet_liikkeet
