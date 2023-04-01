@@ -1,22 +1,30 @@
-import pygame
-
-
 
 class Pelilauta:
     """Luokka joka pitää huolta pelilaudan tilanteesta
     """
     def __init__(self, lauta, ruudun_koko):
-        """Luokan konstruktori, jossa määritellään tarvittavat muuttujat ja spritejen ryhmät
+        """Luokan konstruktori, jossa määritellään tarvittavat muuttujat
 
         Args:
             lauta: 2-ulotteinen taulukko joka kuvaa pelilautaa
             ruudun_koko: Yhden pelilaudan ruudun koko
-            alustaja: Luokka jossa on metodi pelilaudan alustamiselle
         """
         self.lauta = lauta
         self.ruudun_koko = ruudun_koko
 
-    def tarkista_liikkeet(self, nappula, y, x):
+    def tarkista_liikkeet(self, nappula, y, x): # pylint: disable=invalid-name
+        """Metodi joka tarkistaa nappulan kaikki mahdolliset liikkeet
+        ja sen liikkumisen edessä olevat nappulat
+
+        Args:
+            nappula (int): Nappulan tyyppi
+            y (int): Nappulan y-koordinaatti
+            x (int): Nappulan x-koordinaatti
+
+        Returns:
+            list: kaksi listaa joista toinen on nappulan mahdolliset liikkeet
+            ja toinen nappulan liikkeiden edessä olevien nappuloiden koordinaatit
+        """
         liikkeet = []
         edessa = []
 
@@ -67,7 +75,7 @@ class Pelilauta:
                     else:
                         edessa.append(((nappula, y, x), (y+1, x+1)))
 
-        elif nappula == 2 or nappula == 8:
+        elif nappula in (2, 8):
             for i in range(y + 1, 8):
                 if self.lauta[i][x] == 0:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
@@ -116,11 +124,11 @@ class Pelilauta:
                 else:
                     edessa.append(((nappula, y, x), (y, i)))
                     break
-            
-        elif nappula == 3 or nappula == 9:
+
+        elif nappula in (3, 9):
             if y < 6:
                 if x < 7:
-                    if self.lauta[y+2][x+1] == 0:  
+                    if self.lauta[y+2][x+1] == 0:
                         liikkeet.append(((nappula, y, x), (nappula, y+2, x+1)))
                     elif nappula == 3 and 6 <= self.lauta[y+2][x+1] <= 12:
                         liikkeet.append(((nappula, y, x), (nappula, y+2, x+1)))
@@ -139,7 +147,7 @@ class Pelilauta:
                         edessa.append(((nappula, y, x), (y+2, x-1)))
             if y > 1:
                 if x < 7:
-                    if self.lauta[y-2][x+1] == 0:  
+                    if self.lauta[y-2][x+1] == 0:
                         liikkeet.append(((nappula, y, x), (nappula, y-2, x+1)))
                     elif nappula == 3 and 6 <= self.lauta[y-2][x+1] <= 12:
                         liikkeet.append(((nappula, y, x), (nappula, y-2, x+1)))
@@ -158,7 +166,7 @@ class Pelilauta:
                         edessa.append(((nappula, y, x), (y-2, x-1)))
             if x > 1:
                 if y < 7:
-                    if self.lauta[y+1][x-2] == 0:  
+                    if self.lauta[y+1][x-2] == 0:
                         liikkeet.append(((nappula, y, x), (nappula, y+1, x-2)))
                     elif nappula == 3 and 6 <= self.lauta[y+1][x-2] <= 12:
                         liikkeet.append(((nappula, y, x), (nappula, y+1, x-2)))
@@ -177,7 +185,7 @@ class Pelilauta:
                         edessa.append(((nappula, y, x), (y-1, x-2)))
             if x < 6:
                 if y < 7:
-                    if self.lauta[y+1][x+2] == 0:  
+                    if self.lauta[y+1][x+2] == 0:
                         liikkeet.append(((nappula, y, x), (nappula, y+1, x+2)))
                     elif nappula == 3 and 6 <= self.lauta[y+1][x+2] <= 12:
                         liikkeet.append(((nappula, y, x), (nappula, y+1, x+2)))
@@ -194,8 +202,8 @@ class Pelilauta:
                         liikkeet.append(((nappula, y, x), (nappula, y-1, x+2)))
                     else:
                         edessa.append(((nappula, y, x), (y-1, x+2)))
-            
-        elif nappula == 4 or nappula == 10:
+
+        elif nappula in (4, 10):
             if x > y:
                 montako = x
             else:
@@ -261,7 +269,7 @@ class Pelilauta:
                     edessa.append(((nappula, y, x), (y-i, x+i)))
                     break
 
-        elif nappula == 5 or nappula == 11:
+        elif nappula in (5, 11):
             for i in range(y + 1, 8):
                 if self.lauta[i][x] == 0:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
@@ -375,7 +383,7 @@ class Pelilauta:
                     edessa.append(((nappula, y, x), (y-i, x+i)))
                     break
 
-        elif nappula == 6 or nappula == 12:
+        elif nappula in (6, 12):
             if x < 7:
                 if self.lauta[y][x+1] == 0:
                     liikkeet.append(((nappula, y, x), (nappula, y, x+1)))
@@ -449,12 +457,25 @@ class Pelilauta:
                 else:
                     edessa.append(((nappula, y, x), (y+1, x)))
 
-
         return liikkeet, edessa
 
 
 
     def paivita(self, liikkeet, edessa, alku, loppu):
+        """Metodi joka päivittää kaikkien nappuloiden, joihin
+        edellinen siirto mahdollisesti vaikutti, liikkeet ja
+        liikkeiden edessä olevat nappulat
+
+        Args:
+            liikkeet (list): lista mahdollista liikkeistä
+            edessa (list): lista edessä olevien nappuloiden koordinaateista
+            alku (tuple): siirretyn nappulan alkuperäinen paikka
+            loppu (tuple): siirretyn nappulan loppupaikka
+
+        Returns:
+            list: kaksi listaa joista toinen on nappulan mahdolliset liikkeet
+            ja toinen nappulan liikkeiden edessä olevien nappuloiden koordinaatit
+        """
         #alkupaikka jonkun blokkilistalla
         #loppupaikka jonkun blokkilistalla
         #alkupaikka jonkun liikelistalla
@@ -466,7 +487,8 @@ class Pelilauta:
             if blokki[1] == (alku[1], alku[2]) or blokki[1] == (loppu[1], loppu[2]):
                 poistettavat.append(blokki[0])
         for liike in liikkeet:
-            if (liike[1][1], liike[1][2]) == (alku[1], alku[2]) or (liike[1][1], liike[1][2]) == (loppu[1], loppu[2]):
+            if ((liike[1][1], liike[1][2]) == (alku[1], alku[2]) or
+                    (liike[1][1], liike[1][2]) == (loppu[1], loppu[2])):
                 poistettavat.append(liike[0])
         for blokki in edessa:
             if blokki[0] in poistettavat:
@@ -475,15 +497,27 @@ class Pelilauta:
             if liike[0] in poistettavat:
                 mahdolliset.remove(liike)
         uudet = list(set(poistettavat))
-        print(uudet)
         for nappula in uudet:
-            nappulan_uudet_liikkeet, nappulan_uudet_blokit = self.tarkista_liikkeet(nappula[0], nappula[1], nappula[2])
+            liikkeet_ja_blokit = self.tarkista_liikkeet(nappula[0], nappula[1], nappula[2])
+            nappulan_uudet_liikkeet = liikkeet_ja_blokit[0]
+            nappulan_uudet_blokit = liikkeet_ja_blokit[1]
             mahdolliset = mahdolliset + nappulan_uudet_liikkeet
             blokit = blokit + nappulan_uudet_blokit
         return mahdolliset, blokit
-        
 
     def liiku(self, alku, loppu, liikkeet, edessa):
+        """Metodi joka liikuttaa nappulaa laudalla
+
+        Args:
+            alku (tuple): siirretyn nappulan alkuperäinen paikka
+            loppu (tuple): siirretyn nappulan loppupaikka
+            liikkeet (list): lista mahdollista liikkeistä
+            edessa (list): lista edessä olevien nappuloiden koordinaateista
+
+        Returns:
+            list: kaksi listaa joista toinen on nappulan mahdolliset liikkeet
+            ja toinen nappulan liikkeiden edessä olevien nappuloiden koordinaatit
+        """
         mahdolliset = [] + liikkeet
         blokit = [] + edessa
         alku_y = alku[1]
@@ -505,9 +539,10 @@ class Pelilauta:
         for blokki in edessa: #poista edelliset blokit
             if blokki[0] == alku:
                 blokit.remove(blokki)
-                print(blokki)
-        uudet_liikkeet, uudet_edessa = self.tarkista_liikkeet(loppu[0], loppu[1], loppu[2]) #tarkista uudet liikkeet ja blokit
-        print(uudet_liikkeet, uudet_edessa)
-        mahdolliset = mahdolliset + uudet_liikkeet #lisää mahdollisiin liikkeisiin uudet liikkeet
-        blokit = blokit + uudet_edessa #lisää blokkeihin uudet blokit
+        # tarkista uudet liikkeet ja blokit
+        uudet_liikkeet, uudet_edessa = self.tarkista_liikkeet(loppu[0], loppu[1], loppu[2])
+        #lisää mahdollisiin liikkeisiin uudet liikkeet
+        mahdolliset = mahdolliset + uudet_liikkeet
+        #lisää blokkeihin uudet blokit
+        blokit = blokit + uudet_edessa
         return mahdolliset, blokit

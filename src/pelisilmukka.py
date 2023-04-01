@@ -1,16 +1,18 @@
-import pygame
 import os
+import pygame
+
 
 hakemisto = os.path.dirname(__file__)
 
 class Pelisilmukka:
     """Luokka joka pitää huolta aikaan sidotuista tapahtumista
     """
-    def __init__(self, pelilauta, ruudun_koko, naytto):
+    def __init__(self, pelilauta, ruudun_koko, naytto): # pylint: disable=too-many-instance-attributes
         """Luokan konstruktori, jossa määritellään tarvittavat muuttujat
 
         Args:
-            pelilauta: sisältää pelilaudan senhetkisen tilaanteen ja tarvittavat metodit liikkumiselle
+            pelilauta: sisältää pelilaudan senhetkisen tilaanteen
+              ja tarvittavat metodit liikkumiselle
             ruudun_koko: Yhden laudan ruudun koko
             naytto: naytto johon lauta ja spritet piirretään
         """
@@ -27,24 +29,23 @@ class Pelisilmukka:
         self.tausta = ""
         self.spritet = {}
         self._hae_spritet()
-        
 
     def aloita(self):
         """Aloittaa pelisilmukan, ja tarkistaa aluksi valkoisen mahdolliset liikkeet
         """
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = self._pelilauta.tarkista_liikkeet(self._pelilauta.lauta[y][x], y, x)
+        for y in range(8): # pylint: disable=invalid-name
+            for x in range(8): # pylint: disable=invalid-name
+                liikkeet = self._pelilauta.tarkista_liikkeet(self._pelilauta.lauta[y][x], y, x)
+                uudet_liikkeet = liikkeet[0]
+                uudet_edessa = liikkeet[1]
                 self.mahdolliset_liikkeet = self.mahdolliset_liikkeet + uudet_liikkeet
                 self.edessa = self.edessa + uudet_edessa
-        print(len(self.mahdolliset_liikkeet))
-        print(len(self.edessa))
         while True:
-            if self._syotteet() == False:
+            if self._syotteet() is False:
                 break
-            
+
             self._renderoi()
-            
+
             self._kello.tick(60)
 
     def _syotteet(self):
@@ -54,64 +55,53 @@ class Pelisilmukka:
             False: Peli suljetaan
         """
         for syote in pygame.event.get():
-            if syote.type == pygame.MOUSEBUTTONDOWN:
+            if syote.type == pygame.MOUSEBUTTONDOWN: # pylint: disable=no-member
                 self.hiiri_x, self.hiiri_y = pygame.mouse.get_pos()
-                x = self.hiiri_x // self._ruudun_koko
-                y = self.hiiri_y // self._ruudun_koko
+                x = self.hiiri_x // self._ruudun_koko # pylint: disable=invalid-name
+                y = self.hiiri_y // self._ruudun_koko # pylint: disable=invalid-name
                 if self.valittu_nappula == "":
                     if self._pelilauta.lauta[y][x] != 0:
                         if self.vuoro_valkoinen:
-                            #print("mrhelloust")
                             if 1 <= self._pelilauta.lauta[y][x] <= 6:
                                 self.valittu_nappula = (self._pelilauta.lauta[y][x], y, x)
                         else:
                             if 7 <= self._pelilauta.lauta[y][x] <= 12:
                                 self.valittu_nappula = (self._pelilauta.lauta[y][x], y, x)
                 else:
-                    if (self.valittu_nappula, (self.valittu_nappula[0], y, x)) in self.mahdolliset_liikkeet:
-                        #print("5/5")
-                        uudet_mahdolliset_liikkeet, uudet_edessa = self._pelilauta.liiku(self.valittu_nappula, (self.valittu_nappula[0], y, x), self.mahdolliset_liikkeet, self.edessa)
+                    if ((self.valittu_nappula, (self.valittu_nappula[0], y, x))
+                             in self.mahdolliset_liikkeet):
+                        liikkeet = self._pelilauta.liiku(self.valittu_nappula,
+                            (self.valittu_nappula[0], y, x), self.mahdolliset_liikkeet, self.edessa)
+                        uudet_mahdolliset_liikkeet = liikkeet[0]
+                        uudet_edessa = liikkeet[1]
                         self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
                         self.edessa = uudet_edessa
-                        self.mahdolliset_liikkeet, self.edessa = self._pelilauta.paivita(self.mahdolliset_liikkeet, self.edessa, self.valittu_nappula, (self.valittu_nappula[0], y, x))
+                        self.mahdolliset_liikkeet, self.edessa = self._pelilauta.paivita(
+                            self.mahdolliset_liikkeet,
+                            self.edessa, self.valittu_nappula, (self.valittu_nappula[0], y, x))
                         self.vuoro_valkoinen = not self.vuoro_valkoinen
                         self.valittu_nappula = ""
-                        print("")
-                        print("")
-                        print("")
-                        print("")
-                        for i in self.mahdolliset_liikkeet:
-                            print(i)
-                        #print(self.mahdolliset_liikkeet)
-                        print("")
-                        print("")
-                        print("")
-                        print("")
-                        #print(self.edessa)
-                        for i in self.edessa:
-                            print(i)
-                        print(len(self.mahdolliset_liikkeet))
-                        print(len(self.edessa))
-                        #for liike in self.edessa:
-                        #    print(liike[0])
-            elif syote.type == pygame.KEYDOWN:
-                if syote.key == pygame.K_d:
+            elif syote.type == pygame.KEYDOWN: # pylint: disable=no-member
+                if syote.key == pygame.K_d: # pylint: disable=no-member
                     self.valittu_nappula = ""
-            elif syote.type == pygame.QUIT:
+            elif syote.type == pygame.QUIT: # pylint: disable=no-member
                 return False
 
     def _renderoi(self):
         """Piirtää laudan ja spritet näytölle
         """
         self._naytto.blit(self.tausta, (0,0))
-        for y in range(8):
-            for x in range(8):
+        for y in range(8): # pylint: disable=invalid-name
+            for x in range(8): # pylint: disable=invalid-name
                 ruutu = self._pelilauta.lauta[y][x]
                 if ruutu != 0:
-                    self._naytto.blit(self.spritet[ruutu], (x*self._ruudun_koko,y*self._ruudun_koko))
+                    self._naytto.blit(self.spritet[ruutu],
+                        (x*self._ruudun_koko,y*self._ruudun_koko))
         pygame.display.update()
 
     def _hae_spritet(self):
+        """Hakee nappuloiden kuvat ja sijoittaa ne sanakirjaan
+        """
         self.tausta = pygame.image.load(
             os.path.join(hakemisto, "assetit_isommat", "shakkilauta.png")
         )
