@@ -24,6 +24,7 @@ class Pelisilmukka:
         self.hiiri_y = 0
         self.valittu_nappula = ""
         self.vuoro_valkoinen = True
+        self.korotus = 5
         self.mahdolliset_liikkeet = []
         self.edessa = []
         self.tausta = ""
@@ -81,9 +82,30 @@ class Pelisilmukka:
                             self.edessa, self.valittu_nappula, (self.valittu_nappula[0], y, x))
                         self.vuoro_valkoinen = not self.vuoro_valkoinen
                         self.valittu_nappula = ""
+                    elif ((self.valittu_nappula, (self.korotus, y, x))
+                             in self.mahdolliset_liikkeet):
+                        liikkeet = self._pelilauta.liiku(self.valittu_nappula,
+                            (self.korotus, y, x), self.mahdolliset_liikkeet, self.edessa)
+                        uudet_mahdolliset_liikkeet = liikkeet[0]
+                        uudet_edessa = liikkeet[1]
+                        self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
+                        self.edessa = uudet_edessa
+                        self.mahdolliset_liikkeet, self.edessa = self._pelilauta.paivita(
+                            self.mahdolliset_liikkeet,
+                            self.edessa, self.valittu_nappula, (self.korotus, y, x))
+                        self.vuoro_valkoinen = not self.vuoro_valkoinen
+                        self.valittu_nappula = ""
             elif syote.type == pygame.KEYDOWN: # pylint: disable=no-member
                 if syote.key == pygame.K_d: # pylint: disable=no-member
                     self.valittu_nappula = ""
+                elif syote.key == pygame.K_2:
+                    self.korotus = 2
+                elif syote.key == pygame.K_3:
+                    self.korotus = 3
+                elif syote.key == pygame.K_4:
+                    self.korotus = 4
+                elif syote.key == pygame.K_5:
+                    self.korotus = 5
             elif syote.type == pygame.QUIT: # pylint: disable=no-member
                 return False
 

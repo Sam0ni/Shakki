@@ -33,7 +33,10 @@ class Pelilauta:
 
         if nappula == 1:
             if y > 0:
-                if self.lauta[y-1][x] == 0:
+                if y == 1 and self.lauta[y-1][x] == 0:
+                    for i in range(2, 6):
+                        liikkeet.append(((nappula, y, x), (i, y-1, x)))
+                elif self.lauta[y-1][x] == 0:
                     liikkeet.append(((nappula, y, x), (1, y-1, x)))
                     if y == 6:
                         if self.lauta[y-2][x] == 0:
@@ -43,11 +46,17 @@ class Pelilauta:
                 else:
                     edessa.append(((nappula, y, x), (y-1, x)))
                 if x > 0:
-                    if 7 <= self.lauta[y-1][x-1] <= 12:
+                    if y == 1 and (7 <= self.lauta[y-1][x-1] <= 12):
+                        for i in range(2, 6):
+                            liikkeet.append(((nappula, y, x), (i, y-1, x-1)))
+                    elif 7 <= self.lauta[y-1][x-1] <= 12:
                         liikkeet.append(((nappula, y, x), (1, y-1, x-1)))
                     else:
                         edessa.append(((nappula, y, x), (y-1, x-1)))
                 if x < 7:
+                    if y == 1 and (7 <= self.lauta[y-1][x+1] <= 12):
+                        for i in range(2, 6):
+                            liikkeet.append(((nappula, y, x), (i, y-1, x+1)))
                     if 7 <= self.lauta[y-1][x+1] <= 12:
                         liikkeet.append(((nappula, y, x), (1, y-1, x+1)))
                     else:
@@ -55,7 +64,10 @@ class Pelilauta:
 
         elif nappula == 7:
             if y < 7:
-                if self.lauta[y+1][x] == 0:
+                if y == 6 and self.lauta[y+1][x] == 0:
+                    for i in range(8, 12):
+                        liikkeet.append(((nappula, y, x), (i, y+1, x)))
+                elif self.lauta[y+1][x] == 0:
                     liikkeet.append(((nappula, y, x), (7, y+1, x)))
                     if y == 1:
                         if self.lauta[y+2][x] == 0:
@@ -64,12 +76,19 @@ class Pelilauta:
                             edessa.append(((nappula, y, x), (y+2, x)))
                 else:
                     edessa.append(((nappula, y, x), (y+1, x)))
+                
                 if x > 0:
-                    if 1 <= self.lauta[y+1][x-1] <= 6:
+                    if y == 6 and (1 <= self.lauta[y+1][x-1] <= 6):
+                        for i in range(8, 12):
+                            liikkeet.append(((nappula, y, x), (i, y+1, x-1)))
+                    elif 1 <= self.lauta[y+1][x-1] <= 6:
                         liikkeet.append(((nappula, y, x), (7, y+1, x-1)))
                     else:
                         edessa.append(((nappula, y, x), (y+1, x-1)))
                 if x < 7:
+                    if y == 6 and (1 <= self.lauta[y+1][x+1] <= 6):
+                        for i in range(8, 12):
+                            liikkeet.append(((nappula, y, x), (i, y+1, x+1)))
                     if 1 <= self.lauta[y+1][x+1] <= 6:
                         liikkeet.append(((nappula, y, x), (7, y+1, x+1)))
                     else:
