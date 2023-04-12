@@ -620,7 +620,6 @@ class TestLiikkeet(unittest.TestCase):
             ((1, 5, 3), (4, 2)),
             ((1, 5, 5), (4, 4)),
             ((1, 5, 5), (4, 6))
-
         ]
 
         mahdolliset_liikkeet = []
@@ -664,7 +663,7 @@ class TestLiikkeet(unittest.TestCase):
             ((3, 3, 4), (3, 4, 2)),
             ((3, 3, 4), (3, 4, 6)),
             ((3, 3, 4), (3, 5, 3)),
-            ((3, 3, 4), (3, 5, 5)),
+            ((3, 3, 4), (3, 5, 5))
         ]
         tiedetyt_blokit = [
             ((7, 1, 3), (2, 4)),
