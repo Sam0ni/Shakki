@@ -53,6 +53,21 @@ class Pelisilmukka:
 
             self._kello.tick(60)
 
+            if not self.vuoro_valkoinen and self.tekoaly_kaytossa:
+                        kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
+                        liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa, 2)
+                        liikkeet = self._pelilauta.liiku(liike[0],
+                            liike[1], self.mahdolliset_liikkeet, self.edessa)
+                        uudet_mahdolliset_liikkeet = liikkeet[0]
+                        uudet_edessa = liikkeet[1]
+                        self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
+                        self.edessa = uudet_edessa
+                        self.mahdolliset_liikkeet, self.edessa = self._pelilauta.paivita(
+                            self.mahdolliset_liikkeet,
+                            self.edessa, liike[0],
+                            liike[1],)
+                        self.vuoro_valkoinen = not self.vuoro_valkoinen
+
     def _syotteet(self):
         """Tarkistaa hiiren ja näppäimistön syötteet.
 
@@ -99,20 +114,6 @@ class Pelisilmukka:
                             self.edessa, self.valittu_nappula, (self.korotus, y, x))
                         self.vuoro_valkoinen = not self.vuoro_valkoinen
                         self.valittu_nappula = ""
-                    if not self.vuoro_valkoinen and self.tekoaly_kaytossa:
-                        kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
-                        liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa)
-                        liikkeet = self._pelilauta.liiku(liike[0],
-                            liike[1], self.mahdolliset_liikkeet, self.edessa)
-                        uudet_mahdolliset_liikkeet = liikkeet[0]
-                        uudet_edessa = liikkeet[1]
-                        self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
-                        self.edessa = uudet_edessa
-                        self.mahdolliset_liikkeet, self.edessa = self._pelilauta.paivita(
-                            self.mahdolliset_liikkeet,
-                            self.edessa, liike[0],
-                            liike[1],)
-                        self.vuoro_valkoinen = not self.vuoro_valkoinen
             elif syote.type == pygame.KEYDOWN: # pylint: disable=no-member
                 if syote.key == pygame.K_d: # pylint: disable=no-member
                     self.valittu_nappula = ""
