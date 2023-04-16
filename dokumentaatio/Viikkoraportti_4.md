@@ -3,3 +3,5 @@ Tällä viikolla olen pääasiassa työstänyt minimax-algoritmia. Nyt työ on s
 Hieman vaikeuksia tuotti kuitenkin testaus, vaikkakin testausluennolla tuli hyvin asiaa koskien tätä. En ole aivan varma millaisilla pelitilanteilla testausta pitäisi tehdä ja millä laskentasyvyydellä, sillä mikäli laskentasyvyys on liian suuri tai pelitilanteet liian monimutkaisia, voi yhden testin kirjoittamisessa mennä järjettömän paljon aikaa, mikäli käsin alkaa laskea jokaisen siirron arvon. Sitten kun saan shakkimatin tarkistamiseen liittyvän koodin tehtyä, tulee eteen sama ongelma, eli millaisella pelitilanteella kannattaisi algoritmia testata.
 
 Seuraavaksi alan työstämään shakkimatin tarkistamista, ja sen sisällyttämistä minimax-algoritmiin. Myöskin tarkoituksena olisi testien kirjoittaminen ja koodin siistiminen.
+
+Käytetty aika: n. 10h
