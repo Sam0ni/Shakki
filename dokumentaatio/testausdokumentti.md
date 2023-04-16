@@ -8,4 +8,6 @@ Siirtoa tehdessä ja liikkeitä päivittäessä pitää ottaa huomioon neljä er
 - Siirron alkukohta on jonkin nappulan mahdollisissa liikkeissä
 - Siirron loppukohta on jonkin nappulan edessä
 
+Myös minimax-algoritmin oikeellisuustestaus on aloitettu. Testattuna on myös tietenkin pelitilanteen arvioinnin suorittava metodi. Tällä hetkellä minimax-algoritmin testaamisessa on käytössä hyvin yksinkertaiset tilanteet (2 tai 3 nappulaa) laskentasyvyyksille 2 ja 3. Käytännössä näissä tarkistetaan, että algoritmi palauttaa laskentasyvyyden perusteella saatavan parhaan liikkeen. Vielä pitää testata hieman erilaisilla tilanteilla, ja myöskin kun shakkimatti-osuus ohjelmasta saadaan valmiiksi, täytyy testata, että algoritmi osaa tehdä shakkimatin, ja myöskin valita shakkimatin joka on saavutettavissa nopeiten.
+
 Testit voi toistaa ohjelman juurihakemistossa suorittamalla komennon: `poetry invoke testit`
