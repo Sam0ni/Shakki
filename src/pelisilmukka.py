@@ -55,14 +55,14 @@ class Pelisilmukka:
 
             if not self.vuoro_valkoinen and self.tekoaly_kaytossa:
                         kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
-                        liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa, 2)
+                        liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa, 3)
                         liikkeet = self._pelilauta.liiku(liike[0],
                             liike[1], self.mahdolliset_liikkeet, self.edessa)
                         uudet_mahdolliset_liikkeet = liikkeet[0]
                         uudet_edessa = liikkeet[1]
                         self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
                         self.edessa = uudet_edessa
-                        self.mahdolliset_liikkeet, self.edessa = self._pelilauta.paivita(
+                        self.mahdolliset_liikkeet, self.edessa, valkoinen_shakissa, musta_shakissa = self._pelilauta.paivita(
                             self.mahdolliset_liikkeet,
                             self.edessa, liike[0],
                             liike[1],)
@@ -94,9 +94,11 @@ class Pelisilmukka:
                             (self.valittu_nappula[0], y, x), self.mahdolliset_liikkeet, self.edessa)
                         uudet_mahdolliset_liikkeet = liikkeet[0]
                         uudet_edessa = liikkeet[1]
+                        valkoinen_shakissa = liikkeet[2]
+                        musta_shakissa = liikkeet[3]
                         self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
                         self.edessa = uudet_edessa
-                        self.mahdolliset_liikkeet, self.edessa = self._pelilauta.paivita(
+                        self.mahdolliset_liikkeet, self.edessa, valkoinen_shakissa, musta_shakissa = self._pelilauta.paivita(
                             self.mahdolliset_liikkeet,
                             self.edessa, self.valittu_nappula, (self.valittu_nappula[0], y, x))
                         self.vuoro_valkoinen = not self.vuoro_valkoinen
@@ -109,7 +111,7 @@ class Pelisilmukka:
                         uudet_edessa = liikkeet[1]
                         self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
                         self.edessa = uudet_edessa
-                        self.mahdolliset_liikkeet, self.edessa = self._pelilauta.paivita(
+                        self.mahdolliset_liikkeet, self.edessa, valkoinen_shakissa, musta_shakissa = self._pelilauta.paivita(
                             self.mahdolliset_liikkeet,
                             self.edessa, self.valittu_nappula, (self.korotus, y, x))
                         self.vuoro_valkoinen = not self.vuoro_valkoinen

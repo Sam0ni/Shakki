@@ -1,3 +1,4 @@
+from copy import deepcopy
 
 class Pelilauta:
     """Luokka joka pitää huolta pelilaudan tilanteesta
@@ -27,6 +28,8 @@ class Pelilauta:
         """
         liikkeet = []
         edessa = []
+        valkoinen_shakissa = False
+        musta_shakissa = False
 
         if nappula == 0:
             return liikkeet, edessa
@@ -57,8 +60,11 @@ class Pelilauta:
                     if y == 1 and (7 <= self.lauta[y-1][x+1] <= 12):
                         for i in range(2, 6):
                             liikkeet.append(((nappula, y, x), (i, y-1, x+1)))
-                    if 7 <= self.lauta[y-1][x+1] <= 12:
+                    if 7 <= self.lauta[y-1][x+1] <= 11:
                         liikkeet.append(((nappula, y, x), (1, y-1, x+1)))
+                    elif self.lauta[y-1][x+1] == 12:
+                        liikkeet.append(((nappula, y, x), (1, y-1, x+1)))
+                        musta_shakissa = True
                     else:
                         edessa.append(((nappula, y, x), (y-1, x+1)))
 
@@ -89,8 +95,11 @@ class Pelilauta:
                     if y == 6 and (1 <= self.lauta[y+1][x+1] <= 6):
                         for i in range(8, 12):
                             liikkeet.append(((nappula, y, x), (i, y+1, x+1)))
-                    if 1 <= self.lauta[y+1][x+1] <= 6:
+                    if 1 <= self.lauta[y+1][x+1] <= 5:
                         liikkeet.append(((nappula, y, x), (7, y+1, x+1)))
+                    elif self.lauta[y+1][x+1] == 6:
+                        liikkeet.append(((nappula, y, x), (7, y+1, x+1)))
+                        valkoinen_shakissa = True
                     else:
                         edessa.append(((nappula, y, x), (y+1, x+1)))
 
@@ -100,9 +109,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
                 elif nappula == 2 and 7<= self.lauta[i][x] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
+                    if self.lauta[i][x] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 8 and 1<= self.lauta[i][x] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
+                    if self.lauta[i][x] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (i, x)))
@@ -112,9 +125,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
                 elif nappula == 2 and 7<= self.lauta[i][x] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
+                    if self.lauta[i][x] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 8 and 1<= self.lauta[i][x] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
+                    if self.lauta[i][x] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (i, x)))
@@ -124,9 +141,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, y, i)))
                 elif nappula == 2 and 7<= self.lauta[y][i] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, y, i)))
+                    if self.lauta[y][i] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 8 and 1<= self.lauta[y][i] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, y, i)))
+                    if self.lauta[y][i] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (y, i)))
@@ -136,9 +157,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, y, i)))
                 elif nappula == 2 and 7<= self.lauta[y][i] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, y, i)))
+                    if self.lauta[y][i] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 8 and 1<= self.lauta[y][i] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, y, i)))
+                    if self.lauta[y][i] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (y, i)))
@@ -151,8 +176,12 @@ class Pelilauta:
                         liikkeet.append(((nappula, y, x), (nappula, y+2, x+1)))
                     elif nappula == 3 and 6 <= self.lauta[y+2][x+1] <= 12:
                         liikkeet.append(((nappula, y, x), (nappula, y+2, x+1)))
+                        if self.lauta[y+2][x+1] == 12:
+                            musta_shakissa = True
                     elif nappula == 9 and 1 <= self.lauta[y+2][x+1] <= 6:
                         liikkeet.append(((nappula, y, x), (nappula, y+2, x+1)))
+                        if self.lauta[y+2][x+1] == 6:
+                            valkoinen_shakissa = True
                     else:
                         edessa.append(((nappula, y, x), (y+2, x+1)))
                 if x > 0:
@@ -160,8 +189,12 @@ class Pelilauta:
                         liikkeet.append(((nappula, y, x), (nappula, y+2, x-1)))
                     elif nappula == 3 and 6 <= self.lauta[y+2][x-1] <= 12:
                         liikkeet.append(((nappula, y, x), (nappula, y+2, x-1)))
+                        if self.lauta[y+2][x-1] == 12:
+                            musta_shakissa = True
                     elif nappula == 9 and 1 <= self.lauta[y+2][x-1] <= 6:
                         liikkeet.append(((nappula, y, x), (nappula, y+2, x-1)))
+                        if self.lauta[y+2][x-1] == 6:
+                            valkoinen_shakissa = True
                     else:
                         edessa.append(((nappula, y, x), (y+2, x-1)))
             if y > 1:
@@ -170,8 +203,12 @@ class Pelilauta:
                         liikkeet.append(((nappula, y, x), (nappula, y-2, x+1)))
                     elif nappula == 3 and 6 <= self.lauta[y-2][x+1] <= 12:
                         liikkeet.append(((nappula, y, x), (nappula, y-2, x+1)))
+                        if self.lauta[y-2][x+1] == 12:
+                            musta_shakissa = True
                     elif nappula == 9 and 1 <= self.lauta[y-2][x+1] <= 6:
                         liikkeet.append(((nappula, y, x), (nappula, y-2, x+1)))
+                        if self.lauta[y-2][x+1] == 6:
+                            valkoinen_shakissa = True
                     else:
                         edessa.append(((nappula, y, x), (y-2, x+1)))
                 if x > 0:
@@ -179,8 +216,12 @@ class Pelilauta:
                         liikkeet.append(((nappula, y, x), (nappula, y-2, x-1)))
                     elif nappula == 3 and 6 <= self.lauta[y-2][x-1] <= 12:
                         liikkeet.append(((nappula, y, x), (nappula, y-2, x-1)))
+                        if self.lauta[y-2][x-1] == 12:
+                            musta_shakissa = True
                     elif nappula == 9 and 1 <= self.lauta[y-2][x-1] <= 6:
                         liikkeet.append(((nappula, y, x), (nappula, y-2, x-1)))
+                        if self.lauta[y-2][x-1] == 6:
+                            valkoinen_shakissa = True
                     else:
                         edessa.append(((nappula, y, x), (y-2, x-1)))
             if x > 1:
@@ -189,8 +230,12 @@ class Pelilauta:
                         liikkeet.append(((nappula, y, x), (nappula, y+1, x-2)))
                     elif nappula == 3 and 6 <= self.lauta[y+1][x-2] <= 12:
                         liikkeet.append(((nappula, y, x), (nappula, y+1, x-2)))
+                        if self.lauta[y+1][x-2] == 12:
+                            musta_shakissa = True
                     elif nappula == 9 and 1 <= self.lauta[y+1][x-2] <= 6:
                         liikkeet.append(((nappula, y, x), (nappula, y+1, x-2)))
+                        if self.lauta[y+1][x-2] == 6:
+                            valkoinen_shakissa = True
                     else:
                         edessa.append(((nappula, y, x), (y+1, x-2)))
                 if y > 0:
@@ -198,8 +243,12 @@ class Pelilauta:
                         liikkeet.append(((nappula, y, x), (nappula, y-1, x-2)))
                     elif nappula == 3 and 6 <= self.lauta[y-1][x-2] <= 12:
                         liikkeet.append(((nappula, y, x), (nappula, y-1, x-2)))
+                        if self.lauta[y-1][x-2] == 12:
+                            musta_shakissa = True
                     elif nappula == 9 and 1 <= self.lauta[y-1][x-2] <= 6:
                         liikkeet.append(((nappula, y, x), (nappula, y-1, x-2)))
+                        if self.lauta[y-1][x-2] <= 6:
+                            valkoinen_shakissa = True
                     else:
                         edessa.append(((nappula, y, x), (y-1, x-2)))
             if x < 6:
@@ -208,8 +257,12 @@ class Pelilauta:
                         liikkeet.append(((nappula, y, x), (nappula, y+1, x+2)))
                     elif nappula == 3 and 6 <= self.lauta[y+1][x+2] <= 12:
                         liikkeet.append(((nappula, y, x), (nappula, y+1, x+2)))
+                        if self.lauta[y+1][x+2] == 12:
+                            musta_shakissa = True
                     elif nappula == 9 and 1 <= self.lauta[y+1][x+2] <= 6:
                         liikkeet.append(((nappula, y, x), (nappula, y+1, x+2)))
+                        if self.lauta[y+1][x+2] == 6:
+                            valkoinen_shakissa = True
                     else:
                         edessa.append(((nappula, y, x), (y+1, x+2)))
                 if y > 0:
@@ -217,8 +270,12 @@ class Pelilauta:
                         liikkeet.append(((nappula, y, x), (nappula, y-1, x+2)))
                     elif nappula == 3 and 6 <= self.lauta[y-1][x+2] <= 12:
                         liikkeet.append(((nappula, y, x), (nappula, y-1, x+2)))
+                        if self.lauta[y-1][x+2] == 12:
+                            musta_shakissa = True
                     elif nappula == 9 and 1 <= self.lauta[y-1][x+2] <= 6:
                         liikkeet.append(((nappula, y, x), (nappula, y-1, x+2)))
+                        if self.lauta[y-1][x+2] == 6:
+                            valkoinen_shakissa = True
                     else:
                         edessa.append(((nappula, y, x), (y-1, x+2)))
 
@@ -232,9 +289,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, y+i, x+i)))
                 elif nappula == 4 and 7 <= self.lauta[y+i][x+i] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, y+i, x+i)))
+                    if self.lauta[y+i][x+i] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 10 and 1 <= self.lauta[y+i][x+i] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, y+i, x+i)))
+                    if self.lauta[y+i][x+i] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (y+i, x+i)))
@@ -248,9 +309,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, y+i, x-i)))
                 elif nappula == 4 and 7 <= self.lauta[y+i][x-i] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, y+i, x-i)))
+                    if self.lauta[y+i][x-i] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 10 and 1 <= self.lauta[y+i][x-i] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, y+i, x-i)))
+                    if self.lauta[y+i][x-i] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (y+i, x-i)))
@@ -264,9 +329,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, y-i, x-i)))
                 elif nappula == 4 and 7 <= self.lauta[y-i][x-i] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, y-i, x-i)))
+                    if self.lauta[y-i][x-i] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 10 and 1 <= self.lauta[y-i][x-i] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, y-i, x-i)))
+                    if self.lauta[y-i][x-i] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (y-i, x-i)))
@@ -280,9 +349,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, y-i, x+i)))
                 elif nappula == 4 and 7 <= self.lauta[y-i][x+i] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, y-i, x+i)))
+                    if self.lauta[y-i][x+i] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 10 and 1 <= self.lauta[y-i][x+i] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, y-i, x+i)))
+                    if self.lauta[y-i][x+i] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (y-i, x+i)))
@@ -294,9 +367,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
                 elif nappula == 5 and 7<= self.lauta[i][x] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
+                    if self.lauta[i][x] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 11 and 1<= self.lauta[i][x] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
+                    if self.lauta[i][x] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (i, x)))
@@ -306,9 +383,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
                 elif nappula == 5 and 7<= self.lauta[i][x] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
+                    if self.lauta[i][x] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 11 and 1<= self.lauta[i][x] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, i, x)))
+                    if self.lauta[i][x] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (i, x)))
@@ -318,9 +399,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, y, i)))
                 elif nappula == 5 and 7<= self.lauta[y][i] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, y, i)))
+                    if self.lauta[y][i] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 11 and 1<= self.lauta[y][i] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, y, i)))
+                    if self.lauta[y][i] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (y, i)))
@@ -330,9 +415,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, y, i)))
                 elif nappula == 5 and 7<= self.lauta[y][i] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, y, i)))
+                    if self.lauta[y][i] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 11 and 1<= self.lauta[y][i] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, y, i)))
+                    if self.lauta[y][i] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (y, i)))
@@ -346,9 +435,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, y+i, x+i)))
                 elif nappula == 5 and 7 <= self.lauta[y+i][x+i] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, y+i, x+i)))
+                    if self.lauta[y+i][x+i] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 11 and 1 <= self.lauta[y+i][x+i] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, y+i, x+i)))
+                    if self.lauta[y+i][x+i] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (y+i, x+i)))
@@ -362,9 +455,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, y+i, x-i)))
                 elif nappula == 5 and 7 <= self.lauta[y+i][x-i] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, y+i, x-i)))
+                    if self.lauta[y+i][x-i] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 11 and 1 <= self.lauta[y+i][x-i] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, y+i, x-i)))
+                    if self.lauta[y+i][x-i] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (y+i, x-i)))
@@ -378,9 +475,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, y-i, x-i)))
                 elif nappula == 5 and 7 <= self.lauta[y-i][x-i] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, y-i, x-i)))
+                    if self.lauta[y-i][x-i] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 11 and 1 <= self.lauta[y-i][x-i] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, y-i, x-i)))
+                    if self.lauta[y-i][x-i] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (y-i, x-i)))
@@ -394,9 +495,13 @@ class Pelilauta:
                     liikkeet.append(((nappula, y, x), (nappula, y-i, x+i)))
                 elif nappula == 5 and 7 <= self.lauta[y-i][x+i] <= 12:
                     liikkeet.append(((nappula, y, x), (nappula, y-i, x+i)))
+                    if self.lauta[y-i][x+i] == 12:
+                        musta_shakissa = True
                     break
                 elif nappula == 11 and 1 <= self.lauta[y-i][x+i] <= 6:
                     liikkeet.append(((nappula, y, x), (nappula, y-i, x+i)))
+                    if self.lauta[y-i][x+i] == 6:
+                        valkoinen_shakissa = True
                     break
                 else:
                     edessa.append(((nappula, y, x), (y-i, x+i)))
@@ -476,7 +581,35 @@ class Pelilauta:
                 else:
                     edessa.append(((nappula, y, x), (y+1, x)))
 
-        return liikkeet, edessa
+        return liikkeet, edessa, valkoinen_shakissa, musta_shakissa
+
+    def tarkista_matti(self, liikkeet, edessa, valkoinen):
+        kopio_lauta = deepcopy(self.lauta)
+
+        if valkoinen:
+            sotilas = 1
+            kuningas = 6
+        else:
+            sotilas = 7
+            kuningas = 12
+        matissa = False
+        for liike in liikkeet:
+            if sotilas <= liike[0][0] <= kuningas:
+                uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = self.liiku(liike[0], liike[1], liikkeet, edessa)
+                paivitetyt = self.paivita(uudet_liikkeet, uudet_edessa, liike[0], liike[1])
+                valkoinen_shakissa = valkoinen_shakissa or paivitetyt[2]
+                musta_shakissa = musta_shakissa or paivitetyt[3]
+                if valkoinen and valkoinen_shakissa:
+                    self.lauta = deepcopy(kopio_lauta)
+                    matissa = True
+                elif not valkoinen and musta_shakissa:
+                    self.lauta = deepcopy(kopio_lauta)
+                    matissa = True
+                else:
+                    matissa = False
+                    break
+            self.lauta = deepcopy(kopio_lauta)
+        return matissa
 
 
 
@@ -516,13 +649,17 @@ class Pelilauta:
             if liike[0] in poistettavat:
                 mahdolliset.remove(liike)
         uudet = list(set(poistettavat))
+        valkoinen_shakissa = False
+        musta_shakissa = False
         for nappula in uudet:
             liikkeet_ja_blokit = self.tarkista_liikkeet(nappula[0], nappula[1], nappula[2])
             nappulan_uudet_liikkeet = liikkeet_ja_blokit[0]
             nappulan_uudet_blokit = liikkeet_ja_blokit[1]
+            valkoinen_shakissa = valkoinen_shakissa or liikkeet_ja_blokit[2]
+            musta_shakissa = musta_shakissa or liikkeet_ja_blokit[3]
             mahdolliset = mahdolliset + nappulan_uudet_liikkeet
             blokit = blokit + nappulan_uudet_blokit
-        return mahdolliset, blokit
+        return mahdolliset, blokit, valkoinen_shakissa, musta_shakissa
 
     def liiku(self, alku, loppu, liikkeet, edessa):
         """Metodi joka liikuttaa nappulaa laudalla
@@ -559,9 +696,9 @@ class Pelilauta:
             if blokki[0] == alku:
                 blokit.remove(blokki)
         # tarkista uudet liikkeet ja blokit
-        uudet_liikkeet, uudet_edessa = self.tarkista_liikkeet(loppu[0], loppu[1], loppu[2])
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = self.tarkista_liikkeet(loppu[0], loppu[1], loppu[2])
         #lisää mahdollisiin liikkeisiin uudet liikkeet
         mahdolliset = mahdolliset + uudet_liikkeet
         #lisää blokkeihin uudet blokit
         blokit = blokit + uudet_edessa
-        return mahdolliset, blokit
+        return mahdolliset, blokit, valkoinen_shakissa, musta_shakissa
