@@ -40,13 +40,9 @@ class TestMinimax(unittest.TestCase):
 
         pelilauta = Pelilauta(lauta, self.ruudun_koko)
         minimax = Minimax(lauta)
-        for y in range(8):
-            for x in range(8):
-                liikkeet = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                uudet_liikkeet = liikkeet[0]
-                uudet_edessa = liikkeet[1]
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                edessa = edessa + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        edessa = edessa + uudet_edessa
         liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 1)
 
         oikea_liike = ((9,2,4), (9,3,2))
@@ -68,13 +64,9 @@ class TestMinimax(unittest.TestCase):
 
         pelilauta = Pelilauta(lauta, self.ruudun_koko)
         minimax = Minimax(lauta)
-        for y in range(8):
-            for x in range(8):
-                liikkeet = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                uudet_liikkeet = liikkeet[0]
-                uudet_edessa = liikkeet[1]
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                edessa = edessa + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        edessa = edessa + uudet_edessa
         liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 2)
 
         oikea_liike = ((9,2,4), (9,3,2))

@@ -6,7 +6,7 @@ class Tarkistaja:
         self.musta_shakissa = False
         self.liikkeet = []
         self.edessa = []
-        self.lauta = []
+        self.lauta = lauta
 
     def alusta(self):
         tarkistus_metodit = {
@@ -53,15 +53,18 @@ class Tarkistaja:
                 if y == 1 and (7 <= self.lauta[y-1][x-1] <= 12):
                     for i in range(2, 6):
                         self.liikkeet.append(((nappula, y, x), (i, y-1, x-1)))
-                elif 7 <= self.lauta[y-1][x-1] <= 12:
+                elif 7 <= self.lauta[y-1][x-1] <= 11:
                     self.liikkeet.append(((nappula, y, x), (1, y-1, x-1)))
+                elif self.lauta[y-1][x-1] == 12:
+                    self.liikkeet.append(((nappula, y, x), (1, y-1, x-1)))
+                    self.musta_shakissa = True
                 else:
                     self.edessa.append(((nappula, y, x), (y-1, x-1)))
             if x < 7:
                 if y == 1 and (7 <= self.lauta[y-1][x+1] <= 12):
                     for i in range(2, 6):
                         self.liikkeet.append(((nappula, y, x), (i, y-1, x+1)))
-                if 7 <= self.lauta[y-1][x+1] <= 11:
+                elif 7 <= self.lauta[y-1][x+1] <= 11:
                     self.liikkeet.append(((nappula, y, x), (1, y-1, x+1)))
                 elif self.lauta[y-1][x+1] == 12:
                     self.liikkeet.append(((nappula, y, x), (1, y-1, x+1)))
@@ -88,15 +91,18 @@ class Tarkistaja:
                 if y == 6 and (1 <= self.lauta[y+1][x-1] <= 6):
                     for i in range(8, 12):
                         self.liikkeet.append(((nappula, y, x), (i, y+1, x-1)))
-                elif 1 <= self.lauta[y+1][x-1] <= 6:
+                elif 1 <= self.lauta[y+1][x-1] <= 5:
                     self.liikkeet.append(((nappula, y, x), (7, y+1, x-1)))
+                elif self.lauta[y+1][x-1] == 6:
+                    self.liikkeet.append(((nappula, y, x), (7, y+1, x-1)))
+                    self.valkoinen_shakissa = True
                 else:
                     self.edessa.append(((nappula, y, x), (y+1, x-1)))
             if x < 7:
                 if y == 6 and (1 <= self.lauta[y+1][x+1] <= 6):
                     for i in range(8, 12):
                         self.liikkeet.append(((nappula, y, x), (i, y+1, x+1)))
-                if 1 <= self.lauta[y+1][x+1] <= 5:
+                elif 1 <= self.lauta[y+1][x+1] <= 5:
                     self.liikkeet.append(((nappula, y, x), (7, y+1, x+1)))
                 elif self.lauta[y+1][x+1] == 6:
                     self.liikkeet.append(((nappula, y, x), (7, y+1, x+1)))

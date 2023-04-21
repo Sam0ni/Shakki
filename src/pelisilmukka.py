@@ -38,13 +38,7 @@ class Pelisilmukka:
     def aloita(self):
         """Aloittaa pelisilmukan, ja tarkistaa aluksi valkoisen mahdolliset liikkeet
         """
-        for y in range(8): # pylint: disable=invalid-name
-            for x in range(8): # pylint: disable=invalid-name
-                liikkeet = self._pelilauta.tarkista_liikkeet(self._pelilauta.lauta[y][x], y, x)
-                uudet_liikkeet = liikkeet[0]
-                uudet_edessa = liikkeet[1]
-                self.mahdolliset_liikkeet = self.mahdolliset_liikkeet + uudet_liikkeet
-                self.edessa = self.edessa + uudet_edessa
+        self.mahdolliset_liikkeet, self.edessa, valkoinen_shakissa, musta_shakissa = self._pelilauta.alusta()
         while True:
             if self._syotteet() is False:
                 break
@@ -54,19 +48,15 @@ class Pelisilmukka:
             self._kello.tick(60)
 
             if not self.vuoro_valkoinen and self.tekoaly_kaytossa:
-                        kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
-                        liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa, 3)
-                        liikkeet = self._pelilauta.liiku(liike[0],
-                            liike[1], self.mahdolliset_liikkeet, self.edessa)
-                        uudet_mahdolliset_liikkeet = liikkeet[0]
-                        uudet_edessa = liikkeet[1]
-                        self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
-                        self.edessa = uudet_edessa
-                        self.mahdolliset_liikkeet, self.edessa, valkoinen_shakissa, musta_shakissa = self._pelilauta.paivita(
-                            self.mahdolliset_liikkeet,
-                            self.edessa, liike[0],
-                            liike[1],)
-                        self.vuoro_valkoinen = not self.vuoro_valkoinen
+                kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
+                liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa, 3)
+                liikkeet = self._pelilauta.liiku(liike[0],
+                    liike[1], self.mahdolliset_liikkeet, self.edessa)
+                uudet_mahdolliset_liikkeet = liikkeet[0]
+                uudet_edessa = liikkeet[1]
+                self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
+                self.edessa = uudet_edessa
+                self.vuoro_valkoinen = not self.vuoro_valkoinen
 
     def _syotteet(self):
         """Tarkistaa hiiren ja näppäimistön syötteet.
@@ -98,9 +88,6 @@ class Pelisilmukka:
                         musta_shakissa = liikkeet[3]
                         self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
                         self.edessa = uudet_edessa
-                        self.mahdolliset_liikkeet, self.edessa, valkoinen_shakissa, musta_shakissa = self._pelilauta.paivita(
-                            self.mahdolliset_liikkeet,
-                            self.edessa, self.valittu_nappula, (self.valittu_nappula[0], y, x))
                         self.vuoro_valkoinen = not self.vuoro_valkoinen
                         self.valittu_nappula = ""
                     elif ((self.valittu_nappula, (self.korotus, y, x))
@@ -111,9 +98,6 @@ class Pelisilmukka:
                         uudet_edessa = liikkeet[1]
                         self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
                         self.edessa = uudet_edessa
-                        self.mahdolliset_liikkeet, self.edessa, valkoinen_shakissa, musta_shakissa = self._pelilauta.paivita(
-                            self.mahdolliset_liikkeet,
-                            self.edessa, self.valittu_nappula, (self.korotus, y, x))
                         self.vuoro_valkoinen = not self.vuoro_valkoinen
                         self.valittu_nappula = ""
             elif syote.type == pygame.KEYDOWN: # pylint: disable=no-member

@@ -138,11 +138,7 @@ class Minimax:
                             liike[1], liikkeet, edessa)
                 uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                 uudet_edessa = seuraavat_liikkeet[1]
-                uudet_mahdolliset_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = self.valiaikainen_pelilauta.paivita(
-                            uudet_mahdolliset_liikkeet,
-                            uudet_edessa, liike[0],
-                            liike[1])
-                if seuraavat_liikkeet[2] or valkoinen_shakissa:
+                if seuraavat_liikkeet[2]:
                     voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, True)
                 liikkeen_arvo = self.minimax(self.valiaikainen_pelilauta.lauta, uudet_mahdolliset_liikkeet, uudet_edessa, syvyys, parhaan_liikkeen_arvo, 99999999, False, voitto)
                 if parhaan_liikkeen_arvo < liikkeen_arvo:
@@ -184,11 +180,7 @@ class Minimax:
                                 liike[1], liikkeet, edessa)
                     uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                     uudet_edessa = seuraavat_liikkeet[1]
-                    uudet_mahdolliset_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = self.valiaikainen_pelilauta.paivita(
-                            uudet_mahdolliset_liikkeet,
-                            uudet_edessa, liike[0],
-                            liike[1])
-                    if seuraavat_liikkeet[2] or valkoinen_shakissa:
+                    if seuraavat_liikkeet[2]:
                         voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, True)
                     arvo = max(arvo, self.minimax(self.valiaikainen_pelilauta.lauta, uudet_mahdolliset_liikkeet, uudet_edessa, syvyys - 1, alfa, beta, False, voitto))
                     alfa = max(alfa, arvo)
@@ -207,11 +199,7 @@ class Minimax:
                                 liike[1], liikkeet, edessa)
                     uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                     uudet_edessa = seuraavat_liikkeet[1]
-                    uudet_mahdolliset_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = self.valiaikainen_pelilauta.paivita(
-                            uudet_mahdolliset_liikkeet,
-                            uudet_edessa, liike[0],
-                            liike[1])
-                    if seuraavat_liikkeet[3] or musta_shakissa:
+                    if seuraavat_liikkeet[3]:
                         voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, False)
                     arvo = min(arvo, self.minimax(self.valiaikainen_pelilauta.lauta, uudet_mahdolliset_liikkeet, uudet_edessa, syvyys - 1, alfa, beta, True, voitto))
                     beta = min(beta, arvo)

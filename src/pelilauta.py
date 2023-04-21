@@ -30,6 +30,7 @@ class Pelilauta:
             ja toinen nappulan liikkeiden edessä olevien nappuloiden koordinaatit
         """
         self.tarkistaja.nollaa()
+        self.tarkistaja.lauta = self.lauta
         for nappula in nappulat:
             self.tarkistajat[nappula[0]](nappula[0], nappula[1], nappula[2])
         listat = self.tarkistaja.palauta()
@@ -90,6 +91,7 @@ class Pelilauta:
         for blokki in edessa:
             if blokki[1] == (alku[1], alku[2]) or blokki[1] == (loppu[1], loppu[2]):
                 poistettavat.append(blokki[0])
+                #print(blokki)
         for liike in liikkeet:
             if ((liike[1][1], liike[1][2]) == (alku[1], alku[2]) or
                     (liike[1][1], liike[1][2]) == (loppu[1], loppu[2])):
@@ -100,7 +102,7 @@ class Pelilauta:
         for liike in liikkeet:
             if liike[0] in poistettavat:
                 mahdolliset.remove(liike)
-        uudet.append(loppu)
+        poistettavat.append(loppu)
         uudet = list(set(poistettavat))
         tarkistetut = self.tarkista_liikkeet(uudet)
         mahdolliset = mahdolliset + tarkistetut[0]
@@ -142,9 +144,13 @@ class Pelilauta:
             if blokki[0] == alku:
                 blokit.remove(blokki)
         # tarkista uudet liikkeet ja blokit
-        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = self.paivita(mahdolliset, blokit, alku, loppu)
-        #lisää mahdollisiin liikkeisiin uudet liikkeet
-        mahdolliset = mahdolliset + uudet_liikkeet
-        #lisää blokkeihin uudet blokit
-        blokit = blokit + uudet_edessa
-        return mahdolliset, blokit, valkoinen_shakissa, musta_shakissa
+        return self.paivita(mahdolliset, blokit, alku, loppu)
+
+    def alusta(self):
+        nappulat = []
+        for y in range(8):
+            for x in range(8):
+                if self.lauta[y][x] == 0:
+                    continue
+                nappulat.append((self.lauta[y][x], y, x))
+        return self.tarkista_liikkeet(nappulat)

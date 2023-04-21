@@ -41,11 +41,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -83,11 +81,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -167,11 +163,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -251,11 +245,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -335,11 +327,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -391,11 +381,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -447,11 +435,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -503,11 +489,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -559,11 +543,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -625,11 +607,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -688,11 +668,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -750,11 +728,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -817,11 +793,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -853,11 +827,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -889,11 +861,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -925,11 +895,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -961,11 +929,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -1073,11 +1039,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -1192,11 +1156,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -1311,11 +1273,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -1431,11 +1391,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -1491,11 +1449,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -1551,11 +1507,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -1611,11 +1565,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -1651,11 +1603,9 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -1690,13 +1640,11 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
 
-        mahdolliset_liikkeet, mahdolliset_blokit = pelilauta.liiku((1, 5, 4), (1, 4, 3), mahdolliset_liikkeet, mahdolliset_blokit)
+        mahdolliset_liikkeet, mahdolliset_blokit, valkoinen_shakissa, musta_shakissa = pelilauta.liiku((1, 5, 4), (1, 4, 3), mahdolliset_liikkeet, mahdolliset_blokit)
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
@@ -1769,15 +1717,11 @@ class TestLiikkeet(unittest.TestCase):
         mahdolliset_liikkeet = []
         mahdolliset_blokit = []
 
-        for y in range(8):
-            for x in range(8):
-                uudet_liikkeet, uudet_edessa = pelilauta.tarkista_liikkeet(pelilauta.lauta[y][x], y, x)
-                mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-                mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        mahdolliset_blokit = mahdolliset_blokit + uudet_edessa
 
-        mahdolliset_liikkeet, mahdolliset_blokit = pelilauta.liiku((2, 4, 4), (2, 2, 4), mahdolliset_liikkeet, mahdolliset_blokit)
-    
-        mahdolliset_liikkeet, mahdolliset_blokit = pelilauta.paivita(mahdolliset_liikkeet, mahdolliset_blokit, (2, 4, 4), (2, 2, 4))
+        mahdolliset_liikkeet, mahdolliset_blokit, valkoinen_shakissa, musta_shakissa = pelilauta.liiku((2, 4, 4), (2, 2, 4), mahdolliset_liikkeet, mahdolliset_blokit)
         
         self.assertCountEqual(mahdolliset_liikkeet, tiedetyt_liikkeet)
         self.assertCountEqual(mahdolliset_blokit, tiedetyt_blokit)
