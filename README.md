@@ -12,4 +12,4 @@ Tiralabra-kurssin harjoitustyö
 
 
 ![GHA workflow badge](https://github.com/Sam0ni/Shakki/workflows/CI/badge.svg)
-[![codecov](https://codecov.io/gh/Sam0ni/Shakki/branch/main/graph/badge.svg?token=8J2MHSTWHR)](https://codecov.io/gh/Sam0ni/ohtuvarasto)
+[![codecov](https://codecov.io/gh/Sam0ni/Shakki/branch/main/graph/badge.svg?token=8J2MHSTWHR)](https://codecov.io/gh/Sam0ni/Shakki)
