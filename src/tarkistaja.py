@@ -10,16 +10,16 @@ class Tarkistaja:
 
     def alusta(self):
         tarkistus_metodit = {
-            1: self.tarkista_valkoinen_sotilas,
-            2: self.tarkista_torni,
+            1: self.tarkista_sotilas,
+            2: self.tarkista_vaaka_pysty,
             3: self.tarkista_ratsu,
-            4: self.tarkista_lahetti,
+            4: self.tarkista_viisto,
             5: self.tarkista_kuningatar,
             6: self.tarkista_kuningas,
-            7: self.tarkista_musta_sotilas,
-            8: self.tarkista_torni,
+            7: self.tarkista_sotilas,
+            8: self.tarkista_vaaka_pysty,
             9: self.tarkista_ratsu,
-            10: self.tarkista_lahetti,
+            10: self.tarkista_viisto,
             11: self.tarkista_kuningatar,
             12: self.tarkista_kuningas
         }
@@ -35,555 +35,244 @@ class Tarkistaja:
     def palauta(self):
         return self.liikkeet, self.edessa, self.valkoinen_shakissa, self.musta_shakissa
 
-    def tarkista_valkoinen_sotilas(self, nappula, y, x):
-        if y > 0:
-            if y == 1 and self.lauta[y-1][x] == 0:
-                for i in range(2, 6):
-                    self.liikkeet.append(((nappula, y, x), (i, y-1, x)))
-            elif self.lauta[y-1][x] == 0:
-                self.liikkeet.append(((nappula, y, x), (1, y-1, x)))
-                if y == 6:
-                    if self.lauta[y-2][x] == 0:
-                        self.liikkeet.append(((nappula, y, x), (1, y-2, x)))
+    def tarkista_sotilas(self, nappula, y, x):
+        if nappula == 1:
+            korotus_raja = 1
+            y_aloitus = 6
+            y_liike = -1
+            y_liike_alku = -2
+            oma_torni = 2
+            oma_kuningatar = 6
+            vihollisen_sotilas = 7
+            vihollisen_kuningatar = 11
+            vihollisen_kuningas = 12
+        else:
+            korotus_raja = 6
+            y_aloitus = 1
+            y_liike = 1
+            y_liike_alku = 2
+            oma_torni = 8
+            oma_kuningatar = 12
+            vihollisen_sotilas = 1
+            vihollisen_kuningatar = 5
+            vihollisen_kuningas = 6
+
+        if y == korotus_raja and self.lauta[y+y_liike][x] == 0:
+            for i in range(oma_torni, oma_kuningatar):
+                self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x)))
+        elif self.lauta[y+y_liike][x] == 0:
+            self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x)))
+            if y == y_aloitus:
+                if self.lauta[y+y_liike_alku][x] == 0:
+                    self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike_alku, x)))
+                else:
+                    self.edessa.append(((nappula, y, x), (y+y_liike_alku, x)))
+        else:
+            self.edessa.append(((nappula, y, x), (y+y_liike, x)))
+        if x > 0:
+            if y == korotus_raja and (vihollisen_sotilas <= self.lauta[y+y_liike][x-1] <= vihollisen_kuningatar):
+                for i in range(oma_torni, oma_kuningatar):
+                    self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x-1)))
+            elif y == korotus_raja and (self.lauta[y+y_liike][x-1] == vihollisen_kuningas):
+                for i in range(oma_torni, oma_kuningatar):
+                    self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x-1)))
+                    if nappula == 1:
+                        self.musta_shakissa = True
                     else:
-                        self.edessa.append(((nappula, y, x), (y-2, x)))
+                        self.valkoinen_shakissa = True
+            elif vihollisen_sotilas <= self.lauta[y+y_liike][x-1] <= vihollisen_kuningatar:
+                self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x-1)))
+            elif self.lauta[y+y_liike][x-1] == vihollisen_kuningas:
+                self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x-1)))
+                if nappula == 1:
+                    self.musta_shakissa = True
+                else:
+                    self.valkoinen_shakissa = True
             else:
-                self.edessa.append(((nappula, y, x), (y-1, x)))
-            if x > 0:
-                if y == 1 and (7 <= self.lauta[y-1][x-1] <= 12):
-                    for i in range(2, 6):
-                        self.liikkeet.append(((nappula, y, x), (i, y-1, x-1)))
-                elif 7 <= self.lauta[y-1][x-1] <= 11:
-                    self.liikkeet.append(((nappula, y, x), (1, y-1, x-1)))
-                elif self.lauta[y-1][x-1] == 12:
-                    self.liikkeet.append(((nappula, y, x), (1, y-1, x-1)))
-                    self.musta_shakissa = True
-                else:
-                    self.edessa.append(((nappula, y, x), (y-1, x-1)))
-            if x < 7:
-                if y == 1 and (7 <= self.lauta[y-1][x+1] <= 12):
-                    for i in range(2, 6):
-                        self.liikkeet.append(((nappula, y, x), (i, y-1, x+1)))
-                elif 7 <= self.lauta[y-1][x+1] <= 11:
-                    self.liikkeet.append(((nappula, y, x), (1, y-1, x+1)))
-                elif self.lauta[y-1][x+1] == 12:
-                    self.liikkeet.append(((nappula, y, x), (1, y-1, x+1)))
-                    self.musta_shakissa = True
-                else:
-                    self.edessa.append(((nappula, y, x), (y-1, x+1)))
-    
-    def tarkista_musta_sotilas(self, nappula, y, x):
-        if y < 7:
-            if y == 6 and self.lauta[y+1][x] == 0:
-                for i in range(8, 12):
-                    self.liikkeet.append(((nappula, y, x), (i, y+1, x)))
-            elif self.lauta[y+1][x] == 0:
-                self.liikkeet.append(((nappula, y, x), (7, y+1, x)))
-                if y == 1:
-                    if self.lauta[y+2][x] == 0:
-                        self.liikkeet.append(((nappula, y, x), (7, y+2, x)))
+                self.edessa.append(((nappula, y, x), (y+y_liike, x-1)))
+        if x < 7:
+            if y == korotus_raja and (vihollisen_sotilas <= self.lauta[y+y_liike][x+1] <= vihollisen_kuningatar):
+                for i in range(oma_torni, oma_kuningatar):
+                    self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x+1)))
+            elif y == korotus_raja and (self.lauta[y+y_liike][x+1] == vihollisen_kuningas):
+                for i in range(oma_torni, oma_kuningatar):
+                    self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x+1)))
+                    if nappula == 1:
+                        self.musta_shakissa = True
                     else:
-                        self.edessa.append(((nappula, y, x), (y+2, x)))
-            else:
-                self.edessa.append(((nappula, y, x), (y+1, x)))
-            
-            if x > 0:
-                if y == 6 and (1 <= self.lauta[y+1][x-1] <= 6):
-                    for i in range(8, 12):
-                        self.liikkeet.append(((nappula, y, x), (i, y+1, x-1)))
-                elif 1 <= self.lauta[y+1][x-1] <= 5:
-                    self.liikkeet.append(((nappula, y, x), (7, y+1, x-1)))
-                elif self.lauta[y+1][x-1] == 6:
-                    self.liikkeet.append(((nappula, y, x), (7, y+1, x-1)))
-                    self.valkoinen_shakissa = True
+                        self.valkoinen_shakissa = True
+            elif vihollisen_sotilas <= self.lauta[y+y_liike][x+1] <= vihollisen_kuningatar:
+                self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+1)))
+            elif self.lauta[y+y_liike][x+1] == vihollisen_kuningas:
+                self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+1)))
+                if nappula == 1:
+                    self.musta_shakissa = True
                 else:
-                    self.edessa.append(((nappula, y, x), (y+1, x-1)))
-            if x < 7:
-                if y == 6 and (1 <= self.lauta[y+1][x+1] <= 6):
-                    for i in range(8, 12):
-                        self.liikkeet.append(((nappula, y, x), (i, y+1, x+1)))
-                elif 1 <= self.lauta[y+1][x+1] <= 5:
-                    self.liikkeet.append(((nappula, y, x), (7, y+1, x+1)))
-                elif self.lauta[y+1][x+1] == 6:
-                    self.liikkeet.append(((nappula, y, x), (7, y+1, x+1)))
                     self.valkoinen_shakissa = True
+            else:
+                self.edessa.append(((nappula, y, x), (y+y_liike, x+1)))
+
+    def tarkista_vaaka_pysty(self, nappula, y, x):
+        alku = y + 1
+        paate = 8
+        steppi = 1
+
+        for suunta in range(2):
+            for i in range(alku, paate, steppi):
+                if self.lauta[i][x] == 0:
+                    self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
+                    if nappula == 6 or nappula == 12:
+                        break
+                elif 2 <= nappula < 7 and 7<= self.lauta[i][x] <= 12:
+                    self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
+                    if self.lauta[i][x] == 12:
+                        self.musta_shakissa = True
+                    break
+                elif 8 <= nappula < 13 and 1<= self.lauta[i][x] <= 6:
+                    self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
+                    if self.lauta[i][x] == 6:
+                        self.valkoinen_shakissa = True
+                    break
                 else:
-                    self.edessa.append(((nappula, y, x), (y+1, x+1)))
-    
-    def tarkista_torni(self, nappula, y, x):
-        for i in range(y + 1, 8):
-            if self.lauta[i][x] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-            elif nappula == 2 and 7<= self.lauta[i][x] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-                if self.lauta[i][x] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 8 and 1<= self.lauta[i][x] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-                if self.lauta[i][x] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (i, x)))
-                break
-        for i in range(y - 1, -1, -1):
-            if self.lauta[i][x] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-            elif nappula == 2 and 7<= self.lauta[i][x] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-                if self.lauta[i][x] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 8 and 1<= self.lauta[i][x] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-                if self.lauta[i][x] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (i, x)))
-                break
-        for i in range(x + 1, 8):
-            if self.lauta[y][i] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-            elif nappula == 2 and 7<= self.lauta[y][i] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-                if self.lauta[y][i] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 8 and 1<= self.lauta[y][i] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-                if self.lauta[y][i] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (y, i)))
-                break
-        for i in range(x - 1, -1, -1):
-            if self.lauta[y][i] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-            elif nappula == 2 and 7<= self.lauta[y][i] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-                if self.lauta[y][i] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 8 and 1<= self.lauta[y][i] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-                if self.lauta[y][i] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (y, i)))
-                break
+                    self.edessa.append(((nappula, y, x), (i, x)))
+                    break
+            alku = y - 1
+            paate = -1
+            steppi = -1
+        alku = x + 1
+        paate = 8
+        steppi = 1
+        for suunta in range(2):
+            for i in range(alku, paate, steppi):
+                if self.lauta[y][i] == 0:
+                    self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
+                    if nappula == 6 or nappula == 12:
+                        break
+                elif 2 <= nappula < 7 and 7<= self.lauta[y][i] <= 12:
+                    self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
+                    if self.lauta[y][i] == 12:
+                        self.musta_shakissa = True
+                    break
+                elif 8 <= nappula < 13 and 1<= self.lauta[y][i] <= 6:
+                    self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
+                    if self.lauta[y][i] == 6:
+                        self.valkoinen_shakissa = True
+                    break
+                else:
+                    self.edessa.append(((nappula, y, x), (y, i)))
+                    break
+            alku = x - 1
+            paate = -1
+            steppi = -1
+
+    def tarkista_viisto(self, nappula, y, x):
+        if x > y:
+            montako = 8-x
+        else:
+            montako = 8-y
+        x_suunta = 1
+        y_suunta = 1
+        x_liike = 1
+        y_liike = 1
+        for suunta in range(4):
+            for i in range(1, montako):
+                if self.lauta[y+y_liike][x+x_liike] == 0:
+                    self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
+                    if nappula == 6 or nappula == 12:
+                        break
+                elif 4 <= nappula <= 6 and 7 <= self.lauta[y+y_liike][x+x_liike] <= 12:
+                    self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
+                    if self.lauta[y+y_liike][x+x_liike] == 12:
+                        self.musta_shakissa = True
+                    break
+                elif 10 <= nappula <= 12 and 1 <= self.lauta[y+y_liike][x+x_liike] <= 6:
+                    self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
+                    if self.lauta[y+y_liike][x+x_liike] == 6:
+                        self.valkoinen_shakissa = True
+                    break
+                else:
+                    self.edessa.append(((nappula, y, x), (y+y_liike, x+x_liike)))
+                    break
+                x_liike += x_suunta
+                y_liike += y_suunta
+            if suunta == 0:
+                if x < y:
+                    montako = x + 1
+                else:
+                    montako = y + 1
+                x_suunta = -1
+                y_suunta = -1
+                x_liike = -1
+                y_liike = -1
+            elif suunta == 1:
+                if x < 7 - y:
+                    montako = x + 1
+                else:
+                    montako = 7 - y + 1
+                x_suunta = -1
+                y_suunta = 1
+                x_liike = -1
+                y_liike = 1
+            elif suunta == 2:
+                if 7 - x < y:
+                    montako = 7 - x + 1
+                else:
+                    montako = y + 1
+                x_suunta = 1
+                y_suunta = -1
+                x_liike = 1
+                y_liike = -1
 
     def tarkista_ratsu(self, nappula, y, x):
-        if y < 6:
-            if x < 7:
-                if self.lauta[y+2][x+1] == 0:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+2, x+1)))
-                elif nappula == 3 and 6 <= self.lauta[y+2][x+1] <= 12:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+2, x+1)))
-                    if self.lauta[y+2][x+1] == 12:
-                        self.musta_shakissa = True
-                elif nappula == 9 and 1 <= self.lauta[y+2][x+1] <= 6:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+2, x+1)))
-                    if self.lauta[y+2][x+1] == 6:
-                        self.valkoinen_shakissa = True
-                else:
-                    self.edessa.append(((nappula, y, x), (y+2, x+1)))
-            if x > 0:
-                if self.lauta[y+2][x-1] == 0:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+2, x-1)))
-                elif nappula == 3 and 6 <= self.lauta[y+2][x-1] <= 12:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+2, x-1)))
-                    if self.lauta[y+2][x-1] == 12:
-                        self.musta_shakissa = True
-                elif nappula == 9 and 1 <= self.lauta[y+2][x-1] <= 6:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+2, x-1)))
-                    if self.lauta[y+2][x-1] == 6:
-                        self.valkoinen_shakissa = True
-                else:
-                    self.edessa.append(((nappula, y, x), (y+2, x-1)))
-        if y > 1:
-            if x < 7:
-                if self.lauta[y-2][x+1] == 0:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-2, x+1)))
-                elif nappula == 3 and 6 <= self.lauta[y-2][x+1] <= 12:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-2, x+1)))
-                    if self.lauta[y-2][x+1] == 12:
-                        self.musta_shakissa = True
-                elif nappula == 9 and 1 <= self.lauta[y-2][x+1] <= 6:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-2, x+1)))
-                    if self.lauta[y-2][x+1] == 6:
-                        self.valkoinen_shakissa = True
-                else:
-                    self.edessa.append(((nappula, y, x), (y-2, x+1)))
-            if x > 0:
-                if self.lauta[y-2][x-1] == 0:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-2, x-1)))
-                elif nappula == 3 and 6 <= self.lauta[y-2][x-1] <= 12:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-2, x-1)))
-                    if self.lauta[y-2][x-1] == 12:
-                        self.musta_shakissa = True
-                elif nappula == 9 and 1 <= self.lauta[y-2][x-1] <= 6:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-2, x-1)))
-                    if self.lauta[y-2][x-1] == 6:
-                        self.valkoinen_shakissa = True
-                else:
-                    self.edessa.append(((nappula, y, x), (y-2, x-1)))
-        if x > 1:
-            if y < 7:
-                if self.lauta[y+1][x-2] == 0:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+1, x-2)))
-                elif nappula == 3 and 6 <= self.lauta[y+1][x-2] <= 12:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+1, x-2)))
-                    if self.lauta[y+1][x-2] == 12:
-                        self.musta_shakissa = True
-                elif nappula == 9 and 1 <= self.lauta[y+1][x-2] <= 6:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+1, x-2)))
-                    if self.lauta[y+1][x-2] == 6:
-                        self.valkoinen_shakissa = True
-                else:
-                    self.edessa.append(((nappula, y, x), (y+1, x-2)))
-            if y > 0:
-                if self.lauta[y-1][x-2] == 0:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-1, x-2)))
-                elif nappula == 3 and 6 <= self.lauta[y-1][x-2] <= 12:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-1, x-2)))
-                    if self.lauta[y-1][x-2] == 12:
-                        self.musta_shakissa = True
-                elif nappula == 9 and 1 <= self.lauta[y-1][x-2] <= 6:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-1, x-2)))
-                    if self.lauta[y-1][x-2] <= 6:
-                        self.valkoinen_shakissa = True
-                else:
-                    self.edessa.append(((nappula, y, x), (y-1, x-2)))
-        if x < 6:
-            if y < 7:
-                if self.lauta[y+1][x+2] == 0:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+1, x+2)))
-                elif nappula == 3 and 6 <= self.lauta[y+1][x+2] <= 12:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+1, x+2)))
-                    if self.lauta[y+1][x+2] == 12:
-                        self.musta_shakissa = True
-                elif nappula == 9 and 1 <= self.lauta[y+1][x+2] <= 6:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+1, x+2)))
-                    if self.lauta[y+1][x+2] == 6:
-                        self.valkoinen_shakissa = True
-                else:
-                    self.edessa.append(((nappula, y, x), (y+1, x+2)))
-            if y > 0:
-                if self.lauta[y-1][x+2] == 0:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-1, x+2)))
-                elif nappula == 3 and 6 <= self.lauta[y-1][x+2] <= 12:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-1, x+2)))
-                    if self.lauta[y-1][x+2] == 12:
-                        self.musta_shakissa = True
-                elif nappula == 9 and 1 <= self.lauta[y-1][x+2] <= 6:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-1, x+2)))
-                    if self.lauta[y-1][x+2] == 6:
-                        self.valkoinen_shakissa = True
-                else:
-                    self.edessa.append(((nappula, y, x), (y-1, x+2)))
-
-    def tarkista_lahetti(self, nappula, y, x):
-        if x > y:
-            montako = x
-        else:
-            montako = y
-        for i in range(1, 8-montako):
-            if self.lauta[y+i][x+i] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+i, x+i)))
-            elif nappula == 4 and 7 <= self.lauta[y+i][x+i] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+i, x+i)))
-                if self.lauta[y+i][x+i] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 10 and 1 <= self.lauta[y+i][x+i] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+i, x+i)))
-                if self.lauta[y+i][x+i] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (y+i, x+i)))
-                break
-        if x < 7 - y:
-            montako = x
-        else:
-            montako = 7 - y
-        for i in range(1, montako + 1):
-            if self.lauta[y+i][x-i] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+i, x-i)))
-            elif nappula == 4 and 7 <= self.lauta[y+i][x-i] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+i, x-i)))
-                if self.lauta[y+i][x-i] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 10 and 1 <= self.lauta[y+i][x-i] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+i, x-i)))
-                if self.lauta[y+i][x-i] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (y+i, x-i)))
-                break
-        if x < y:
-            montako = x
-        else:
-            montako = y
-        for i in range(1, montako + 1):
-            if self.lauta[y-i][x-i] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-i, x-i)))
-            elif nappula == 4 and 7 <= self.lauta[y-i][x-i] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-i, x-i)))
-                if self.lauta[y-i][x-i] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 10 and 1 <= self.lauta[y-i][x-i] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-i, x-i)))
-                if self.lauta[y-i][x-i] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (y-i, x-i)))
-                break
-        if 7 - x < y:
-            montako = 7 - x
-        else:
-            montako = y
-        for i in range(1, montako + 1):
-            if self.lauta[y-i][x+i] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-i, x+i)))
-            elif nappula == 4 and 7 <= self.lauta[y-i][x+i] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-i, x+i)))
-                if self.lauta[y-i][x+i] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 10 and 1 <= self.lauta[y-i][x+i] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-i, x+i)))
-                if self.lauta[y-i][x+i] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (y-i, x+i)))
-                break
+        ehto_1 = y < 6
+        ehto_2 = x < 7
+        ehto_3 = x > 0
+        x_liike = 1
+        y_liike = 2
+        for y_suunta in range(4):
+            if ehto_1:
+                for x_suunta in range(2):
+                    if ehto_2:
+                        if self.lauta[y+y_liike][x+x_liike] == 0:
+                            self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
+                        elif nappula == 3 and 6 <= self.lauta[y+y_liike][x+x_liike] <= 12:
+                            self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
+                            if self.lauta[y+y_liike][x+x_liike] == 12:
+                                self.musta_shakissa = True
+                        elif nappula == 9 and 1 <= self.lauta[y+y_liike][x+x_liike] <= 6:
+                            self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
+                            if self.lauta[y+y_liike][x+x_liike] == 6:
+                                self.valkoinen_shakissa = True
+                        else:
+                            self.edessa.append(((nappula, y, x), (y+y_liike, x+x_liike)))
+                    ehto_2 = ehto_3
+                    if y_suunta < 2:
+                        x_liike = -x_liike
+                    else:
+                        y_liike = -y_liike
+            if y_suunta == 0:
+                ehto_1 = y > 1
+                ehto_2 = x < 7
+                ehto_3 = x > 0
+                x_liike = 1
+                y_liike = -2
+            elif y_suunta == 1:
+                ehto_1 = x > 1
+                ehto_2 = y < 7
+                ehto_3 = y > 0
+                x_liike = -2
+                y_liike = 1
+            elif y_suunta == 2:
+                ehto_1 = x < 6
+                ehto_2 = y < 7
+                ehto_3 = y > 0
+                x_liike = 2
+                y_liike = 1
 
     def tarkista_kuningatar(self, nappula, y, x):
-        for i in range(y + 1, 8):
-            if self.lauta[i][x] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-            elif nappula == 5 and 7<= self.lauta[i][x] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-                if self.lauta[i][x] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 11 and 1<= self.lauta[i][x] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-                if self.lauta[i][x] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (i, x)))
-                break
-        for i in range(y - 1, -1, -1):
-            if self.lauta[i][x] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-            elif nappula == 5 and 7<= self.lauta[i][x] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-                if self.lauta[i][x] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 11 and 1<= self.lauta[i][x] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-                if self.lauta[i][x] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (i, x)))
-                break
-        for i in range(x + 1, 8):
-            if self.lauta[y][i] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-            elif nappula == 5 and 7<= self.lauta[y][i] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-                if self.lauta[y][i] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 11 and 1<= self.lauta[y][i] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-                if self.lauta[y][i] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (y, i)))
-                break
-        for i in range(x - 1, -1, -1):
-            if self.lauta[y][i] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-            elif nappula == 5 and 7<= self.lauta[y][i] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-                if self.lauta[y][i] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 11 and 1<= self.lauta[y][i] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-                if self.lauta[y][i] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (y, i)))
-                break
-        if x > y:
-            montako = x
-        else:
-            montako = y
-        for i in range(1, 8-montako):
-            if self.lauta[y+i][x+i] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+i, x+i)))
-            elif nappula == 5 and 7 <= self.lauta[y+i][x+i] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+i, x+i)))
-                if self.lauta[y+i][x+i] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 11 and 1 <= self.lauta[y+i][x+i] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+i, x+i)))
-                if self.lauta[y+i][x+i] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (y+i, x+i)))
-                break
-        if x < 7 - y:
-            montako = x
-        else:
-            montako = 7 - y
-        for i in range(1, montako + 1):
-            if self.lauta[y+i][x-i] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+i, x-i)))
-            elif nappula == 5 and 7 <= self.lauta[y+i][x-i] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+i, x-i)))
-                if self.lauta[y+i][x-i] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 11 and 1 <= self.lauta[y+i][x-i] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+i, x-i)))
-                if self.lauta[y+i][x-i] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (y+i, x-i)))
-                break
-        if x < y:
-            montako = x
-        else:
-            montako = y
-        for i in range(1, montako + 1):
-            if self.lauta[y-i][x-i] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-i, x-i)))
-            elif nappula == 5 and 7 <= self.lauta[y-i][x-i] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-i, x-i)))
-                if self.lauta[y-i][x-i] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 11 and 1 <= self.lauta[y-i][x-i] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-i, x-i)))
-                if self.lauta[y-i][x-i] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (y-i, x-i)))
-                break
-        if 7 - x < y:
-            montako = 7 - x
-        else:
-            montako = y
-        for i in range(1, montako + 1):
-            if self.lauta[y-i][x+i] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-i, x+i)))
-            elif nappula == 5 and 7 <= self.lauta[y-i][x+i] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-i, x+i)))
-                if self.lauta[y-i][x+i] == 12:
-                    self.musta_shakissa = True
-                break
-            elif nappula == 11 and 1 <= self.lauta[y-i][x+i] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-i, x+i)))
-                if self.lauta[y-i][x+i] == 6:
-                    self.valkoinen_shakissa = True
-                break
-            else:
-                self.edessa.append(((nappula, y, x), (y-i, x+i)))
-                break
+        self.tarkista_viisto(nappula, y, x)
+        self.tarkista_vaaka_pysty(nappula, y, x)
 
     def tarkista_kuningas(self, nappula, y, x):
-        if x < 7:
-            if self.lauta[y][x+1] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, x+1)))
-            elif nappula == 6 and 7 <= self.lauta[y][x+1] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, x+1)))
-            elif nappula == 12 and 1 <= self.lauta[y][x+1] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, x+1)))
-            else:
-                self.edessa.append(((nappula, y, x), (y, x+1)))
-            if y < 7:
-                if self.lauta[y+1][x+1] == 0:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+1, x+1)))
-                elif nappula == 6 and 7 <= self.lauta[y+1][x+1] <= 12:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+1, x+1)))
-                elif nappula == 12 and 1 <= self.lauta[y+1][x+1] <= 6:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+1, x+1)))
-                else:
-                    self.edessa.append(((nappula, y, x), (y+1, x+1)))
-            if y > 0:
-                if self.lauta[y-1][x+1] == 0:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-1, x+1)))
-                elif nappula == 6 and 7 <= self.lauta[y-1][x+1] <= 12:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-1, x+1)))
-                elif nappula == 12 and 1 <= self.lauta[y-1][x+1] <= 6:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-1, x+1)))
-                else:
-                    self.edessa.append(((nappula, y, x), (y-1, x+1)))
-        if x > 0:
-            if self.lauta[y][x-1] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, x-1)))
-            elif nappula == 6 and 7 <= self.lauta[y][x-1] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, x-1)))
-            elif nappula == 12 and 1 <= self.lauta[y][x-1] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y, x-1)))
-            else:
-                self.edessa.append(((nappula, y, x), (y, x-1)))
-            if y < 7:
-                if self.lauta[y+1][x-1] == 0:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+1, x-1)))
-                elif nappula == 6 and 7 <= self.lauta[y+1][x-1] <= 12:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+1, x-1)))
-                elif nappula == 12 and 1 <= self.lauta[y+1][x-1] <= 6:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y+1, x-1)))
-                else:
-                    self.edessa.append(((nappula, y, x), (y+1, x-1)))
-            if y > 0:
-                if self.lauta[y-1][x-1] == 0:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-1, x-1)))
-                elif nappula == 6 and 7 <= self.lauta[y-1][x-1] <= 12:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-1, x-1)))
-                elif nappula == 12 and 1 <= self.lauta[y-1][x-1] <= 6:
-                    self.liikkeet.append(((nappula, y, x), (nappula, y-1, x-1)))
-                else:
-                    self.edessa.append(((nappula, y, x), (y-1, x-1)))
-        if y > 0:
-            if self.lauta[y-1][x] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-1, x)))
-            elif nappula == 6 and 7 <= self.lauta[y-1][x] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-1, x)))
-            elif nappula == 12 and 1 <= self.lauta[y-1][x] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y-1, x)))
-            else:
-                self.edessa.append(((nappula, y, x), (y-1, x)))
-        if y < 7:
-            if self.lauta[y+1][x] == 0:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+1, x)))
-            elif nappula == 6 and 7 <= self.lauta[y+1][x] <= 12:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+1, x)))
-            elif nappula == 12 and 1 <= self.lauta[y+1][x] <= 6:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+1, x)))
-            else:
-                self.edessa.append(((nappula, y, x), (y+1, x)))
+        self.tarkista_vaaka_pysty(nappula, y, x)
+        self.tarkista_viisto(nappula, y, x)
