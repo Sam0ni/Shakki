@@ -1,4 +1,4 @@
-![kattavuusraportti](https://user-images.githubusercontent.com/101888699/232341316-17cf12bd-4fd9-48f5-92d5-b24c1ca11ba0.png)
+![kattavuusraportti](https://user-images.githubusercontent.com/101888699/233867146-8fd15676-48fc-4cd4-8c64-02cdbdb1cf9c.png)
 
 
 Tällä hetkellä on testattuna pelilogiikka, eli se, että nappulat liikkuvat oikein. Käytännössä ohjelmassa ylläpidetään kahta eri listaa, joista toisessa on kaikkien nappuloiden mahdolliset liikkeet sillä hetkellä, ja toisessa on nappuloiden liikkeiden edessä olevat nappulat. Yksikkötesteissä testataan jokaiselle nappulatyypille, että mahdolliset liikkeet ja edessä olevat nappulat tarkistetaan oikein. Myöskin testataan, että nappulat siirtyvät laudalla, ja että siirron jälkeen liikkeet päivittyvät oikein.
