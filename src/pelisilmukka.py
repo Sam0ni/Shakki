@@ -9,7 +9,7 @@ hakemisto = os.path.dirname(__file__)
 class Pelisilmukka:
     """Luokka joka pitää huolta aikaan sidotuista tapahtumista
     """
-    def __init__(self, pelilauta, ruudun_koko, renderoja, kello, syotteiden_hakija, tekoaly_kaytossa): # pylint: disable=too-many-instance-attributes
+    def __init__(self, pelilauta, ruudun_koko, renderoja, kello, syotteiden_hakija, tekoaly_kaytossa, tekoaly): # pylint: disable=too-many-instance-attributes
         """Luokan konstruktori, jossa määritellään tarvittavat muuttujat
 
         Args:
@@ -28,7 +28,7 @@ class Pelisilmukka:
         self.korotus = 5
         self.mahdolliset_liikkeet = []
         self.edessa = []
-        self.tekoaly = Minimax(self._pelilauta.lauta.copy())
+        self.tekoaly = tekoaly
         self.tekoaly_kaytossa = tekoaly_kaytossa
 
     def aloita(self):
@@ -52,6 +52,7 @@ class Pelisilmukka:
         Returns:
             False: Peli suljetaan
         """
+        print(self._syotteiden_hakija.hae())
         for syote in self._syotteiden_hakija.hae():
             if syote.type == pygame.MOUSEBUTTONDOWN: # pylint: disable=no-member
                 x, y = pygame.mouse.get_pos()
