@@ -1,5 +1,8 @@
 import pygame
 from pelilauta import Pelilauta
+from pelisilmukkaassetit.renderoja import Renderoja
+from pelisilmukkaassetit.kello import Kello
+from pelisilmukkaassetit.syotteiden_hakija import Syotteiden_hakija
 from pelisilmukka import Pelisilmukka
 
 lauta = [[8,9,10,11,12,10,9,8],
@@ -24,7 +27,12 @@ def main():
 
     pelilauta = Pelilauta(lauta, Ruudun_Koko)
 
-    silmukka = Pelisilmukka(pelilauta, Ruudun_Koko, naytto)
+    renderoja = Renderoja(naytto, Ruudun_Koko, pelilauta)
+    kello = Kello()
+    syotteiden_hakija = Syotteiden_hakija()
+
+
+    silmukka = Pelisilmukka(pelilauta, Ruudun_Koko, renderoja, kello, syotteiden_hakija, True)
 
     pygame.init() # pylint: disable=no-member
     silmukka.aloita()
