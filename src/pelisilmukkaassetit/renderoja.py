@@ -10,12 +10,16 @@ class Renderoja:
         self._pelilauta = pelilauta
         self.spritet = None
         self._hae_spritet()
+        self.tekstit = None
+        self.alusta_tekstit()
 
 
-    def _renderoi(self):
+    def _renderoi(self, valittu_nappula):
         """Piirtää laudan ja spritet näytölle
         """
         self._naytto.blit(self.tausta, (0,0))
+        if valittu_nappula != "":
+            self._naytto.blit(self.valittu, (valittu_nappula[2] * self._ruudun_koko + 1, valittu_nappula[1] * self._ruudun_koko + 1))
         for y in range(8): # pylint: disable=invalid-name
             for x in range(8): # pylint: disable=invalid-name
                 ruutu = self._pelilauta.lauta[y][x]
@@ -29,6 +33,9 @@ class Renderoja:
         """
         self.tausta = pygame.image.load(
             os.path.join(hakemisto, "..", "assetit_isommat", "shakkilauta.png")
+        )
+        self.valittu = pygame.image.load(
+            os.path.join(hakemisto, "..", "assetit_isommat", "valittu_rengas.png")
         )
         valkoinen_sotilas = pygame.image.load(
             os.path.join(hakemisto, "..", "assetit_isommat", "valkoinen_sotilas.png")
@@ -80,4 +87,16 @@ class Renderoja:
             10:musta_lahetti,
             11:musta_kuningatar,
             12:musta_kuningas
+        }
+
+    def alusta_tekstit(self):
+        fontti = pygame.font.Font('freesansbold.ttf', 32)
+        vari = (0, 200, 100)
+        self.tekstit = {
+            "voitto_musta": fontti.render("Musta Voitti!", False, vari),
+            "voitto_valkoinen": fontti.render("Valkoinen Voitti!", False, vari),
+            2: fontti.render("Kororus = Torni", False, vari),
+            3: fontti.render("Kororus = Ratsu", False, vari),
+            4: fontti.render("Kororus = Lähetti", False, vari),
+            5: fontti.render("Kororus = Kuningatar", False, vari)
         }

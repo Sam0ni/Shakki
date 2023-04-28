@@ -34,12 +34,12 @@ class Pelisilmukka:
     def aloita(self):
         """Aloittaa pelisilmukan, ja tarkistaa aluksi valkoisen mahdolliset liikkeet
         """
-        self.mahdolliset_liikkeet, self.edessa, valkoinen_shakissa, musta_shakissa = self._pelilauta.alusta()
+        self.mahdolliset_liikkeet, self.edessa, valkoinen_shakissa, musta_shakissa, valkoisen_shakkaajat, mustan_shakkaajat = self._pelilauta.alusta()
         while True:
             if self._syotteet() is False:
                 break
 
-            self._renderoja._renderoi()
+            self._renderoja._renderoi(self.valittu_nappula)
 
             self._kello.tick(60)
 
@@ -52,7 +52,6 @@ class Pelisilmukka:
         Returns:
             False: Peli suljetaan
         """
-        print(self._syotteiden_hakija.hae())
         for syote in self._syotteiden_hakija.hae():
             if syote.type == pygame.MOUSEBUTTONDOWN: # pylint: disable=no-member
                 x, y = pygame.mouse.get_pos()
