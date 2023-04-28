@@ -34,9 +34,9 @@ class Pelilauta:
         for nappula in nappulat:
             self.tarkistajat[nappula[0]](nappula[0], nappula[1], nappula[2])
         listat = self.tarkistaja.palauta()
-        return listat[0], listat[1], listat[2], listat[3]
+        return listat[0], listat[1], listat[2], listat[3], listat[4], listat[5]
 
-    def tarkista_matti(self, liikkeet, edessa, valkoinen):
+    def tarkista_matti(self, liikkeet, edessa, valkoinen, shakkaajat):
         kopio_lauta = deepcopy(self.lauta)
 
         if valkoinen:
@@ -48,10 +48,14 @@ class Pelilauta:
         matissa = False
         for liike in liikkeet:
             if sotilas <= liike[0][0] <= kuningas:
-                uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa = self.liiku(liike[0], liike[1], liikkeet, edessa)
-                paivitetyt = self.paivita(uudet_liikkeet, uudet_edessa, liike[0], liike[1])
-                valkoinen_shakissa = valkoinen_shakissa or paivitetyt[2]
-                musta_shakissa = musta_shakissa or paivitetyt[3]
+                kopio_shakkaajat = deepcopy(shakkaajat)
+                uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa, valkoisen_shakkaajat, mustan_shakkaajat = self.liiku(liike[0], liike[1], liikkeet, edessa)
+                for shakkaaja in shakkaajat:
+                    if liike[1][1] == shakkaaja[1] and liike[1][2] == shakkaaja[2]:
+                        kopio_shakkaajat.remove(shakkaaja)
+                shakkaajien_tila = self.tarkista_liikkeet(kopio_shakkaajat)
+                valkoinen_shakissa = valkoinen_shakissa or shakkaajien_tila[2]
+                musta_shakissa = musta_shakissa or shakkaajien_tila[3]
                 if valkoinen and valkoinen_shakissa:
                     self.lauta = deepcopy(kopio_lauta)
                     matissa = True
@@ -107,7 +111,7 @@ class Pelilauta:
         tarkistetut = self.tarkista_liikkeet(uudet)
         mahdolliset = mahdolliset + tarkistetut[0]
         blokit = blokit + tarkistetut[1]
-        return mahdolliset, blokit, tarkistetut[2], tarkistetut[3]
+        return mahdolliset, blokit, tarkistetut[2], tarkistetut[3], tarkistetut[4], tarkistetut[5]
 
     def liiku(self, alku, loppu, liikkeet, edessa):
         """Metodi joka liikuttaa nappulaa laudalla

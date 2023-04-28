@@ -6,6 +6,8 @@ class Tarkistaja:
         self.musta_shakissa = False
         self.liikkeet = []
         self.edessa = []
+        self.valkoisen_shakkaajat = []
+        self.mustan_shakkaajat = []
         self.lauta = lauta
 
     def alusta(self):
@@ -29,11 +31,13 @@ class Tarkistaja:
     def nollaa(self):
         self.liikkeet = []
         self.edessa = []
+        self.valkoisen_shakkaajat = []
+        self.mustan_shakkaajat = []
         self.valkoinen_shakissa = False
         self.musta_shakissa = False
 
     def palauta(self):
-        return self.liikkeet, self.edessa, self.valkoinen_shakissa, self.musta_shakissa
+        return self.liikkeet, self.edessa, self.valkoinen_shakissa, self.musta_shakissa, self.valkoisen_shakkaajat, self.mustan_shakkaajat
 
     def tarkista_sotilas(self, nappula, y, x):
         if nappula == 1:
@@ -76,18 +80,22 @@ class Tarkistaja:
             elif y == korotus_raja and (self.lauta[y+y_liike][x-1] == vihollisen_kuningas):
                 for i in range(oma_torni, oma_kuningatar):
                     self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x-1)))
-                    if nappula == 1:
-                        self.musta_shakissa = True
-                    else:
-                        self.valkoinen_shakissa = True
+                if nappula == 1:
+                    self.musta_shakissa = True
+                    self.mustan_shakkaajat.append((nappula, y, x))
+                else:
+                    self.valkoinen_shakissa = True
+                    self.valkoisen_shakkaajat.append((nappula, y, x))
             elif vihollisen_sotilas <= self.lauta[y+y_liike][x-1] <= vihollisen_kuningatar:
                 self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x-1)))
             elif self.lauta[y+y_liike][x-1] == vihollisen_kuningas:
                 self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x-1)))
                 if nappula == 1:
                     self.musta_shakissa = True
+                    self.mustan_shakkaajat.append((nappula, y, x))
                 else:
                     self.valkoinen_shakissa = True
+                    self.valkoisen_shakkaajat.append((nappula, y, x))
             else:
                 self.edessa.append(((nappula, y, x), (y+y_liike, x-1)))
         if x < 7:
@@ -97,18 +105,22 @@ class Tarkistaja:
             elif y == korotus_raja and (self.lauta[y+y_liike][x+1] == vihollisen_kuningas):
                 for i in range(oma_torni, oma_kuningatar):
                     self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x+1)))
-                    if nappula == 1:
-                        self.musta_shakissa = True
-                    else:
-                        self.valkoinen_shakissa = True
+                if nappula == 1:
+                    self.musta_shakissa = True
+                    self.mustan_shakkaajat.append((nappula, y, x))
+                else:
+                    self.valkoinen_shakissa = True
+                    self.valkoisen_shakkaajat.append((nappula, y, x))
             elif vihollisen_sotilas <= self.lauta[y+y_liike][x+1] <= vihollisen_kuningatar:
                 self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+1)))
             elif self.lauta[y+y_liike][x+1] == vihollisen_kuningas:
                 self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+1)))
                 if nappula == 1:
                     self.musta_shakissa = True
+                    self.mustan_shakkaajat.append((nappula, y, x))
                 else:
                     self.valkoinen_shakissa = True
+                    self.valkoisen_shakkaajat.append((nappula, y, x))
             else:
                 self.edessa.append(((nappula, y, x), (y+y_liike, x+1)))
 
@@ -127,11 +139,13 @@ class Tarkistaja:
                     self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
                     if self.lauta[i][x] == 12:
                         self.musta_shakissa = True
+                        self.mustan_shakkaajat.append((nappula, y, x))
                     break
                 elif 8 <= nappula < 13 and 1<= self.lauta[i][x] <= 6:
                     self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
                     if self.lauta[i][x] == 6:
                         self.valkoinen_shakissa = True
+                        self.valkoisen_shakkaajat.append((nappula, y, x))
                     break
                 else:
                     self.edessa.append(((nappula, y, x), (i, x)))
@@ -152,11 +166,13 @@ class Tarkistaja:
                     self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
                     if self.lauta[y][i] == 12:
                         self.musta_shakissa = True
+                        self.mustan_shakkaajat.append((nappula, y, x))
                     break
                 elif 8 <= nappula < 13 and 1<= self.lauta[y][i] <= 6:
                     self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
                     if self.lauta[y][i] == 6:
                         self.valkoinen_shakissa = True
+                        self.valkoisen_shakkaajat.append((nappula, y, x))
                     break
                 else:
                     self.edessa.append(((nappula, y, x), (y, i)))
@@ -184,11 +200,13 @@ class Tarkistaja:
                     self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
                     if self.lauta[y+y_liike][x+x_liike] == 12:
                         self.musta_shakissa = True
+                        self.mustan_shakkaajat.append((nappula, y, x))
                     break
                 elif 10 <= nappula <= 12 and 1 <= self.lauta[y+y_liike][x+x_liike] <= 6:
                     self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
                     if self.lauta[y+y_liike][x+x_liike] == 6:
                         self.valkoinen_shakissa = True
+                        self.valkoisen_shakkaajat.append((nappula, y, x))
                     break
                 else:
                     self.edessa.append(((nappula, y, x), (y+y_liike, x+x_liike)))
@@ -239,10 +257,12 @@ class Tarkistaja:
                             self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
                             if self.lauta[y+y_liike][x+x_liike] == 12:
                                 self.musta_shakissa = True
+                                self.mustan_shakkaajat.append((nappula, y, x))
                         elif nappula == 9 and 1 <= self.lauta[y+y_liike][x+x_liike] <= 6:
                             self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
                             if self.lauta[y+y_liike][x+x_liike] == 6:
                                 self.valkoinen_shakissa = True
+                                self.valkoisen_shakkaajat.append((nappula, y, x))
                         else:
                             self.edessa.append(((nappula, y, x), (y+y_liike, x+x_liike)))
                     ehto_2 = ehto_3
