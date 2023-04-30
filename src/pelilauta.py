@@ -26,8 +26,10 @@ class Pelilauta:
             x (int): Nappulan x-koordinaatti
 
         Returns:
-            list: kaksi listaa joista toinen on nappulan mahdolliset liikkeet
-            ja toinen nappulan liikkeiden edessä olevien nappuloiden koordinaatit
+            tuple: neljä listaa joista toinen on nappulan mahdolliset liikkeet,
+            toinen nappulan liikkeiden edessä olevien nappuloiden koordinaatit,
+            kolmas ja neljäs shakin aiheuttavat nappulat. Myös kaksi totuusarvoa,
+            jotka ilmaisevat shakin
         """
         self.tarkistaja.nollaa()
         self.tarkistaja.lauta = self.lauta
@@ -82,8 +84,10 @@ class Pelilauta:
             loppu (tuple): siirretyn nappulan loppupaikka
 
         Returns:
-            list: kaksi listaa joista toinen on nappulan mahdolliset liikkeet
-            ja toinen nappulan liikkeiden edessä olevien nappuloiden koordinaatit
+            tuple: neljä listaa joista toinen on nappulan mahdolliset liikkeet,
+            toinen nappulan liikkeiden edessä olevien nappuloiden koordinaatit,
+            kolmas ja neljäs shakin aiheuttavat nappulat. Myös kaksi totuusarvoa,
+            jotka ilmaisevat shakin
         """
         #alkupaikka jonkun blokkilistalla
         #loppupaikka jonkun blokkilistalla
@@ -122,8 +126,10 @@ class Pelilauta:
             edessa (list): lista edessä olevien nappuloiden koordinaateista
 
         Returns:
-            list: kaksi listaa joista toinen on nappulan mahdolliset liikkeet
-            ja toinen nappulan liikkeiden edessä olevien nappuloiden koordinaatit
+            tuple: neljä listaa joista toinen on nappulan mahdolliset liikkeet,
+            toinen nappulan liikkeiden edessä olevien nappuloiden koordinaatit,
+            kolmas ja neljäs shakin aiheuttavat nappulat. Myös kaksi totuusarvoa,
+            jotka ilmaisevat shakin
         """
         mahdolliset = [] + liikkeet
         blokit = [] + edessa
@@ -150,6 +156,11 @@ class Pelilauta:
         return self.paivita(mahdolliset, blokit, alku, loppu)
 
     def alusta(self):
+        """Alustaa laudan
+
+        Returns:
+            tuple: mahdolliset liikkeet, edessa olevat, shakkaustiedot
+        """
         nappulat = []
         for y in range(8):
             for x in range(8):

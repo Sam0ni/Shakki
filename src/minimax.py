@@ -61,6 +61,7 @@ class Minimax:
             alfa (int): alfa-beta karsinnan alfa-arvo
             beta (int): alfa-beta karsinnan beta-arvo
             maksimoiva (boolean): muuttuja jolla määritellään onko maksimoivan vai minimoivan osan vuoro
+            voitto (bool): onko shakkimatti
 
         Returns:
             int: pelitilanteen arvo

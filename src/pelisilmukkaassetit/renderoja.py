@@ -15,7 +15,13 @@ class Renderoja:
 
 
     def _renderoi(self, valittu_nappula, korotus, voitto, voittaja):
-        """Piirtää laudan ja spritet näytölle
+        """Piirtää spritet näytölle
+
+        Args:
+            valittu_nappula (tuple): valitun nappulan koordinaatit
+            korotus (int): nappula joksi korotetaan
+            voitto (bool): Onko peli päättynyt
+            voittaja (str): kumpi voitti
         """
         self._naytto.fill((0,0,0))
         self._naytto.blit(self.tausta, (0,0))

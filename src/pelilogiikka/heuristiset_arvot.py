@@ -6,6 +6,8 @@ hakemisto = os.path.dirname(__file__)
 envin_polku = os.path.join(hakemisto, "..", ".env")
 
 class Heuristiset_arvot:
+    """haetaan tiedostosta arvot joiden perusteella pelitilanne arvioidaan
+    """
     def hae(self):
         dotenv.load_dotenv(envin_polku)
         nappuloiden_arvot = self.nappulat()

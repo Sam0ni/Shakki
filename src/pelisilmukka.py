@@ -34,7 +34,7 @@ class Pelisilmukka:
         self.m_voitto = False
 
     def aloita(self):
-        """Aloittaa pelisilmukan, ja tarkistaa aluksi valkoisen mahdolliset liikkeet
+        """Aloittaa pelisilmukan, ja tarkistaa aluksi mahdolliset liikkeet
         """
         self.mahdolliset_liikkeet, self.edessa, valkoinen_shakissa, musta_shakissa, valkoisen_shakkaajat, mustan_shakkaajat = self._pelilauta.alusta()
         while True:
@@ -91,6 +91,8 @@ class Pelisilmukka:
                 return False
 
     def tekoalyn_vuoro(self):
+        """Kutsuu minimaxia ja liikuttaa sen palauttaman liikkeen
+        """
         kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
         liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa, 2)
         liikkeet = self._pelilauta.liiku(liike[0],
@@ -103,6 +105,12 @@ class Pelisilmukka:
         self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
 
     def valitse_nappula(self, y, x):
+        """valitsee nappulan, mikäli hiiren x- ja y-koordinaatit ovat kelvolliset
+
+        Args:
+            y (int): hiiren y-koordinaatti
+            x (int): hiiren x-koordinaatti
+        """
         if self._pelilauta.lauta[y][x] != 0:
             if self.vuoro_valkoinen:
                 if 1 <= self._pelilauta.lauta[y][x] <= 6:
@@ -112,6 +120,12 @@ class Pelisilmukka:
                     self.valittu_nappula = (self._pelilauta.lauta[y][x], y, x)
 
     def validoi_liike(self, y, x):
+        """tarkistaa onko liike kelvollinen ja liikuttaa mikäli on
+
+        Args:
+            y (int): hiiren y-koordinaatti
+            x (int): hiiren x-koordinaatti
+        """
         if ((self.valittu_nappula, (self.valittu_nappula[0], y, x))
                     in self.mahdolliset_liikkeet):
             liikkeet = self._pelilauta.liiku(self.valittu_nappula,
@@ -136,6 +150,14 @@ class Pelisilmukka:
             self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
 
     def matin_tarkistus(self, v_shakissa, m_shakissa, v_shakkaajat, m_shakkaajat):
+        """tarkistaa onko shakkimatti
+
+        Args:
+            v_shakissa (bool): valkoinen kuningas shakissa
+            m_shakissa (bool): musta kuningas shakissa
+            v_shakkaajat (list): nappulat jotka uhkaavat valkoista kuningasta
+            m_shakkaajat (list): nappulat jotka uhkaavat mustaa kuningasta
+        """
         if v_shakissa:
             if not self.vuoro_valkoinen:
                 self.m_voitto = True
