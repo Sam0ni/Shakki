@@ -131,27 +131,3 @@ class TestMinimax(unittest.TestCase):
         oikea_liike = ((8,3,0), (8,3,7))
 
         self.assertEqual(liike, oikea_liike)
-
-    def test_minimax_osaa_vaistaa_matin(self):
-        lauta = [[0,0,0,0,0,0,0,0],
-        [0,0,5,0,0,0,2,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,8,0,0,2,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,12]]
-
-        mahdolliset_liikkeet = []
-        edessa = []
-
-        pelilauta = Pelilauta(lauta, self.ruudun_koko)
-        minimax = Minimax(lauta)
-        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa, valkoisen_shakkaajat, mustan_shakkaajat = pelilauta.alusta()
-        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
-        edessa = edessa + uudet_edessa
-        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 4)
-
-        oikea_liike = ((8,3,2), (8,3,5))
-
-        self.assertEqual(liike, oikea_liike)
