@@ -65,7 +65,7 @@ class Pelilauta:
                 else:
                     matissa = False
                     break
-            self.lauta = deepcopy(kopio_lauta)
+        self.lauta = deepcopy(kopio_lauta)
         return matissa
 
 
@@ -95,7 +95,6 @@ class Pelilauta:
         for blokki in edessa:
             if blokki[1] == (alku[1], alku[2]) or blokki[1] == (loppu[1], loppu[2]):
                 poistettavat.append(blokki[0])
-                #print(blokki)
         for liike in liikkeet:
             if ((liike[1][1], liike[1][2]) == (alku[1], alku[2]) or
                     (liike[1][1], liike[1][2]) == (loppu[1], loppu[2])):

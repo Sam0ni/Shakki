@@ -14,10 +14,15 @@ class Renderoja:
         self.alusta_tekstit()
 
 
-    def _renderoi(self, valittu_nappula):
+    def _renderoi(self, valittu_nappula, korotus, voitto, voittaja):
         """Piirtää laudan ja spritet näytölle
         """
+        self._naytto.fill((0,0,0))
         self._naytto.blit(self.tausta, (0,0))
+        self._naytto.blit(self.tekstit[korotus], (8*self._ruudun_koko, 200))
+        self._naytto.blit(self.tekstit["komennot"], (8*self._ruudun_koko, 350))
+        self._naytto.blit(self.tekstit["korotus"], (8*self._ruudun_koko, 500))
+        self._naytto.blit(self.tekstit["vaihto"], (8*self._ruudun_koko, 650))
         if valittu_nappula != "":
             self._naytto.blit(self.valittu, (valittu_nappula[2] * self._ruudun_koko + 1, valittu_nappula[1] * self._ruudun_koko + 1))
         for y in range(8): # pylint: disable=invalid-name
@@ -26,6 +31,8 @@ class Renderoja:
                 if ruutu != 0:
                     self._naytto.blit(self.spritet[ruutu],
                         (x*self._ruudun_koko,y*self._ruudun_koko))
+        if voitto:
+            self._naytto.blit(self.tekstit[voittaja], (2* self._ruudun_koko, 3* self._ruudun_koko))
         pygame.display.update()
 
     def _hae_spritet(self):
@@ -90,13 +97,18 @@ class Renderoja:
         }
 
     def alusta_tekstit(self):
-        fontti = pygame.font.Font('freesansbold.ttf', 32)
+        fontti = pygame.font.Font('freesansbold.ttf', 45)
+        fontti_isompi = pygame.font.Font('freesansbold.ttf', 100)
         vari = (0, 200, 100)
+        tausta_vari = (0, 0, 190)
         self.tekstit = {
-            "voitto_musta": fontti.render("Musta Voitti!", False, vari),
-            "voitto_valkoinen": fontti.render("Valkoinen Voitti!", False, vari),
-            2: fontti.render("Kororus = Torni", False, vari),
-            3: fontti.render("Kororus = Ratsu", False, vari),
-            4: fontti.render("Kororus = Lähetti", False, vari),
-            5: fontti.render("Kororus = Kuningatar", False, vari)
+            "voitto_musta": fontti_isompi.render("Musta Voitti!", True, vari, tausta_vari),
+            "voitto_valkoinen": fontti_isompi.render("Valkoinen Voitti!", True, vari, tausta_vari),
+            2: fontti.render("Korotus = Torni", False, vari),
+            3: fontti.render("Korotus = Ratsu", False, vari),
+            4: fontti.render("Korotus = Lähetti", False, vari),
+            5: fontti.render("Korotus = Kuningatar", False, vari),
+            "komennot": fontti.render("Komennot:", False, vari),
+            "korotus": fontti.render("Vaihda Korotus: 2-5", False, vari),
+            "vaihto": fontti.render("Vaihda nappulaa: D", False, vari)
         }

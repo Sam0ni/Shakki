@@ -30,7 +30,7 @@ class Minimax:
             tuple: paras mahdollinen liike
         """
         paras_liike = ""
-        parhaan_liikkeen_arvo = -99999999999
+        parhaan_liikkeen_arvo = -9999999999999
         for liike in liikkeet:
             if liike[0][0] > 6:
                 voitto = False
@@ -42,6 +42,8 @@ class Minimax:
                 uudet_edessa = seuraavat_liikkeet[1]
                 if seuraavat_liikkeet[2]:
                     voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, True, seuraavat_liikkeet[4])
+                elif seuraavat_liikkeet[3]:
+                    continue
                 liikkeen_arvo = self.minimax(self.valiaikainen_pelilauta.lauta, uudet_mahdolliset_liikkeet, uudet_edessa, syvyys, parhaan_liikkeen_arvo, 99999999, False, voitto)
                 if parhaan_liikkeen_arvo < liikkeen_arvo:
                     parhaan_liikkeen_arvo = liikkeen_arvo
@@ -84,6 +86,8 @@ class Minimax:
                     uudet_edessa = seuraavat_liikkeet[1]
                     if seuraavat_liikkeet[2]:
                         voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, True, seuraavat_liikkeet[4])
+                    elif seuraavat_liikkeet[3]:
+                        continue
                     arvo = max(arvo, self.minimax(self.valiaikainen_pelilauta.lauta, uudet_mahdolliset_liikkeet, uudet_edessa, syvyys - 1, alfa, beta, False, voitto))
                     alfa = max(alfa, arvo)
                     if arvo >= beta:
@@ -103,6 +107,8 @@ class Minimax:
                     uudet_edessa = seuraavat_liikkeet[1]
                     if seuraavat_liikkeet[3]:
                         voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, False, seuraavat_liikkeet[5])
+                    elif seuraavat_liikkeet[2]:
+                        continue
                     arvo = min(arvo, self.minimax(self.valiaikainen_pelilauta.lauta, uudet_mahdolliset_liikkeet, uudet_edessa, syvyys - 1, alfa, beta, True, voitto))
                     beta = min(beta, arvo)
                     if arvo <= alfa:

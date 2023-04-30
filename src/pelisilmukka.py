@@ -30,6 +30,8 @@ class Pelisilmukka:
         self.edessa = []
         self.tekoaly = tekoaly
         self.tekoaly_kaytossa = tekoaly_kaytossa
+        self.v_voitto = False
+        self.m_voitto = False
 
     def aloita(self):
         """Aloittaa pelisilmukan, ja tarkistaa aluksi valkoisen mahdolliset liikkeet
@@ -39,11 +41,17 @@ class Pelisilmukka:
             if self._syotteet() is False:
                 break
 
-            self._renderoja._renderoi(self.valittu_nappula)
+            if self.v_voitto:
+                self._renderoja._renderoi(self.valittu_nappula, self.korotus, True, "voitto_valkoinen")
+            elif self.m_voitto:
+                self._renderoja._renderoi(self.valittu_nappula, self.korotus, True, "voitto_musta")
+            else:
+                self._renderoja._renderoi(self.valittu_nappula, self.korotus, False, None)
+
 
             self._kello.tick(60)
 
-            if not self.vuoro_valkoinen and self.tekoaly_kaytossa:
+            if not self.vuoro_valkoinen and self.tekoaly_kaytossa and not self.v_voitto and not self.m_voitto:
                 self.tekoalyn_vuoro()
 
     def _syotteet(self):
@@ -53,10 +61,16 @@ class Pelisilmukka:
             False: Peli suljetaan
         """
         for syote in self._syotteiden_hakija.hae():
+            if self.v_voitto or self.m_voitto:
+                if syote.type == pygame.QUIT:
+                    return False
+                continue
             if syote.type == pygame.MOUSEBUTTONDOWN: # pylint: disable=no-member
                 x, y = pygame.mouse.get_pos()
                 x = x // self._ruudun_koko # pylint: disable=invalid-name
                 y = y // self._ruudun_koko # pylint: disable=invalid-name
+                if x > 7 or y > 7:
+                    continue
                 if self.valittu_nappula == "":
                     if self._pelilauta.lauta[y][x] != 0:
                         self.valitse_nappula(y, x)
@@ -86,6 +100,7 @@ class Pelisilmukka:
         self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
         self.edessa = uudet_edessa
         self.vuoro_valkoinen = not self.vuoro_valkoinen
+        self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
 
     def valitse_nappula(self, y, x):
         if self._pelilauta.lauta[y][x] != 0:
@@ -103,12 +118,11 @@ class Pelisilmukka:
                 (self.valittu_nappula[0], y, x), self.mahdolliset_liikkeet, self.edessa)
             uudet_mahdolliset_liikkeet = liikkeet[0]
             uudet_edessa = liikkeet[1]
-            valkoinen_shakissa = liikkeet[2]
-            musta_shakissa = liikkeet[3]
             self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
             self.edessa = uudet_edessa
             self.vuoro_valkoinen = not self.vuoro_valkoinen
             self.valittu_nappula = ""
+            self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
         elif ((self.valittu_nappula, (self.korotus, y, x))
                     in self.mahdolliset_liikkeet):
             liikkeet = self._pelilauta.liiku(self.valittu_nappula,
@@ -119,3 +133,20 @@ class Pelisilmukka:
             self.edessa = uudet_edessa
             self.vuoro_valkoinen = not self.vuoro_valkoinen
             self.valittu_nappula = ""
+            self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
+
+    def matin_tarkistus(self, v_shakissa, m_shakissa, v_shakkaajat, m_shakkaajat):
+        if v_shakissa:
+            if not self.vuoro_valkoinen:
+                self.m_voitto = True
+                return
+            if self._pelilauta.tarkista_matti(self.mahdolliset_liikkeet, self.edessa, True, v_shakkaajat):
+                self.m_voitto = True
+                return
+        elif m_shakissa:
+            if self.vuoro_valkoinen:
+                self.v_voitto = True
+                return
+            if self._pelilauta.tarkista_matti(self.mahdolliset_liikkeet, self.edessa, False, m_shakkaajat):
+                self.v_voitto = True
+                return

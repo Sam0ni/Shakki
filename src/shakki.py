@@ -22,7 +22,9 @@ def main():
     """
     nayton_korkeus_ja_leveys = 8*Ruudun_Koko
 
-    naytto = pygame.display.set_mode((nayton_korkeus_ja_leveys, nayton_korkeus_ja_leveys))
+    pygame.init() # pylint: disable=no-member
+
+    naytto = pygame.display.set_mode((nayton_korkeus_ja_leveys + 500, nayton_korkeus_ja_leveys))
 
     pygame.display.set_caption("Shakki")
 
@@ -36,7 +38,6 @@ def main():
 
     silmukka = Pelisilmukka(pelilauta, Ruudun_Koko, renderoja, kello, syotteiden_hakija, True, tekoaly)
 
-    pygame.init() # pylint: disable=no-member
     silmukka.aloita()
 
 if __name__ == "__main__":
