@@ -15,6 +15,15 @@ lauta = [[8,9,10,11,12,10,9,8],
 [1,1,1,1,1,1,1,1],
 [2,3,4,5,6,4,3,2]]
 
+lauta = [[0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0],
+[8,0,0,0,2,0,0,0],
+[0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,2,0],
+[0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0],
+[6,0,0,0,0,0,0,12]]
+
 Ruudun_Koko = 125 # pylint: disable=invalid-name
 
 def main():
@@ -36,7 +45,7 @@ def main():
     tekoaly = Minimax(pelilauta.lauta.copy())
 
 
-    silmukka = Pelisilmukka(pelilauta, Ruudun_Koko, renderoja, kello, syotteiden_hakija, True, tekoaly)
+    silmukka = Pelisilmukka(pelilauta, Ruudun_Koko, renderoja, kello, syotteiden_hakija, False, tekoaly)
 
     silmukka.aloita()
 

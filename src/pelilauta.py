@@ -44,12 +44,17 @@ class Pelilauta:
         if valkoinen:
             sotilas = 1
             kuningas = 6
+            vihollisen_kuningas = 12
         else:
             sotilas = 7
             kuningas = 12
+            vihollisen_kuningas = 6
         matissa = False
         for liike in liikkeet:
-            if sotilas <= liike[0][0] <= kuningas:
+            if kopio_lauta[liike[1][1]][liike[1][2]] == vihollisen_kuningas:
+                matissa = False
+                break
+            elif sotilas <= liike[0][0] <= kuningas:
                 kopio_shakkaajat = deepcopy(shakkaajat)
                 uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa, valkoisen_shakkaajat, mustan_shakkaajat = self.liiku(liike[0], liike[1], liikkeet, edessa)
                 for shakkaaja in shakkaajat:

@@ -29,7 +29,7 @@ class Minimax:
         Returns:
             tuple: paras mahdollinen liike
         """
-        paras_liike = ""
+        paras_liike = None
         parhaan_liikkeen_arvo = -9999999999999
         for liike in liikkeet:
             if liike[0][0] > 6:
@@ -40,7 +40,9 @@ class Minimax:
                             liike[1], liikkeet, edessa)
                 uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                 uudet_edessa = seuraavat_liikkeet[1]
-                if seuraavat_liikkeet[2]:
+                if lauta[liike[1][1]][liike[1][2]] == 6:
+                    voitto = True
+                elif seuraavat_liikkeet[2]:
                     voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, True, seuraavat_liikkeet[4])
                 elif seuraavat_liikkeet[3]:
                     continue
@@ -66,13 +68,13 @@ class Minimax:
         Returns:
             int: pelitilanteen arvo
         """
-        if syvyys == 0:
-            return self.arvioi_pelitilanne()
-        elif voitto:
+        if voitto:
             if maksimoiva:
                 return (syvyys + 1) * -50000000000
             else:
                 return (syvyys + 1) * 50000000000
+        elif syvyys == 0:
+            return self.arvioi_pelitilanne()
 
         if maksimoiva:
             arvo = -999999999
@@ -85,7 +87,9 @@ class Minimax:
                                 liike[1], liikkeet, edessa)
                     uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                     uudet_edessa = seuraavat_liikkeet[1]
-                    if seuraavat_liikkeet[2]:
+                    if lauta[liike[1][1]][liike[1][2]] == 6:
+                        voitto = True
+                    elif seuraavat_liikkeet[2]:
                         voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, True, seuraavat_liikkeet[4])
                     elif seuraavat_liikkeet[3]:
                         continue
@@ -106,12 +110,14 @@ class Minimax:
                                 liike[1], liikkeet, edessa)
                     uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                     uudet_edessa = seuraavat_liikkeet[1]
-                    if seuraavat_liikkeet[3]:
+                    if lauta[liike[1][1]][liike[1][2]] == 12:
+                        voitto = True
+                    elif seuraavat_liikkeet[3]:
                         voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, False, seuraavat_liikkeet[5])
                     elif seuraavat_liikkeet[2]:
                         continue
                     arvo = min(arvo, self.minimax(self.valiaikainen_pelilauta.lauta, uudet_mahdolliset_liikkeet, uudet_edessa, syvyys - 1, alfa, beta, True, voitto))
-                    beta = min(beta, arvo)
+                    beta = min(beta, arvo)                        
                     if arvo <= alfa:
                         break
             return arvo 

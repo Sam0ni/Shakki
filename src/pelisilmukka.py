@@ -95,6 +95,8 @@ class Pelisilmukka:
         """
         kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
         liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa, 2)
+        if self._pelilauta.lauta[liike[1][1]][liike[1][2]]:
+            self.m_voitto = True
         liikkeet = self._pelilauta.liiku(liike[0],
             liike[1], self.mahdolliset_liikkeet, self.edessa)
         uudet_mahdolliset_liikkeet = liikkeet[0]
@@ -102,7 +104,8 @@ class Pelisilmukka:
         self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
         self.edessa = uudet_edessa
         self.vuoro_valkoinen = not self.vuoro_valkoinen
-        self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
+        if not self.m_voitto:
+            self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
 
     def valitse_nappula(self, y, x):
         """valitsee nappulan, mikäli hiiren x- ja y-koordinaatit ovat kelvolliset
@@ -128,6 +131,11 @@ class Pelisilmukka:
         """
         if ((self.valittu_nappula, (self.valittu_nappula[0], y, x))
                     in self.mahdolliset_liikkeet):
+            if self._pelilauta.lauta[y][x] in (6, 12):
+                if self.vuoro_valkoinen:
+                    self.v_voitto = True
+                else:
+                    self.m_voitto = True
             liikkeet = self._pelilauta.liiku(self.valittu_nappula,
                 (self.valittu_nappula[0], y, x), self.mahdolliset_liikkeet, self.edessa)
             uudet_mahdolliset_liikkeet = liikkeet[0]
@@ -136,9 +144,15 @@ class Pelisilmukka:
             self.edessa = uudet_edessa
             self.vuoro_valkoinen = not self.vuoro_valkoinen
             self.valittu_nappula = ""
-            self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
+            if not self.v_voitto and not self.m_voitto:
+                self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
         elif ((self.valittu_nappula, (self.korotus, y, x))
                     in self.mahdolliset_liikkeet):
+            if self._pelilauta.lauta[y][x] in (6, 12):
+                if self.vuoro_valkoinen:
+                    self.v_voitto = True
+                else:
+                    self.m_voitto = True
             liikkeet = self._pelilauta.liiku(self.valittu_nappula,
                 (self.korotus, y, x), self.mahdolliset_liikkeet, self.edessa)
             uudet_mahdolliset_liikkeet = liikkeet[0]
@@ -147,7 +161,8 @@ class Pelisilmukka:
             self.edessa = uudet_edessa
             self.vuoro_valkoinen = not self.vuoro_valkoinen
             self.valittu_nappula = ""
-            self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
+            if not self.v_voitto and not self.m_voitto:
+                self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
 
     def matin_tarkistus(self, v_shakissa, m_shakissa, v_shakkaajat, m_shakkaajat):
         """tarkistaa onko shakkimatti
@@ -158,17 +173,9 @@ class Pelisilmukka:
             v_shakkaajat (list): nappulat jotka uhkaavat valkoista kuningasta
             m_shakkaajat (list): nappulat jotka uhkaavat mustaa kuningasta
         """
-        if v_shakissa:
-            if not self.vuoro_valkoinen:
+        if v_shakissa and self._pelilauta.tarkista_matti(self.mahdolliset_liikkeet, self.edessa, True, v_shakkaajat):
                 self.m_voitto = True
                 return
-            if self._pelilauta.tarkista_matti(self.mahdolliset_liikkeet, self.edessa, True, v_shakkaajat):
-                self.m_voitto = True
-                return
-        elif m_shakissa:
-            if self.vuoro_valkoinen:
-                self.v_voitto = True
-                return
-            if self._pelilauta.tarkista_matti(self.mahdolliset_liikkeet, self.edessa, False, m_shakkaajat):
+        elif m_shakissa and self._pelilauta.tarkista_matti(self.mahdolliset_liikkeet, self.edessa, False, m_shakkaajat):
                 self.v_voitto = True
                 return
