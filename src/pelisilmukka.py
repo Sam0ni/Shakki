@@ -95,7 +95,7 @@ class Pelisilmukka:
         """
         kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
         liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa, 2)
-        if self._pelilauta.lauta[liike[1][1]][liike[1][2]]:
+        if self._pelilauta.lauta[liike[1][1]][liike[1][2]] == 6:
             self.m_voitto = True
         liikkeet = self._pelilauta.liiku(liike[0],
             liike[1], self.mahdolliset_liikkeet, self.edessa)

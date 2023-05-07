@@ -24,11 +24,12 @@ class Renderoja:
             voittaja (str): kumpi voitti
         """
         self._naytto.fill((0,0,0))
+        self._naytto.blit(self.laudan_sivu, (1000,0))
         self._naytto.blit(self.tausta, (0,0))
-        self._naytto.blit(self.tekstit[korotus], (8*self._ruudun_koko, 200))
-        self._naytto.blit(self.tekstit["komennot"], (8*self._ruudun_koko, 350))
-        self._naytto.blit(self.tekstit["korotus"], (8*self._ruudun_koko, 500))
-        self._naytto.blit(self.tekstit["vaihto"], (8*self._ruudun_koko, 650))
+        self._naytto.blit(self.tekstit[korotus], (8*self._ruudun_koko +35, 200))
+        self._naytto.blit(self.tekstit["komennot"], (8*self._ruudun_koko +35, 350))
+        self._naytto.blit(self.tekstit["korotus"], (8*self._ruudun_koko +35, 500))
+        self._naytto.blit(self.tekstit["vaihto"], (8*self._ruudun_koko +35, 650))
         if valittu_nappula != "":
             self._naytto.blit(self.valittu, (valittu_nappula[2] * self._ruudun_koko + 1, valittu_nappula[1] * self._ruudun_koko + 1))
         for y in range(8): # pylint: disable=invalid-name
@@ -46,6 +47,9 @@ class Renderoja:
         """
         self.tausta = pygame.image.load(
             os.path.join(hakemisto, "..", "assetit_isommat", "shakkilauta.png")
+        )
+        self.laudan_sivu = pygame.image.load(
+            os.path.join(hakemisto, "..", "assetit_isommat", "laudan_sivu.png")
         )
         self.valittu = pygame.image.load(
             os.path.join(hakemisto, "..", "assetit_isommat", "valittu_rengas.png")
@@ -103,9 +107,9 @@ class Renderoja:
         }
 
     def alusta_tekstit(self):
-        fontti = pygame.font.Font('freesansbold.ttf', 45)
+        fontti = pygame.font.Font('freesansbold.ttf', 40)
         fontti_isompi = pygame.font.Font('freesansbold.ttf', 100)
-        vari = (0, 200, 100)
+        vari = (0, 160, 80)
         tausta_vari = (0, 0, 190)
         self.tekstit = {
             "voitto_musta": fontti_isompi.render("Musta Voitti!", True, vari, tausta_vari),

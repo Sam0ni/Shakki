@@ -160,7 +160,7 @@ class TestMinimax(unittest.TestCase):
         mahdolliset_liikkeet = uudet[0]
         edessa = uudet[1]
 
-        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 2)
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 4)
 
         uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
         mahdolliset_liikkeet = uudet[0]
@@ -170,7 +170,7 @@ class TestMinimax(unittest.TestCase):
         mahdolliset_liikkeet = uudet[0]
         edessa = uudet[1]
 
-        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 0)
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 4)
 
         uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
         mahdolliset_liikkeet = uudet[0]

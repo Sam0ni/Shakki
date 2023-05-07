@@ -15,16 +15,10 @@ lauta = [[8,9,10,11,12,10,9,8],
 [1,1,1,1,1,1,1,1],
 [2,3,4,5,6,4,3,2]]
 
-lauta = [[0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0],
-[8,0,0,0,2,0,0,0],
-[0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,2,0],
-[0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0],
-[6,0,0,0,0,0,0,12]]
 
 Ruudun_Koko = 125 # pylint: disable=invalid-name
+
+tekoaly_kaytossa = True
 
 def main():
     """alustaa näytön, pelilaudan ja aloittaa pelisilmukan
@@ -45,7 +39,7 @@ def main():
     tekoaly = Minimax(pelilauta.lauta.copy())
 
 
-    silmukka = Pelisilmukka(pelilauta, Ruudun_Koko, renderoja, kello, syotteiden_hakija, False, tekoaly)
+    silmukka = Pelisilmukka(pelilauta, Ruudun_Koko, renderoja, kello, syotteiden_hakija, tekoaly_kaytossa, tekoaly)
 
     silmukka.aloita()
 
