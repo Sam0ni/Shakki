@@ -9,6 +9,7 @@ Tiralabra-kurssin harjoitustyö
 - [Viikkoraportti 3](https://github.com/Sam0ni/Shakki/blob/main/dokumentaatio/Viikkoraportti_3.md)
 - [Viikkoraportti 4](https://github.com/Sam0ni/Shakki/blob/main/dokumentaatio/Viikkoraportti_4.md)
 - [Viikkoraportti 5](https://github.com/Sam0ni/Shakki/blob/main/dokumentaatio/Viikkoraportti_5.md)
+- [Viikkoraportti 6](https://github.com/Sam0ni/Shakki/blob/main/dokumentaatio/Viikkoraportti_6.md)
 
 
 ![GHA workflow badge](https://github.com/Sam0ni/Shakki/workflows/CI/badge.svg)
