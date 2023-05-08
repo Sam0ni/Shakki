@@ -1,7 +1,7 @@
 import os
 import pygame
 import copy
-from minimax import Minimax
+from pelisilmukkaassetit.komennot import Komennot
 
 
 hakemisto = os.path.dirname(__file__)
@@ -30,8 +30,10 @@ class Pelisilmukka:
         self.edessa = []
         self.tekoaly = tekoaly
         self.tekoaly_kaytossa = tekoaly_kaytossa
+        self.syvyys = 2
         self.v_voitto = False
         self.m_voitto = False
+        self.komennot = Komennot()
 
     def aloita(self):
         """Aloittaa pelisilmukan, ja tarkistaa aluksi mahdolliset liikkeet
@@ -42,11 +44,11 @@ class Pelisilmukka:
                 break
 
             if self.v_voitto:
-                self._renderoja._renderoi(self.valittu_nappula, self.korotus, True, "voitto_valkoinen")
+                self._renderoja._renderoi(self.valittu_nappula, self.korotus, True, "voitto_valkoinen", self.syvyys, self.tekoaly_kaytossa)
             elif self.m_voitto:
-                self._renderoja._renderoi(self.valittu_nappula, self.korotus, True, "voitto_musta")
+                self._renderoja._renderoi(self.valittu_nappula, self.korotus, True, "voitto_musta", self.syvyys, self.tekoaly_kaytossa)
             else:
-                self._renderoja._renderoi(self.valittu_nappula, self.korotus, False, None)
+                self._renderoja._renderoi(self.valittu_nappula, self.korotus, False, None, self.syvyys, self.tekoaly_kaytossa)
 
 
             self._kello.tick(60)
@@ -66,27 +68,9 @@ class Pelisilmukka:
                     return False
                 continue
             if syote.type == pygame.MOUSEBUTTONDOWN: # pylint: disable=no-member
-                x, y = pygame.mouse.get_pos()
-                x = x // self._ruudun_koko # pylint: disable=invalid-name
-                y = y // self._ruudun_koko # pylint: disable=invalid-name
-                if x > 7 or y > 7:
-                    continue
-                if self.valittu_nappula == "":
-                    if self._pelilauta.lauta[y][x] != 0:
-                        self.valitse_nappula(y, x)
-                else:
-                    self.validoi_liike(y, x)
+                self.komennot.valinta_komento(self)
             elif syote.type == pygame.KEYDOWN: # pylint: disable=no-member
-                if syote.key == pygame.K_d: # pylint: disable=no-member
-                    self.valittu_nappula = ""
-                elif syote.key == pygame.K_2:
-                    self.korotus = 2
-                elif syote.key == pygame.K_3:
-                    self.korotus = 3
-                elif syote.key == pygame.K_4:
-                    self.korotus = 4
-                elif syote.key == pygame.K_5:
-                    self.korotus = 5
+                self.komennot.suorita_komento(syote.key)(self)
             elif syote.type == pygame.QUIT: # pylint: disable=no-member
                 return False
 
@@ -94,7 +78,7 @@ class Pelisilmukka:
         """Kutsuu minimaxia ja liikuttaa sen palauttaman liikkeen
         """
         kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
-        liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa, 2)
+        liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa, self.syvyys)
         if self._pelilauta.lauta[liike[1][1]][liike[1][2]] == 6:
             self.m_voitto = True
         liikkeet = self._pelilauta.liiku(liike[0],
@@ -114,13 +98,14 @@ class Pelisilmukka:
             y (int): hiiren y-koordinaatti
             x (int): hiiren x-koordinaatti
         """
-        if self._pelilauta.lauta[y][x] != 0:
-            if self.vuoro_valkoinen:
-                if 1 <= self._pelilauta.lauta[y][x] <= 6:
-                    self.valittu_nappula = (self._pelilauta.lauta[y][x], y, x)
-            else:
-                if 7 <= self._pelilauta.lauta[y][x] <= 12:
-                    self.valittu_nappula = (self._pelilauta.lauta[y][x], y, x)
+        if self._pelilauta.lauta[y][x] == 0:
+            return
+        if self.vuoro_valkoinen:
+            if 1 <= self._pelilauta.lauta[y][x] <= 6:
+                self.valittu_nappula = (self._pelilauta.lauta[y][x], y, x)
+        else:
+            if 7 <= self._pelilauta.lauta[y][x] <= 12:
+                self.valittu_nappula = (self._pelilauta.lauta[y][x], y, x)
 
     def validoi_liike(self, y, x):
         """tarkistaa onko liike kelvollinen ja liikuttaa mikäli on
