@@ -124,6 +124,7 @@ class Renderoja:
         self.tekstit = {
             "voitto_musta": fontti_isompi.render("Musta Voitti!", True, vari, tausta_vari),
             "voitto_valkoinen": fontti_isompi.render("Valkoinen Voitti!", True, vari, tausta_vari),
+            "tasapeli": fontti_isompi.render("Tasapeli!", True, vari, tausta_vari),
             2: fontti.render("Korotus = Torni", False, vari),
             3: fontti.render("Korotus = Ratsu", False, vari),
             4: fontti.render("Korotus = Lähetti", False, vari),

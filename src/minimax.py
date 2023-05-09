@@ -40,9 +40,7 @@ class Minimax:
                             liike[1], liikkeet, edessa)
                 uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                 uudet_edessa = seuraavat_liikkeet[1]
-                if lauta[liike[1][1]][liike[1][2]] == 6:
-                    voitto = True
-                elif seuraavat_liikkeet[2]:
+                if seuraavat_liikkeet[2]:
                     voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, True, seuraavat_liikkeet[4])
                 elif seuraavat_liikkeet[3]:
                     continue
@@ -89,9 +87,7 @@ class Minimax:
                                 liike[1], liikkeet, edessa)
                     uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                     uudet_edessa = seuraavat_liikkeet[1]
-                    if lauta[liike[1][1]][liike[1][2]] == 6:
-                        voitto = True
-                    elif seuraavat_liikkeet[2]:
+                    if seuraavat_liikkeet[2]:
                         voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, True, seuraavat_liikkeet[4])
                     elif seuraavat_liikkeet[3]:
                         continue
@@ -114,9 +110,7 @@ class Minimax:
                                 liike[1], liikkeet, edessa)
                     uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                     uudet_edessa = seuraavat_liikkeet[1]
-                    if lauta[liike[1][1]][liike[1][2]] == 12:
-                        voitto = True
-                    elif seuraavat_liikkeet[3]:
+                    if seuraavat_liikkeet[3]:
                         voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, False, seuraavat_liikkeet[5])
                     elif seuraavat_liikkeet[2]:
                         continue

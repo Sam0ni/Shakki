@@ -34,6 +34,7 @@ class Pelisilmukka:
         self.syvyys = 2
         self.v_voitto = False
         self.m_voitto = False
+        self.patti = False
         self.komennot = Komennot()
 
     def aloita(self):
@@ -48,6 +49,8 @@ class Pelisilmukka:
                 self._renderoja._renderoi(self.valittu_nappula, self.korotus, True, "voitto_valkoinen", self.syvyys, self.tekoaly_kaytossa)
             elif self.m_voitto:
                 self._renderoja._renderoi(self.valittu_nappula, self.korotus, True, "voitto_musta", self.syvyys, self.tekoaly_kaytossa)
+            elif self.patti:
+                self._renderoja._renderoi(self.valittu_nappula, self.korotus, True, "tasapeli", self.syvyys, self.tekoaly_kaytossa)
             else:
                 self._renderoja._renderoi(self.valittu_nappula, self.korotus, False, None, self.syvyys, self.tekoaly_kaytossa)
 
@@ -64,7 +67,7 @@ class Pelisilmukka:
             False: Peli suljetaan
         """
         for syote in self._syotteiden_hakija.hae():
-            if self.v_voitto or self.m_voitto:
+            if self.v_voitto or self.m_voitto or self.patti:
                 if syote.type == pygame.QUIT:
                     return False
                 continue
@@ -81,7 +84,8 @@ class Pelisilmukka:
         kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
         liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa, self.syvyys)
         if liike == "stalemate":
-            pass
+            self.patti = True
+            return
         if self._pelilauta.lauta[liike[1][1]][liike[1][2]] == 6:
             self.m_voitto = True
         liikkeet = self._pelilauta.liiku(liike[0],
@@ -119,40 +123,27 @@ class Pelisilmukka:
         """
         if ((self.valittu_nappula, (self.valittu_nappula[0], y, x))
                     in self.mahdolliset_liikkeet):
-            if not self.tarkista_liikkeen_laillisuus(self.valittu_nappula, (self.valittu_nappula[0], y, x)):
-                return
-            if self._pelilauta.lauta[y][x] in (6, 12):
-                if self.vuoro_valkoinen:
-                    self.v_voitto = True
-                else:
-                    self.m_voitto = True
-            liikkeet = self._pelilauta.liiku(self.valittu_nappula,
-                (self.valittu_nappula[0], y, x), self.mahdolliset_liikkeet, self.edessa)
-            uudet_mahdolliset_liikkeet = liikkeet[0]
-            uudet_edessa = liikkeet[1]
-            self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
-            self.edessa = uudet_edessa
-            self.vuoro_valkoinen = not self.vuoro_valkoinen
-            self.valittu_nappula = ""
-            if not self.v_voitto and not self.m_voitto:
-                self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
+            loppu = (self.valittu_nappula[0], y, x)
         elif ((self.valittu_nappula, (self.korotus, y, x))
                     in self.mahdolliset_liikkeet):
-            if self._pelilauta.lauta[y][x] in (6, 12):
-                if self.vuoro_valkoinen:
-                    self.v_voitto = True
-                else:
-                    self.m_voitto = True
-            liikkeet = self._pelilauta.liiku(self.valittu_nappula,
-                (self.korotus, y, x), self.mahdolliset_liikkeet, self.edessa)
-            uudet_mahdolliset_liikkeet = liikkeet[0]
-            uudet_edessa = liikkeet[1]
-            self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
-            self.edessa = uudet_edessa
-            self.vuoro_valkoinen = not self.vuoro_valkoinen
-            self.valittu_nappula = ""
-            if not self.v_voitto and not self.m_voitto:
-                self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
+            loppu = (self.korotus, y, x)
+        elif ((self.valittu_nappula, (self.m_korotus, y, x))
+                    in self.mahdolliset_liikkeet):
+            loppu = (self.m_korotus, y, x)
+        else:
+            return
+        if not self.tarkista_liikkeen_laillisuus(self.valittu_nappula, (self.valittu_nappula[0], y, x)):
+            return
+        liikkeet = self._pelilauta.liiku(self.valittu_nappula,
+            (self.valittu_nappula[0], y, x), self.mahdolliset_liikkeet, self.edessa)
+        uudet_mahdolliset_liikkeet = liikkeet[0]
+        uudet_edessa = liikkeet[1]
+        self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
+        self.edessa = uudet_edessa
+        self.vuoro_valkoinen = not self.vuoro_valkoinen
+        self.valittu_nappula = ""
+        self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
+        self.patti = self.tarkista_pattitilanne()
 
     def matin_tarkistus(self, v_shakissa, m_shakissa, v_shakkaajat, m_shakkaajat):
         """tarkistaa onko shakkimatti
@@ -175,14 +166,33 @@ class Pelisilmukka:
         liikkeet = self._pelilauta.liiku(alku,
             loppu, self.mahdolliset_liikkeet, self.edessa)
         if self.vuoro_valkoinen:
-            for liike in liikkeet[0]:
-                if self._pelilauta.lauta[liike[1][1]][liike[1][2]] == 6:
-                    self._pelilauta.lauta = copy.deepcopy(kopio_lauta)
-                    return False
+            kuningas = 6
         else:
-            for liike in liikkeet[0]:
-                if self._pelilauta.lauta[liike[1][1]][liike[1][2]] == 12:
-                    self._pelilauta.lauta = copy.deepcopy(kopio_lauta)
-                    return False
+            kuningas = 12
+        for liike in liikkeet[0]:
+            if self._pelilauta.lauta[liike[1][1]][liike[1][2]] == kuningas:
+                self._pelilauta.lauta = copy.deepcopy(kopio_lauta)
+                return False
         self._pelilauta.lauta = copy.deepcopy(kopio_lauta)
         return True
+
+    def tarkista_pattitilanne(self):
+        patissa = True
+        if self.vuoro_valkoinen:
+            alaraja = 0
+            ylaraja = 7
+            shakki_indx = 2
+        else:
+            alaraja = 6
+            ylaraja = 13
+            shakki_indx = 3
+        for liike in self.mahdolliset_liikkeet:
+            if alaraja < liike[0][0] < ylaraja:
+                kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
+                uudet = self._pelilauta.liiku(liike[0], liike[1], self.mahdolliset_liikkeet, self.edessa)
+                if not uudet[shakki_indx]:
+                    patissa = False
+                    break
+                self._pelilauta.lauta = kopio_lauta
+        self._pelilauta.lauta = kopio_lauta
+        return patissa
