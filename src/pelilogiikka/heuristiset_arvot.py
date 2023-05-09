@@ -1,11 +1,11 @@
 import os
-import dotenv
 import ast
+import dotenv
 
 hakemisto = os.path.dirname(__file__)
 envin_polku = os.path.join(hakemisto, "..", ".env")
 
-class Heuristiset_arvot:
+class HeuristisetArvot:
     """haetaan tiedostosta arvot joiden perusteella pelitilanne arvioidaan
     """
     def hae(self):
@@ -15,10 +15,9 @@ class Heuristiset_arvot:
         mustat = self.mustat_lauta()
         return nappuloiden_arvot, valkoiset, mustat
 
-
     def nappulat(self):
         return ast.literal_eval(os.environ["nappula_arvot"])
-        
+
     def valkoiset_lauta(self):
         return ast.literal_eval(os.environ["valkoinen_lauta_arvot"])
 

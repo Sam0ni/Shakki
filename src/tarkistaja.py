@@ -62,9 +62,10 @@ class Tarkistaja:
             valkoinen kuningas uhattuna, musta kuningas uhattuna,
             valkoisen kuninkaan uhkaajat, mustan kuninkaan uhkaajat
         """
-        return self.liikkeet, self.edessa, self.valkoinen_shakissa, self.musta_shakissa, self.valkoisen_shakkaajat, self.mustan_shakkaajat
+        return (self.liikkeet, self.edessa, self.valkoinen_shakissa,
+                self.musta_shakissa, self.valkoisen_shakkaajat, self.mustan_shakkaajat)
 
-    def tarkista_sotilas(self, nappula, y, x):
+    def tarkista_sotilas(self, nappula, y, x): # pylint: disable=invalid-name
         """tarkistaa sotilaan liikkeet
 
         Args:
@@ -105,48 +106,32 @@ class Tarkistaja:
                     self.edessa.append(((nappula, y, x), (y+y_liike_alku, x)))
         else:
             self.edessa.append(((nappula, y, x), (y+y_liike, x)))
-        if x > 0:
-            if y == korotus_raja and (vihollisen_sotilas <= self.lauta[y+y_liike][x-1] <= vihollisen_kuningatar):
+        x_liike = -1
+        alaraja = 1
+        ylaraja = 7
+        for kerta in range(2):
+            if not alaraja <= x <= ylaraja:
+                x_liike = 1
+                alaraja = 0
+                ylaraja = 6
+                continue
+            if y == korotus_raja and (vihollisen_sotilas <= 
+                self.lauta[y+y_liike][x+x_liike] <= vihollisen_kuningatar):
                 for i in range(oma_torni, oma_kuningatar):
-                    self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x-1)))
-            elif y == korotus_raja and (self.lauta[y+y_liike][x-1] == vihollisen_kuningas):
+                    self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x+x_liike)))
+            elif y == korotus_raja and (self.lauta[y+y_liike][x+x_liike] == vihollisen_kuningas):
                 for i in range(oma_torni, oma_kuningatar):
-                    self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x-1)))
+                    self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x+x_liike)))
                 if nappula == 1:
                     self.musta_shakissa = True
                     self.mustan_shakkaajat.append((nappula, y, x))
                 else:
                     self.valkoinen_shakissa = True
                     self.valkoisen_shakkaajat.append((nappula, y, x))
-            elif vihollisen_sotilas <= self.lauta[y+y_liike][x-1] <= vihollisen_kuningatar:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x-1)))
-            elif self.lauta[y+y_liike][x-1] == vihollisen_kuningas:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x-1)))
-                if nappula == 1:
-                    self.musta_shakissa = True
-                    self.mustan_shakkaajat.append((nappula, y, x))
-                else:
-                    self.valkoinen_shakissa = True
-                    self.valkoisen_shakkaajat.append((nappula, y, x))
-            else:
-                self.edessa.append(((nappula, y, x), (y+y_liike, x-1)))
-        if x < 7:
-            if y == korotus_raja and (vihollisen_sotilas <= self.lauta[y+y_liike][x+1] <= vihollisen_kuningatar):
-                for i in range(oma_torni, oma_kuningatar):
-                    self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x+1)))
-            elif y == korotus_raja and (self.lauta[y+y_liike][x+1] == vihollisen_kuningas):
-                for i in range(oma_torni, oma_kuningatar):
-                    self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x+1)))
-                if nappula == 1:
-                    self.musta_shakissa = True
-                    self.mustan_shakkaajat.append((nappula, y, x))
-                else:
-                    self.valkoinen_shakissa = True
-                    self.valkoisen_shakkaajat.append((nappula, y, x))
-            elif vihollisen_sotilas <= self.lauta[y+y_liike][x+1] <= vihollisen_kuningatar:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+1)))
-            elif self.lauta[y+y_liike][x+1] == vihollisen_kuningas:
-                self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+1)))
+            elif vihollisen_sotilas <= self.lauta[y+y_liike][x+x_liike] <= vihollisen_kuningatar:
+                self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
+            elif self.lauta[y+y_liike][x+x_liike] == vihollisen_kuningas:
+                self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
                 if nappula == 1:
                     self.musta_shakissa = True
                     self.mustan_shakkaajat.append((nappula, y, x))
@@ -154,7 +139,10 @@ class Tarkistaja:
                     self.valkoinen_shakissa = True
                     self.valkoisen_shakkaajat.append((nappula, y, x))
             else:
-                self.edessa.append(((nappula, y, x), (y+y_liike, x+1)))
+                self.edessa.append(((nappula, y, x), (y+y_liike, x+x_liike)))
+            x_liike = 1
+            alaraja = 0
+            ylaraja = 6
 
     def tarkista_vaaka_pysty(self, nappula, y, x):
         """tarkistaa vaaka-pysty akselien liikkeet

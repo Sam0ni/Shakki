@@ -14,7 +14,7 @@ class Renderoja:
         self.alusta_tekstit()
 
 
-    def _renderoi(self, valittu_nappula, korotus, voitto, voittaja, syvyys, kaytossa):
+    def _renderoi(self, valittu_nappula, korotus, voitto, voittaja, syvyys, kaytossa): #pylint: disable=too-many-statements
         """Piirtää spritet näytölle
 
         Args:
@@ -39,7 +39,8 @@ class Renderoja:
         self._naytto.blit(self.tekstit["syvyys1"], (8*self._ruudun_koko +35, 825))
         self._naytto.blit(self.tekstit["syvyys2"], (8*self._ruudun_koko +35, 875))
         if valittu_nappula != "":
-            self._naytto.blit(self.valittu, (valittu_nappula[2] * self._ruudun_koko + 1, valittu_nappula[1] * self._ruudun_koko + 1))
+            self._naytto.blit(self.valittu, (valittu_nappula[2] *
+                self._ruudun_koko + 1, valittu_nappula[1] * self._ruudun_koko + 1))
         for y in range(8): # pylint: disable=invalid-name
             for x in range(8): # pylint: disable=invalid-name
                 ruutu = self._pelilauta.lauta[y][x]
@@ -150,7 +151,7 @@ class Renderoja:
         fontti = pygame.font.Font('freesansbold.ttf', 40)
         vari = (0, 160, 80)
         return fontti.render(f"Syvyys = {syvyys}", False, vari)
-    
+
     def kaytossa_teksti(self, kaytossa):
         """alustaa tekoäly käytössä -tekstin
 

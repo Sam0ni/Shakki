@@ -1,6 +1,6 @@
 import pygame
 
-class Syotteiden_hakija:
+class SyotteidenHakija:
     """Hakee käyttäjän syötteet
     """
     def hae(self):

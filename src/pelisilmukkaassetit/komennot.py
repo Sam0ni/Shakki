@@ -7,7 +7,7 @@ class Komennot:
         """luokan konstruktori joka alustaa sanakirjan
         näppäimistön komennoista
         """
-        self.komennot = self.alusta_komennot()     
+        self.komennot = self.alusta_komennot()
 
     def alusta_komennot(self):
         """alustaa komennot sanakirjaan
@@ -16,30 +16,30 @@ class Komennot:
             dict: näppäimistön syötteiden komennot
         """
         komennot = {
-            pygame.K_d: self.resetoi_valinta,
-            pygame.K_2: self.torni_korotus,
-            pygame.K_3: self.ratsu_korotus,
-            pygame.K_4: self.lahetti_korotus,
-            pygame.K_5: self.kuningatar_korotus,
-            pygame.K_UP: self.kasvata_syvyytta,
-            pygame.K_DOWN: self.pienenna_syvyytta,
-            pygame.K_m: self.ai_paalle_pois
+            pygame.K_d: self.resetoi_valinta, # pylint: disable=no-member
+            pygame.K_2: self.torni_korotus, # pylint: disable=no-member
+            pygame.K_3: self.ratsu_korotus, # pylint: disable=no-member
+            pygame.K_4: self.lahetti_korotus, # pylint: disable=no-member
+            pygame.K_5: self.kuningatar_korotus, # pylint: disable=no-member
+            pygame.K_UP: self.kasvata_syvyytta, # pylint: disable=no-member
+            pygame.K_DOWN: self.pienenna_syvyytta, # pylint: disable=no-member
+            pygame.K_m: self.ai_paalle_pois # pylint: disable=no-member
         }
         return komennot
-    
+
     def valinta_komento(self, silmukka):
         """nappulan valinta hiiren paikan perusteella
 
         Args:
             silmukka (class): pelisilmukka joka kutsuu komentoa
         """
-        x, y = pygame.mouse.get_pos()
-        x = x // silmukka._ruudun_koko # pylint: disable=invalid-name
-        y = y // silmukka._ruudun_koko # pylint: disable=invalid-name
+        x, y = pygame.mouse.get_pos() # pylint: disable=invalid-name
+        x = x // silmukka._ruudun_koko # pylint: disable=protected-access, invalid-name
+        y = y // silmukka._ruudun_koko # pylint: disable=protected-access, invalid-name
         if x > 7 or y > 7:
             return
         if silmukka.valittu_nappula == "":
-            if silmukka._pelilauta.lauta[y][x] != 0:
+            if silmukka._pelilauta.lauta[y][x] != 0: # pylint: disable=protected-access
                 silmukka.valitse_nappula(y, x)
         else:
             silmukka.validoi_liike(y, x)
@@ -60,7 +60,7 @@ class Komennot:
         """
         silmukka.korotus = 2
         silmukka.m_korotus = 8
-    
+
     def ratsu_korotus(self, silmukka):
         """valitsee ratsun korotuksen tulokseksi
 
@@ -129,8 +129,7 @@ class Komennot:
         """
         if komento in self.komennot:
             return self.komennot[komento]
-        else:
-            return self.dummy
+        return self.dummy
 
     def dummy(self, silmukka):
         """Ei tee mitään. Välttää virhetilanteet
@@ -139,4 +138,4 @@ class Komennot:
         Args:
             silmukka (class): pelisilmukka joka kutsuu komentoa
         """
-        pass
+        pass # pylint: disable=unnecessary-pass

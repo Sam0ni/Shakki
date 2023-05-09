@@ -1,21 +1,25 @@
-from pelilauta import Pelilauta
-from pelilogiikka.heuristiset_arvot import Heuristiset_arvot
 import copy
+from pelilauta import Pelilauta
+from pelilogiikka.heuristiset_arvot import HeuristisetArvot
 
 class Minimax:
     """Luokka joka sisältää metodit minimax-algoritmin toimintaan liittyen
     """
 
     def __init__(self, lauta):
-        """Luokan konstruktori, jossa määritellään pelilaudan tilanteen arviointiin tarvittavat muuttujat
+        """Luokan konstruktori, jossa määritellään pelilaudan tilanteen 
+        arviointiin tarvittavat muuttujat
         ja väliaikainen pelilauta liikkumista varten
 
         Args:
             lauta (list): kopio pelilaudasta
         """
         self.valiaikainen_pelilauta = Pelilauta(lauta, 125)
-        heuristiset_arvot = Heuristiset_arvot()
-        self.nappula_arvot, self.valkoinen_lauta_arvot, self.musta_lauta_arvot = heuristiset_arvot.hae()
+        heuristiset_arvot = HeuristisetArvot()
+        arvot = heuristiset_arvot.hae()
+        self.nappula_arvot = arvot[0]
+        self.valkoinen_lauta_arvot = arvot[1]
+        self.musta_lauta_arvot = arvot[2]
 
     def aloita(self, lauta, liikkeet, edessa, syvyys):
         """aloita algoritmin suorittaminen
@@ -41,10 +45,13 @@ class Minimax:
                 uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                 uudet_edessa = seuraavat_liikkeet[1]
                 if seuraavat_liikkeet[2]:
-                    voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, True, seuraavat_liikkeet[4])
+                    voitto = self.valiaikainen_pelilauta.tarkista_matti(
+                        uudet_mahdolliset_liikkeet, uudet_edessa, True, seuraavat_liikkeet[4])
                 elif seuraavat_liikkeet[3]:
                     continue
-                liikkeen_arvo = self.minimax(self.valiaikainen_pelilauta.lauta, uudet_mahdolliset_liikkeet, uudet_edessa, syvyys, parhaan_liikkeen_arvo, 999999999999, False, voitto)
+                liikkeen_arvo = self.minimax(self.valiaikainen_pelilauta.lauta,
+                    uudet_mahdolliset_liikkeet, uudet_edessa, syvyys,
+                    parhaan_liikkeen_arvo, 999999999999, False, voitto)
                 if parhaan_liikkeen_arvo < liikkeen_arvo:
                     parhaan_liikkeen_arvo = liikkeen_arvo
                     paras_liike = liike
@@ -52,7 +59,7 @@ class Minimax:
             return "stalemate"
         return paras_liike
 
-    def minimax(self, lauta, liikkeet, edessa, syvyys, alfa, beta, maksimoiva, voitto):
+    def minimax(self, lauta, liikkeet, edessa, syvyys, alfa, beta, maksimoiva, voitto): # pylint: disable=too-many-statements
         """Metodi joka sisältää itse algoritmin
 
         Args:
@@ -62,7 +69,8 @@ class Minimax:
             syvyys (int): laskennan syvyys
             alfa (int): alfa-beta karsinnan alfa-arvo
             beta (int): alfa-beta karsinnan beta-arvo
-            maksimoiva (boolean): muuttuja jolla määritellään onko maksimoivan vai minimoivan osan vuoro
+            maksimoiva (boolean): muuttuja jolla määritellään onko 
+                            maksimoivan vai minimoivan osan vuoro
             voitto (bool): onko shakkimatti
 
         Returns:
@@ -71,12 +79,11 @@ class Minimax:
         if voitto:
             if maksimoiva:
                 return (syvyys + 1) * -50000000
-            else:
-                return (syvyys + 1) * 50000000
+            return (syvyys + 1) * 50000000
         elif syvyys == 0:
             return self.arvioi_pelitilanne()
 
-        if maksimoiva:
+        elif maksimoiva:
             arvo = -999999999999
             for liike in liikkeet:
                 if liike[0][0] > 6:
@@ -88,16 +95,19 @@ class Minimax:
                     uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                     uudet_edessa = seuraavat_liikkeet[1]
                     if seuraavat_liikkeet[2]:
-                        voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, True, seuraavat_liikkeet[4])
+                        voitto = self.valiaikainen_pelilauta.tarkista_matti(
+                            uudet_mahdolliset_liikkeet, uudet_edessa, True, seuraavat_liikkeet[4])
                     elif seuraavat_liikkeet[3]:
                         continue
-                    arvo = max(arvo, self.minimax(self.valiaikainen_pelilauta.lauta, uudet_mahdolliset_liikkeet, uudet_edessa, syvyys - 1, alfa, beta, False, voitto))
+                    arvo = max(arvo, self.minimax(self.valiaikainen_pelilauta.lauta,
+                        uudet_mahdolliset_liikkeet,
+                        uudet_edessa, syvyys - 1, alfa, beta, False, voitto))
                     alfa = max(alfa, arvo)
                     if arvo >= beta:
                         break
             if arvo == -999999999999: #pattitilanne
                 return 0
-            return arvo 
+            return arvo
 
         else:
             arvo = 999999999999
@@ -111,16 +121,19 @@ class Minimax:
                     uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                     uudet_edessa = seuraavat_liikkeet[1]
                     if seuraavat_liikkeet[3]:
-                        voitto = self.valiaikainen_pelilauta.tarkista_matti(uudet_mahdolliset_liikkeet, uudet_edessa, False, seuraavat_liikkeet[5])
+                        voitto = self.valiaikainen_pelilauta.tarkista_matti(
+                            uudet_mahdolliset_liikkeet, uudet_edessa, False, seuraavat_liikkeet[5])
                     elif seuraavat_liikkeet[2]:
                         continue
-                    arvo = min(arvo, self.minimax(self.valiaikainen_pelilauta.lauta, uudet_mahdolliset_liikkeet, uudet_edessa, syvyys - 1, alfa, beta, True, voitto))
+                    arvo = min(arvo, self.minimax(self.valiaikainen_pelilauta.lauta,
+                        uudet_mahdolliset_liikkeet,
+                        uudet_edessa, syvyys - 1, alfa, beta, True, voitto))
                     beta = min(beta, arvo)
                     if arvo <= alfa:
                         break
             if arvo == 999999999999: #pattitilanne
                 return 0
-            return arvo 
+            return arvo
 
     def arvioi_pelitilanne(self):
         """metodi joka arvio pelitilanteen
@@ -129,12 +142,14 @@ class Minimax:
             int: pelitilanteen arvo
         """
         arvo = 0
-        for y in range(8):
-            for x in range(8):
+        for y in range(8): # pylint: disable=invalid-name
+            for x in range(8): # pylint: disable=invalid-name
                 if self.valiaikainen_pelilauta.lauta[y][x] == 0:
                     continue
-                elif self.valiaikainen_pelilauta.lauta[y][x] < 7:
-                    arvo -= (self.nappula_arvot[self.valiaikainen_pelilauta.lauta[y][x]] + self.valkoinen_lauta_arvot[self.valiaikainen_pelilauta.lauta[y][x]][y][x])
+                if self.valiaikainen_pelilauta.lauta[y][x] < 7:
+                    arvo -= (self.nappula_arvot[self.valiaikainen_pelilauta.lauta[y][x]]
+                        + self.valkoinen_lauta_arvot[self.valiaikainen_pelilauta.lauta[y][x]][y][x])
                 else:
-                    arvo += (self.nappula_arvot[self.valiaikainen_pelilauta.lauta[y][x]] + self.musta_lauta_arvot[self.valiaikainen_pelilauta.lauta[y][x]][y][x])
+                    arvo += (self.nappula_arvot[self.valiaikainen_pelilauta.lauta[y][x]]
+                        + self.musta_lauta_arvot[self.valiaikainen_pelilauta.lauta[y][x]][y][x])
         return arvo

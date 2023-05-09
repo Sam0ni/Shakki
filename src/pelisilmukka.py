@@ -132,10 +132,10 @@ class Pelisilmukka:
             loppu = (self.m_korotus, y, x)
         else:
             return
-        if not self.tarkista_liikkeen_laillisuus(self.valittu_nappula, (self.valittu_nappula[0], y, x)):
+        if not self.tarkista_liikkeen_laillisuus(self.valittu_nappula, loppu):
             return
         liikkeet = self._pelilauta.liiku(self.valittu_nappula,
-            (self.valittu_nappula[0], y, x), self.mahdolliset_liikkeet, self.edessa)
+            loppu, self.mahdolliset_liikkeet, self.edessa)
         uudet_mahdolliset_liikkeet = liikkeet[0]
         uudet_edessa = liikkeet[1]
         self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
