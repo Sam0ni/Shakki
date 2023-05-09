@@ -294,7 +294,7 @@ class Tarkistaja:
                     if ehto_2:
                         if self.lauta[y+y_liike][x+x_liike] == 0:
                             self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
-                        elif nappula == 3 and 6 <= self.lauta[y+y_liike][x+x_liike] <= 12:
+                        elif nappula == 3 and 7 <= self.lauta[y+y_liike][x+x_liike] <= 12:
                             self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
                             if self.lauta[y+y_liike][x+x_liike] == 12:
                                 self.musta_shakissa = True
