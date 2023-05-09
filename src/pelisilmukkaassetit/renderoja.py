@@ -115,6 +115,8 @@ class Renderoja:
         }
 
     def alusta_tekstit(self):
+        """alustaa tekstit
+        """
         fontti = pygame.font.Font('freesansbold.ttf', 40)
         fontti_isompi = pygame.font.Font('freesansbold.ttf', 100)
         vari = (0, 160, 80)
@@ -136,11 +138,27 @@ class Renderoja:
         }
 
     def syvyys_teksti(self, syvyys):
+        """alustaa syvyys tekstin
+
+        Args:
+            syvyys (int): laskenna syvyys
+
+        Returns:
+            method: renderöity teksti
+        """
         fontti = pygame.font.Font('freesansbold.ttf', 40)
         vari = (0, 160, 80)
         return fontti.render(f"Syvyys = {syvyys}", False, vari)
     
     def kaytossa_teksti(self, kaytossa):
+        """alustaa tekoäly käytössä -tekstin
+
+        Args:
+            kaytossa (bool): tekoäly käytössä
+
+        Returns:
+            method: renderöity teksti
+        """
         kayt_teksti = "Ei Käytössä"
         if kaytossa:
             kayt_teksti = "Käytössä"

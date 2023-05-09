@@ -26,6 +26,7 @@ class Pelisilmukka:
         self.valittu_nappula = ""
         self.vuoro_valkoinen = True
         self.korotus = 5
+        self.m_korotus = 11
         self.mahdolliset_liikkeet = []
         self.edessa = []
         self.tekoaly = tekoaly
@@ -79,6 +80,8 @@ class Pelisilmukka:
         """
         kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
         liike = self.tekoaly.aloita(kopio_lauta, self.mahdolliset_liikkeet, self.edessa, self.syvyys)
+        if liike == "stalemate":
+            pass
         if self._pelilauta.lauta[liike[1][1]][liike[1][2]] == 6:
             self.m_voitto = True
         liikkeet = self._pelilauta.liiku(liike[0],
@@ -116,6 +119,8 @@ class Pelisilmukka:
         """
         if ((self.valittu_nappula, (self.valittu_nappula[0], y, x))
                     in self.mahdolliset_liikkeet):
+            if not self.tarkista_liikkeen_laillisuus(self.valittu_nappula, (self.valittu_nappula[0], y, x)):
+                return
             if self._pelilauta.lauta[y][x] in (6, 12):
                 if self.vuoro_valkoinen:
                     self.v_voitto = True
@@ -164,3 +169,20 @@ class Pelisilmukka:
         elif m_shakissa and self._pelilauta.tarkista_matti(self.mahdolliset_liikkeet, self.edessa, False, m_shakkaajat):
                 self.v_voitto = True
                 return
+
+    def tarkista_liikkeen_laillisuus(self, alku, loppu):
+        kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
+        liikkeet = self._pelilauta.liiku(alku,
+            loppu, self.mahdolliset_liikkeet, self.edessa)
+        if self.vuoro_valkoinen:
+            for liike in liikkeet[0]:
+                if self._pelilauta.lauta[liike[1][1]][liike[1][2]] == 6:
+                    self._pelilauta.lauta = copy.deepcopy(kopio_lauta)
+                    return False
+        else:
+            for liike in liikkeet[0]:
+                if self._pelilauta.lauta[liike[1][1]][liike[1][2]] == 12:
+                    self._pelilauta.lauta = copy.deepcopy(kopio_lauta)
+                    return False
+        self._pelilauta.lauta = copy.deepcopy(kopio_lauta)
+        return True

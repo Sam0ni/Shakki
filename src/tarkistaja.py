@@ -1,7 +1,16 @@
 
 class Tarkistaja:
-
+    """luokka joka tarkistaa
+    nappuloiden liikkeet
+    """
     def __init__(self, lauta):
+        """luokan kontruktori, joka alustaa
+        tarvittavat muuttujat
+
+        Args:
+            lauta (list): kaksiuloitteinen lista,
+            joka kuvaa pelilaudan tilanteen
+        """
         self.valkoinen_shakissa = False
         self.musta_shakissa = False
         self.liikkeet = []
@@ -11,6 +20,12 @@ class Tarkistaja:
         self.lauta = lauta
 
     def alusta(self):
+        """alustaa nappuloiden metodit sanakirjaan
+
+        Returns:
+            dict: sisältää nappuloiden liikkeiden
+            tarkistamisen metodit
+        """
         tarkistus_metodit = {
             1: self.tarkista_sotilas,
             2: self.tarkista_vaaka_pysty,
@@ -29,6 +44,8 @@ class Tarkistaja:
         return tarkistus_metodit
 
     def nollaa(self):
+        """resetoi tarvittavat muuttujat
+        """
         self.liikkeet = []
         self.edessa = []
         self.valkoisen_shakkaajat = []
@@ -37,9 +54,24 @@ class Tarkistaja:
         self.musta_shakissa = False
 
     def palauta(self):
+        """palauttaa liikkeet, edessa olevat nappulat,
+        shakkauksen tilanteen ja shakkaajat
+
+        Returns:
+            tuple: mahdolliset liikkeet, edessa olevat nappulat
+            valkoinen kuningas uhattuna, musta kuningas uhattuna,
+            valkoisen kuninkaan uhkaajat, mustan kuninkaan uhkaajat
+        """
         return self.liikkeet, self.edessa, self.valkoinen_shakissa, self.musta_shakissa, self.valkoisen_shakkaajat, self.mustan_shakkaajat
 
     def tarkista_sotilas(self, nappula, y, x):
+        """tarkistaa sotilaan liikkeet
+
+        Args:
+            nappula (int): nappulan tyyppi
+            y (int): y koordinaatti laudalla
+            x (int): x koordinaatti laudalla
+        """
         if nappula == 1:
             korotus_raja = 1
             y_aloitus = 6
@@ -125,6 +157,13 @@ class Tarkistaja:
                 self.edessa.append(((nappula, y, x), (y+y_liike, x+1)))
 
     def tarkista_vaaka_pysty(self, nappula, y, x):
+        """tarkistaa vaaka-pysty akselien liikkeet
+
+        Args:
+            nappula (int): nappulan tyyppi
+            y (int): y koordinaatti laudalla
+            x (int): x koordinaatti laudalla
+        """
         alku = y + 1
         paate = 8
         steppi = 1
@@ -182,6 +221,13 @@ class Tarkistaja:
             steppi = -1
 
     def tarkista_viisto(self, nappula, y, x):
+        """tarkistaa liikkeet viistoakselilla
+
+        Args:
+            nappula (int): nappulan tyyppi
+            y (int): y koordinaatti laudalla
+            x (int): x koordinaatti laudalla
+        """
         if x > y:
             montako = 8-x
         else:
@@ -242,6 +288,13 @@ class Tarkistaja:
                 y_liike = -1
 
     def tarkista_ratsu(self, nappula, y, x):
+        """tarkistaa ratsun liikkeet
+
+        Args:
+            nappula (int): nappulan tyyppi
+            y (int): y koordinaatti laudalla
+            x (int): x koordinaatti laudalla
+        """
         ehto_1 = y < 6
         ehto_2 = x < 7
         ehto_3 = x > 0
@@ -290,9 +343,24 @@ class Tarkistaja:
                 y_liike = 1
 
     def tarkista_kuningatar(self, nappula, y, x):
+        """tarkistaa kuningattaren liikkeet eli
+        viisto- ja vaaka-pysty -akselit
+
+        Args:
+            nappula (int): nappulan tyyppi
+            y (int): y koordinaatti laudalla
+            x (int): x koordinaatti laudalla
+        """
         self.tarkista_viisto(nappula, y, x)
         self.tarkista_vaaka_pysty(nappula, y, x)
 
     def tarkista_kuningas(self, nappula, y, x):
+        """tarkistaa kuninkaan liikkeet
+
+        Args:
+            nappula (int): nappulan tyyppi
+            y (int): y koordinaatti laudalla
+            x (int): x koordinaatti laudalla
+        """
         self.tarkista_vaaka_pysty(nappula, y, x)
         self.tarkista_viisto(nappula, y, x)

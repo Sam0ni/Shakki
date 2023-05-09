@@ -1,6 +1,9 @@
 import pygame
 
 class Kello:
+    """Kelloluokka, joka ajoittaa
+    pelisilmukkaa
+    """
     def __init__(self):
         self.kello = pygame.time.Clock()
 

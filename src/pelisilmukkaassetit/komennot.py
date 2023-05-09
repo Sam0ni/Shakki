@@ -1,10 +1,20 @@
 import pygame
 
 class Komennot:
+    """luokka joka pitää huolta syötteiden komennoista
+    """
     def __init__(self):
+        """luokan konstruktori joka alustaa sanakirjan
+        näppäimistön komennoista
+        """
         self.komennot = self.alusta_komennot()     
 
     def alusta_komennot(self):
+        """alustaa komennot sanakirjaan
+
+        Returns:
+            dict: näppäimistön syötteiden komennot
+        """
         komennot = {
             pygame.K_d: self.resetoi_valinta,
             pygame.K_2: self.torni_korotus,
@@ -18,6 +28,11 @@ class Komennot:
         return komennot
     
     def valinta_komento(self, silmukka):
+        """nappulan valinta hiiren paikan perusteella
+
+        Args:
+            silmukka (class): pelisilmukka joka kutsuu komentoa
+        """
         x, y = pygame.mouse.get_pos()
         x = x // silmukka._ruudun_koko # pylint: disable=invalid-name
         y = y // silmukka._ruudun_koko # pylint: disable=invalid-name
@@ -30,36 +45,98 @@ class Komennot:
             silmukka.validoi_liike(y, x)
 
     def resetoi_valinta(self, silmukka):
+        """resetoi nappulan valinnan
+
+        Args:
+            silmukka (class): pelisilmukka joka kutsuu komentoa
+        """
         silmukka.valittu_nappula = ""
 
     def torni_korotus(self, silmukka):
+        """valitsee tornin korotuksen tulokseksi
+
+        Args:
+            silmukka (class): pelisilmukka joka kutsuu komentoa
+        """
         silmukka.korotus = 2
+        silmukka.m_korotus = 8
     
     def ratsu_korotus(self, silmukka):
+        """valitsee ratsun korotuksen tulokseksi
+
+        Args:
+            silmukka (class): pelisilmukka joka kutsuu komentoa
+        """
         silmukka.korotus = 3
+        silmukka.m_korotus = 9
 
     def lahetti_korotus(self, silmukka):
+        """valitsee lähetin korotuksen tulokseksi
+
+        Args:
+            silmukka (class): pelisilmukka joka kutsuu komentoa
+        """
         silmukka.korotus = 4
+        silmukka.m_korotus = 10
 
     def kuningatar_korotus(self, silmukka):
+        """valitsee kuningattaren korotuksen tulokseksi
+
+        Args:
+            silmukka (class): pelisilmukka joka kutsuu komentoa
+        """
         silmukka.korotus = 5
+        silmukka.m_korotus = 11
 
     def kasvata_syvyytta(self, silmukka):
+        """kasvattaa laskennan syvyyttä,
+        mikäli syvyys on alle 7
+
+        Args:
+            silmukka (class): pelisilmukka joka kutsuu komentoa
+        """
         if silmukka.syvyys < 7:
             silmukka.syvyys += 1
 
     def pienenna_syvyytta(self, silmukka):
+        """pienentää laskennan syvyyttä,
+        mikäli syvyys on yli 0
+
+        Args:
+            silmukka (class): pelisilmukka joka kutsuu komentoa
+        """
         if silmukka.syvyys > 0:
             silmukka.syvyys -= 1
 
     def ai_paalle_pois(self, silmukka):
+        """laittaa tekoälyn käyttöön/pois käytöstä
+
+        Args:
+            silmukka (class): pelisilmukka joka kutsuu komentoa
+        """
         silmukka.tekoaly_kaytossa = not silmukka.tekoaly_kaytossa
 
     def suorita_komento(self, komento):
+        """hakee komennon syötteen perusteella
+
+        Args:
+            komento (pygame.key): näppäimistön syöte
+
+        Returns:
+            method: jos syötettä vastaava komento sanakirjassa,
+            palautetaan komento-metodi. Muuten palautetaan
+            dummy-metodi
+        """
         if komento in self.komennot:
             return self.komennot[komento]
         else:
             return self.dummy
 
     def dummy(self, silmukka):
+        """Ei tee mitään. Välttää virhetilanteet
+        komennon suorituksessa
+
+        Args:
+            silmukka (class): pelisilmukka joka kutsuu komentoa
+        """
         pass

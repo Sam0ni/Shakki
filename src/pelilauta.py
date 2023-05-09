@@ -39,6 +39,17 @@ class Pelilauta:
         return listat[0], listat[1], listat[2], listat[3], listat[4], listat[5]
 
     def tarkista_matti(self, liikkeet, edessa, valkoinen, shakkaajat):
+        """tarkistaa onko shakkimatti liikkeen seurauksena
+
+        Args:
+            liikkeet (list): mahdolliset liikkeet
+            edessa (list): edessa olevat nappulat
+            valkoinen (bool): onko shakattu valkoinen
+            shakkaajat (list): kuninkaan shakkaajat
+
+        Returns:
+            bool: onko shakkimatti saavutettu
+        """
         kopio_lauta = deepcopy(self.lauta)
 
         if valkoinen:
