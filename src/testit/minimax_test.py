@@ -43,7 +43,7 @@ class TestMinimax(unittest.TestCase):
         uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa, valkoisen_shakkaajat, mustan_shakkaajat = pelilauta.alusta()
         mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
         edessa = edessa + uudet_edessa
-        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 1)
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 2)
 
         oikea_liike = ((9,2,4), (9,3,2))
 
@@ -67,7 +67,7 @@ class TestMinimax(unittest.TestCase):
         uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa, valkoisen_shakkaajat, mustan_shakkaajat = pelilauta.alusta()
         mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
         edessa = edessa + uudet_edessa
-        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 2)
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 3)
 
         oikea_liike = ((9,2,4), (9,3,2))
 
@@ -150,7 +150,7 @@ class TestMinimax(unittest.TestCase):
         uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa, valkoisen_shakkaajat, mustan_shakkaajat = pelilauta.alusta()
         mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
         edessa = edessa + uudet_edessa
-        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 4)
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 5)
 
         uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
         mahdolliset_liikkeet = uudet[0]
@@ -160,7 +160,7 @@ class TestMinimax(unittest.TestCase):
         mahdolliset_liikkeet = uudet[0]
         edessa = uudet[1]
 
-        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 2)
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 5)
 
         uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
         mahdolliset_liikkeet = uudet[0]
@@ -170,7 +170,7 @@ class TestMinimax(unittest.TestCase):
         mahdolliset_liikkeet = uudet[0]
         edessa = uudet[1]
 
-        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 0)
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 5)
 
         uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
         mahdolliset_liikkeet = uudet[0]
@@ -198,7 +198,7 @@ class TestMinimax(unittest.TestCase):
         uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa, valkoisen_shakkaajat, mustan_shakkaajat = pelilauta.alusta()
         mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
         edessa = edessa + uudet_edessa
-        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 6)
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 7)
 
         uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
         mahdolliset_liikkeet = uudet[0]
@@ -208,7 +208,7 @@ class TestMinimax(unittest.TestCase):
         mahdolliset_liikkeet = uudet[0]
         edessa = uudet[1]
 
-        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 4)
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 7)
 
         uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
         mahdolliset_liikkeet = uudet[0]
@@ -218,7 +218,7 @@ class TestMinimax(unittest.TestCase):
         mahdolliset_liikkeet = uudet[0]
         edessa = uudet[1]
 
-        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 2)
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 7)
 
         uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
         mahdolliset_liikkeet = uudet[0]
@@ -228,8 +228,113 @@ class TestMinimax(unittest.TestCase):
         mahdolliset_liikkeet = uudet[0]
         edessa = uudet[1]
 
-        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 0)
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 7)
 
+        uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
+        mahdolliset_liikkeet = uudet[0]
+        edessa = uudet[1]
+
+        matti = pelilauta.tarkista_matti(mahdolliset_liikkeet, edessa, True, uudet[4])
+
+        self.assertEqual(matti, True)
+
+    def test_minimax_osaa_tehda_shakkimatin_3(self):
+        lauta = [[0,0,0,0,0,12,0,6],
+        [0,0,0,0,0,0,7,7],
+        [0,0,0,7,0,0,8,8],
+        [0,0,0,1,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,1],
+        [0,0,0,0,0,0,0,0]]
+
+        mahdolliset_liikkeet = []
+        edessa = []
+
+        pelilauta = Pelilauta(lauta, self.ruudun_koko)
+        minimax = Minimax(lauta)
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa, valkoisen_shakkaajat, mustan_shakkaajat = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        edessa = edessa + uudet_edessa
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 5)
+
+        uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
+        mahdolliset_liikkeet = uudet[0]
+        edessa = uudet[1]
+
+        uudet = pelilauta.liiku((1, 6, 7), (1, 4, 7), mahdolliset_liikkeet, edessa)
+        mahdolliset_liikkeet = uudet[0]
+        edessa = uudet[1]
+
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 5)
+
+        uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
+        mahdolliset_liikkeet = uudet[0]
+        edessa = uudet[1]
+
+        uudet = pelilauta.liiku((1, 4, 7), (1, 3, 7), mahdolliset_liikkeet, edessa)
+        mahdolliset_liikkeet = uudet[0]
+        edessa = uudet[1]
+
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 5)
+
+        uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
+        mahdolliset_liikkeet = uudet[0]
+        edessa = uudet[1]
+
+        matti = pelilauta.tarkista_matti(mahdolliset_liikkeet, edessa, True, uudet[4])
+
+        self.assertEqual(matti, True)
+
+    def test_minimax_osaa_tehda_shakkimatin_4(self):
+        lauta = [[0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [7,0,0,0,0,0,0,0],
+        [1,0,7,10,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [6,0,0,12,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,9,0,0,0,0,0]]
+
+        mahdolliset_liikkeet = []
+        edessa = []
+
+        pelilauta = Pelilauta(lauta, self.ruudun_koko)
+        minimax = Minimax(lauta)
+        uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa, valkoisen_shakkaajat, mustan_shakkaajat = pelilauta.alusta()
+        mahdolliset_liikkeet = mahdolliset_liikkeet + uudet_liikkeet
+        edessa = edessa + uudet_edessa
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 7)
+
+        uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
+        mahdolliset_liikkeet = uudet[0]
+        edessa = uudet[1]
+        
+        uudet = pelilauta.liiku((6, 5, 0), (6, 4, 0), mahdolliset_liikkeet, edessa)
+        mahdolliset_liikkeet = uudet[0]
+        edessa = uudet[1]
+
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 7)
+
+        uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
+        mahdolliset_liikkeet = uudet[0]
+        edessa = uudet[1]
+
+        uudet = pelilauta.liiku((6, 4, 0), (6, 5, 0), mahdolliset_liikkeet, edessa)
+        mahdolliset_liikkeet = uudet[0]
+        edessa = uudet[1]
+
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 7)
+
+        uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
+        mahdolliset_liikkeet = uudet[0]
+        edessa = uudet[1]
+
+        uudet = pelilauta.liiku((6, 5, 0), (6, 4, 0), mahdolliset_liikkeet, edessa)
+        mahdolliset_liikkeet = uudet[0]
+        edessa = uudet[1]
+
+        liike = minimax.aloita(lauta, mahdolliset_liikkeet, edessa, 7)
         uudet = pelilauta.liiku(liike[0], liike[1], mahdolliset_liikkeet, edessa)
         mahdolliset_liikkeet = uudet[0]
         edessa = uudet[1]

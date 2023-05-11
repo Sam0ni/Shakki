@@ -95,7 +95,7 @@ class Komennot:
         Args:
             silmukka (class): pelisilmukka joka kutsuu komentoa
         """
-        if silmukka.syvyys < 7:
+        if silmukka.syvyys < 8:
             silmukka.syvyys += 1
 
     def pienenna_syvyytta(self, silmukka):
@@ -105,7 +105,7 @@ class Komennot:
         Args:
             silmukka (class): pelisilmukka joka kutsuu komentoa
         """
-        if silmukka.syvyys > 0:
+        if silmukka.syvyys > 1:
             silmukka.syvyys -= 1
 
     def ai_paalle_pois(self, silmukka):
