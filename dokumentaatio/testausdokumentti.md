@@ -1,13 +1,27 @@
 ![kattavuusraportti](https://user-images.githubusercontent.com/101888699/235369695-72d9accc-327f-4465-b09a-a319df21e200.png)
 
 
-Tällä hetkellä on testattuna pelilogiikka, eli se, että nappulat liikkuvat oikein. Käytännössä ohjelmassa ylläpidetään kahta eri listaa, joista toisessa on kaikkien nappuloiden mahdolliset liikkeet sillä hetkellä, ja toisessa on nappuloiden liikkeiden edessä olevat nappulat. Yksikkötesteissä testataan jokaiselle nappulatyypille, että mahdolliset liikkeet ja edessä olevat nappulat tarkistetaan oikein. Myöskin testataan, että nappulat siirtyvät laudalla, ja että siirron jälkeen liikkeet päivittyvät oikein.
+Pelilogiikka, eli se että nappulat liikkuvat oikein, on testattu. Käytännössä ohjelmassa ylläpidetään kahta eri listaa, joista toisessa on kaikkien nappuloiden mahdolliset liikkeet sillä hetkellä, ja toisessa on nappuloiden liikkeiden edessä olevat nappulat. Yksikkötesteissä testataan jokaiselle nappulatyypille, että mahdolliset liikkeet ja edessä olevat nappulat tarkistetaan oikein. Myöskin testataan, että nappulat siirtyvät laudalla, ja että siirron jälkeen liikkeet päivittyvät oikein.
 Siirtoa tehdessä ja liikkeitä päivittäessä pitää ottaa huomioon neljä eri tapausta:
 - Siirron alkukohta on jonkin nappulan edessä
 - Siirron loppukohta on jonkin nappulan mahdollisissa liikkeissä
 - Siirron alkukohta on jonkin nappulan mahdollisissa liikkeissä
 - Siirron loppukohta on jonkin nappulan edessä
 
-Myös minimax-algoritmin oikeellisuustestaus on aloitettu. Testattuna on myös tietenkin pelitilanteen arvioinnin suorittava metodi. Tällä hetkellä minimax-algoritmin testaamisessa on käytössä hyvin yksinkertaiset tilanteet (2 tai 3 nappulaa) laskentasyvyyksille 2 ja 3. Käytännössä näissä tarkistetaan, että algoritmi palauttaa laskentasyvyyden perusteella saatavan parhaan liikkeen. Testattuna on myös se, että minimax-agoritmi osaa tehdä shakkimatin, ja valitsee shakkimatin joka on vähimmillä liikkeillä saavutettavissa
+Minimax-algoritmille on luotu oikeellisuustestejä. Testattuna on myös tietenkin pelitilanteen arvioinnin suorittava metodi. Tällä hetkellä minimax-algoritmin testaamisessa on käytössä hyvin yksinkertaiset tilanteet (2 tai 3 nappulaa) laskentasyvyyksille 2 ja 3. Käytännössä näissä tarkistetaan, että algoritmi palauttaa laskentasyvyyden perusteella saatavan parhaan liikkeen. Minimax-alogritmia on testattu myös pelkistetyissä pelitilanteissa, joissa on vain kuninkaat ja kaksi tornia. Näillä testeillä testataan löytääkö minimax vähimmillä liikkeillä saavutettavan shakkimatin. Näiden lisäksi on vielä kaksi shakkiharjoitusta jotka on peilattu, koska tämän ohjelman minimax toimii mustana pelaajana. Kyseiset harjoitukset ovat [tämä](https://chesspuzzlesonline.com/solution/ps360/) ja [tämä](https://usefulchess.com/puzzles/chess/mate-moremover.html).
 
-Testit voi toistaa ohjelman juurihakemistossa suorittamalla komennon: `poetry invoke testit`
+Aikavaativuutta on testattu tekemällä yksikkötesti jokaiselle syvyydelle välillä 1-7 ja ottamalla ylös aika joka kuhunkin testiin kuluu. Tässä ajat, jotka itse sain: 
+
+![Laskenta-ajat](https://github.com/Sam0ni/Shakki/assets/101888699/f784198b-f8a0-49a1-a2fb-8e89736ad6c7)
+
+Tässä näistä tehty kuvaaja:
+
+![kuvaaja](https://github.com/Sam0ni/Shakki/assets/101888699/d2bc5104-1a3f-4643-800d-18488710d425)
+
+Näistä huomaa karkeasti, että kyseessä on ekspontentiaalinen nousu ajassa laskentasyvyyden kasvaessa, joten kyseessä on aikavaativuus O(n)^m.
+
+
+
+Testit voi toistaa ohjelman juurihakemistossa suorittamalla komennon: `poetry run invoke testit`
+
+Aikavaativuustestit täytyy suorittaa yksi kerrallaan, jos haluaa nähdä niiden vievän ajan. Testit voi toistaa ohjelman juurihakemistossa suorittamalla komennon: `poetry run pytest src/testit/aikavaativuus/aikavaativuus_laskentasyvyyskokonaislukuna_test`, jossa siis *laskentasyvyyskokonaislukuna* korvataan jollain numeroista 1-7.
