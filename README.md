@@ -1,6 +1,7 @@
 # Shakki
 Tiralabra-kurssin harjoitustyö
 
+- [Käyttöohje](https://github.com/Sam0ni/Shakki/blob/main/dokumentaatio/k%C3%A4ytt%C3%B6ohje.md)
 - [Määrittelydokumentti](https://github.com/Sam0ni/Shakki/blob/main/dokumentaatio/m%C3%A4%C3%A4rittelydokumentti.md)
 - [Testausdokumentti](https://github.com/Sam0ni/Shakki/blob/main/dokumentaatio/testausdokumentti.md)
 - [Toteutusdokumentti](https://github.com/Sam0ni/Shakki/blob/main/dokumentaatio/toteutusdokumentti.md)
