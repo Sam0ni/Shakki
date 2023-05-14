@@ -31,12 +31,14 @@ class Pelilauta:
             kolmas ja neljäs shakin aiheuttavat nappulat. Myös kaksi totuusarvoa,
             jotka ilmaisevat shakin
         """
-        self.tarkistaja.nollaa()
-        self.tarkistaja.lauta = self.lauta
+        self.tarkistaja.nollaa() # nollataan tarkistajan listat
+        self.tarkistaja.lauta = self.lauta # päivitetään tarkistajan lauta
         for nappula in nappulat:
             self.tarkistajat[nappula[0]](nappula[0], nappula[1], nappula[2])
-        listat = self.tarkistaja.palauta()
+        listat = self.tarkistaja.palauta() # haetaan tarkistetut liikkeet
         return listat[0], listat[1], listat[2], listat[3], listat[4], listat[5]
+        # palautetaan liikkeet, edessä, valkoinen shakissa, musta shakissa, 
+        # valkoisen shakkaajat ja mustan shakkaajat
 
     def tarkista_matti(self, liikkeet, edessa, valkoinen, shakkaajat):
         """tarkistaa onko shakkimatti liikkeen seurauksena
@@ -62,26 +64,26 @@ class Pelilauta:
             vihollisen_kuningas = 6
         matissa = False
         for liike in liikkeet:
-            if kopio_lauta[liike[1][1]][liike[1][2]] == vihollisen_kuningas:
+            if kopio_lauta[liike[1][1]][liike[1][2]] == vihollisen_kuningas: # laiton siirto
                 matissa = False
                 break
-            elif sotilas <= liike[0][0] <= kuningas:
+            elif sotilas <= liike[0][0] <= kuningas: # oikean värinen nappula
                 kopio_shakkaajat = deepcopy(shakkaajat)
                 uudet_liikkeet, uudet_edessa, valkoinen_shakissa, musta_shakissa, valkoisen_shakkaajat, mustan_shakkaajat = self.liiku(liike[0], liike[1], liikkeet, edessa)
                 for shakkaaja in shakkaajat:
                     if liike[1][1] == shakkaaja[1] and liike[1][2] == shakkaaja[2]:
                         kopio_shakkaajat.remove(shakkaaja)
                 shakkaajien_tila = self.tarkista_liikkeet(kopio_shakkaajat)
-                valkoinen_shakissa = valkoinen_shakissa or shakkaajien_tila[2]
-                musta_shakissa = musta_shakissa or shakkaajien_tila[3]
-                if valkoinen and valkoinen_shakissa:
+                valkoinen_shakissa = valkoinen_shakissa or shakkaajien_tila[2] # onko valkoinen shakissa
+                musta_shakissa = musta_shakissa or shakkaajien_tila[3] # onko musta shakissa
+                if valkoinen and valkoinen_shakissa: # tarkistetaan valkoisen tila
                     self.lauta = deepcopy(kopio_lauta)
-                    matissa = True
-                elif not valkoinen and musta_shakissa:
+                    matissa = True # tämän liikkeen seurauksena vielä shakissa, seuraava liike
+                elif not valkoinen and musta_shakissa: # tarkistetaan musta tila
                     self.lauta = deepcopy(kopio_lauta)
-                    matissa = True
+                    matissa = True # tämän liikkeen seurauksena vielä shakissa, seuraava liike
                 else:
-                    matissa = False
+                    matissa = False # ei ole matissa, ei tarvitse tarkistaa muita liikkeitä
                     break
         self.lauta = deepcopy(kopio_lauta)
         return matissa
@@ -112,24 +114,24 @@ class Pelilauta:
         mahdolliset = [] + liikkeet
         blokit = [] + edessa
         poistettavat = [] #nappulat joiden liikkeet ja blokit poistetaan
-        for blokki in edessa:
+        for blokki in edessa: # alku tai loppu blokkilistalla
             if blokki[1] == (alku[1], alku[2]) or blokki[1] == (loppu[1], loppu[2]):
                 poistettavat.append(blokki[0])
-        for liike in liikkeet:
+        for liike in liikkeet: # alku tai loppu liikelistalla
             if ((liike[1][1], liike[1][2]) == (alku[1], alku[2]) or
                     (liike[1][1], liike[1][2]) == (loppu[1], loppu[2])):
                 poistettavat.append(liike[0])
-        for blokki in edessa:
+        for blokki in edessa: # poistetaan blokkilistasta päivitettävien blokit
             if blokki[0] in poistettavat:
                 blokit.remove(blokki)
-        for liike in liikkeet:
+        for liike in liikkeet: # poistetaan liikelistasta päivitettävien liikkeet
             if liike[0] in poistettavat:
                 mahdolliset.remove(liike)
-        poistettavat.append(loppu)
-        uudet = list(set(poistettavat))
+        poistettavat.append(loppu) # lisätään päivitettäviin liikutettu
+        uudet = list(set(poistettavat)) # poistetaan duplikaatit
         tarkistetut = self.tarkista_liikkeet(uudet)
-        mahdolliset = mahdolliset + tarkistetut[0]
-        blokit = blokit + tarkistetut[1]
+        mahdolliset = mahdolliset + tarkistetut[0] # lisätään päivitety liikkeet muihin liikkeisiin
+        blokit = blokit + tarkistetut[1] # lisätään päivitety blokit muihin blokkeihin
         return mahdolliset, blokit, tarkistetut[2], tarkistetut[3], tarkistetut[4], tarkistetut[5]
 
     def liiku(self, alku, loppu, liikkeet, edessa):

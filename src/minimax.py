@@ -44,18 +44,18 @@ class Minimax:
                             liike[1], liikkeet, edessa)
                 uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                 uudet_edessa = seuraavat_liikkeet[1]
-                if seuraavat_liikkeet[2]:
+                if seuraavat_liikkeet[3]: # oma shakissa laiton liike
+                    continue
+                if seuraavat_liikkeet[2]: # valkoinen shakissa, tarkistetaan matti
                     voitto = self.valiaikainen_pelilauta.tarkista_matti(
                         uudet_mahdolliset_liikkeet, uudet_edessa, True, seuraavat_liikkeet[4])
-                elif seuraavat_liikkeet[3]:
-                    continue
-                liikkeen_arvo = self.minimax(self.valiaikainen_pelilauta.lauta,
+                liikkeen_arvo = self.minimax(self.valiaikainen_pelilauta.lauta, # kutsutaan minimaxia
                     uudet_mahdolliset_liikkeet, uudet_edessa, syvyys - 1,
                     parhaan_liikkeen_arvo, 999999999999, False, voitto)
                 if parhaan_liikkeen_arvo < liikkeen_arvo:
-                    parhaan_liikkeen_arvo = liikkeen_arvo
+                    parhaan_liikkeen_arvo = liikkeen_arvo # uusi paras liike
                     paras_liike = liike
-        if parhaan_liikkeen_arvo == -9999999999999: #pattitilanne
+        if parhaan_liikkeen_arvo == -9999999999999: # pattitilanne
             return "stalemate"
         return paras_liike
 
@@ -77,9 +77,9 @@ class Minimax:
             int: pelitilanteen arvo
         """
         if voitto:
-            if maksimoiva:
+            if maksimoiva: # musta shakkimatissa
                 return (syvyys + 1) * -50000000
-            return (syvyys + 1) * 50000000
+            return (syvyys + 1) * 50000000 # valkoinen shakkimatissa
         elif syvyys == 0:
             return self.arvioi_pelitilanne()
 
@@ -94,9 +94,9 @@ class Minimax:
                                 liike[1], liikkeet, edessa)
                     uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                     uudet_edessa = seuraavat_liikkeet[1]
-                    if seuraavat_liikkeet[3]:
+                    if seuraavat_liikkeet[3]: # oma shakissa, laiton liike
                         continue
-                    if seuraavat_liikkeet[2]:
+                    if seuraavat_liikkeet[2]: # valkoinen shakissa, tarkistetaan matti
                         voitto = self.valiaikainen_pelilauta.tarkista_matti(
                             uudet_mahdolliset_liikkeet, uudet_edessa, True, seuraavat_liikkeet[4])
                     arvo = max(arvo, self.minimax(self.valiaikainen_pelilauta.lauta,
@@ -120,9 +120,9 @@ class Minimax:
                                 liike[1], liikkeet, edessa)
                     uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                     uudet_edessa = seuraavat_liikkeet[1]
-                    if seuraavat_liikkeet[2]:
+                    if seuraavat_liikkeet[2]: # oma shakissa, laiton liike
                         continue
-                    if seuraavat_liikkeet[3]:
+                    if seuraavat_liikkeet[3]: # musta shakissa, tarkistetaan matti
                         voitto = self.valiaikainen_pelilauta.tarkista_matti(
                             uudet_mahdolliset_liikkeet, uudet_edessa, False, seuraavat_liikkeet[5])
                     arvo = min(arvo, self.minimax(self.valiaikainen_pelilauta.lauta,

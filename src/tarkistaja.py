@@ -73,7 +73,7 @@ class Tarkistaja:
             y (int): y koordinaatti laudalla
             x (int): x koordinaatti laudalla
         """
-        if nappula == 1:
+        if nappula == 1: # valkoinen sotilas
             korotus_raja = 1
             y_aloitus = 6
             y_liike = -1
@@ -83,7 +83,7 @@ class Tarkistaja:
             vihollisen_sotilas = 7
             vihollisen_kuningatar = 11
             vihollisen_kuningas = 12
-        else:
+        else: # musta sotilas
             korotus_raja = 6
             y_aloitus = 1
             y_liike = 1
@@ -94,53 +94,53 @@ class Tarkistaja:
             vihollisen_kuningatar = 5
             vihollisen_kuningas = 6
 
-        if y == korotus_raja and self.lauta[y+y_liike][x] == 0:
+        if y == korotus_raja and self.lauta[y+y_liike][x] == 0: # pystyy korottaa
             for i in range(oma_torni, oma_kuningatar):
                 self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x)))
-        elif self.lauta[y+y_liike][x] == 0:
+        elif self.lauta[y+y_liike][x] == 0: # pystyy liikkumaan
             self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x)))
             if y == y_aloitus:
                 if self.lauta[y+y_liike_alku][x] == 0:
                     self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike_alku, x)))
                 else:
                     self.edessa.append(((nappula, y, x), (y+y_liike_alku, x)))
-        else:
+        else: # edessä nappula; ei pysty liikumaan
             self.edessa.append(((nappula, y, x), (y+y_liike, x)))
-        x_liike = -1
+        x_liike = -1 # vasen viisto
         alaraja = 1
         ylaraja = 7
         for kerta in range(2):
             if not alaraja <= x <= ylaraja:
-                x_liike = 1
+                x_liike = 1 # oikea viisto
                 alaraja = 0
                 ylaraja = 6
                 continue
             if y == korotus_raja and (vihollisen_sotilas <= 
-                self.lauta[y+y_liike][x+x_liike] <= vihollisen_kuningatar):
+                self.lauta[y+y_liike][x+x_liike] <= vihollisen_kuningatar): # korotus syödessä vihollisen nappula
                 for i in range(oma_torni, oma_kuningatar):
                     self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x+x_liike)))
-            elif y == korotus_raja and (self.lauta[y+y_liike][x+x_liike] == vihollisen_kuningas):
+            elif y == korotus_raja and (self.lauta[y+y_liike][x+x_liike] == vihollisen_kuningas): # korotuksessa vihollisen kuningas shakissa
                 for i in range(oma_torni, oma_kuningatar):
                     self.liikkeet.append(((nappula, y, x), (i, y+y_liike, x+x_liike)))
-                if nappula == 1:
+                if nappula == 1: # valkoinen sotilas
                     self.musta_shakissa = True
                     self.mustan_shakkaajat.append((nappula, y, x))
-                else:
+                else: # musta sotilas
                     self.valkoinen_shakissa = True
                     self.valkoisen_shakkaajat.append((nappula, y, x))
-            elif vihollisen_sotilas <= self.lauta[y+y_liike][x+x_liike] <= vihollisen_kuningatar:
+            elif vihollisen_sotilas <= self.lauta[y+y_liike][x+x_liike] <= vihollisen_kuningatar: # vihollisen syöminen ilman korotusta
                 self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
-            elif self.lauta[y+y_liike][x+x_liike] == vihollisen_kuningas:
+            elif self.lauta[y+y_liike][x+x_liike] == vihollisen_kuningas: # vihollisen kuninkaan shakittaminen
                 self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
-                if nappula == 1:
+                if nappula == 1: # valkonen sotilas
                     self.musta_shakissa = True
                     self.mustan_shakkaajat.append((nappula, y, x))
-                else:
+                else: # musta sotilas
                     self.valkoinen_shakissa = True
                     self.valkoisen_shakkaajat.append((nappula, y, x))
             else:
-                self.edessa.append(((nappula, y, x), (y+y_liike, x+x_liike)))
-            x_liike = 1
+                self.edessa.append(((nappula, y, x), (y+y_liike, x+x_liike))) # ei pysty syömään vihollista
+            x_liike = 1 # oikea viisto
             alaraja = 0
             ylaraja = 6
 
@@ -154,57 +154,57 @@ class Tarkistaja:
         """
         alku = y + 1
         paate = 8
-        steppi = 1
+        steppi = 1 # suunta
 
-        for suunta in range(2):
+        for suunta in range(2): # pystysuunta
             for i in range(alku, paate, steppi):
-                if self.lauta[i][x] == 0:
+                if self.lauta[i][x] == 0: # tyhjä ruutu
                     self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-                    if nappula == 6 or nappula == 12:
+                    if nappula == 6 or nappula == 12: # nappula kuningas, lopetetaan yhteen
                         break
-                elif 2 <= nappula < 7 and 7<= self.lauta[i][x] <= 12:
+                elif 2 <= nappula < 7 and 7<= self.lauta[i][x] <= 12: # valkoinen nappula, syödään vihollinen
                     self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-                    if self.lauta[i][x] == 12:
+                    if self.lauta[i][x] == 12: # vihollisen kuningas shakissa
                         self.musta_shakissa = True
                         self.mustan_shakkaajat.append((nappula, y, x))
                     break
-                elif 8 <= nappula < 13 and 1<= self.lauta[i][x] <= 6:
+                elif 8 <= nappula < 13 and 1<= self.lauta[i][x] <= 6: # musta nappula, syödään vihollinen
                     self.liikkeet.append(((nappula, y, x), (nappula, i, x)))
-                    if self.lauta[i][x] == 6:
+                    if self.lauta[i][x] == 6: # vihollisen kuningas shakissa
                         self.valkoinen_shakissa = True
                         self.valkoisen_shakkaajat.append((nappula, y, x))
                     break
                 else:
-                    self.edessa.append(((nappula, y, x), (i, x)))
+                    self.edessa.append(((nappula, y, x), (i, x))) # oma nappula edessä
                     break
-            alku = y - 1
+            alku = y - 1 # vaihdetaan suuntaa
             paate = -1
-            steppi = -1
-        alku = x + 1
+            steppi = -1 
+        alku = x + 1 # vaakatason tarkistus
         paate = 8
         steppi = 1
         for suunta in range(2):
             for i in range(alku, paate, steppi):
-                if self.lauta[y][i] == 0:
+                if self.lauta[y][i] == 0: # tyhjä ruutu
                     self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-                    if nappula == 6 or nappula == 12:
+                    if nappula == 6 or nappula == 12: # nappula kuningas, lopetetaan yhteen
                         break
-                elif 2 <= nappula < 7 and 7<= self.lauta[y][i] <= 12:
+                elif 2 <= nappula < 7 and 7<= self.lauta[y][i] <= 12: # valkoinen nappula, syödään vihollinen
                     self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-                    if self.lauta[y][i] == 12:
+                    if self.lauta[y][i] == 12: # vihollisen kuningas shakissa
                         self.musta_shakissa = True
                         self.mustan_shakkaajat.append((nappula, y, x))
                     break
-                elif 8 <= nappula < 13 and 1<= self.lauta[y][i] <= 6:
+                elif 8 <= nappula < 13 and 1<= self.lauta[y][i] <= 6: # musta nappula, syödään vihollinen
                     self.liikkeet.append(((nappula, y, x), (nappula, y, i)))
-                    if self.lauta[y][i] == 6:
+                    if self.lauta[y][i] == 6: # vihollisen kuningas shakissa
                         self.valkoinen_shakissa = True
                         self.valkoisen_shakkaajat.append((nappula, y, x))
                     break
                 else:
-                    self.edessa.append(((nappula, y, x), (y, i)))
+                    self.edessa.append(((nappula, y, x), (y, i))) # oma nappula edessä
                     break
-            alku = x - 1
+            alku = x - 1 # vaihdetaan suuntaa
             paate = -1
             steppi = -1
 
@@ -216,7 +216,7 @@ class Tarkistaja:
             y (int): y koordinaatti laudalla
             x (int): x koordinaatti laudalla
         """
-        if x > y:
+        if x > y: # montako ruutua maksimissaan tarkistetaan
             montako = 8-x
         else:
             montako = 8-y
@@ -226,28 +226,28 @@ class Tarkistaja:
         y_liike = 1
         for suunta in range(4):
             for i in range(1, montako):
-                if self.lauta[y+y_liike][x+x_liike] == 0:
+                if self.lauta[y+y_liike][x+x_liike] == 0: # vapaa ruutu
                     self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
-                    if nappula == 6 or nappula == 12:
+                    if nappula == 6 or nappula == 12: # nappula kuningas lopetetaan yhteen
                         break
-                elif 4 <= nappula <= 6 and 7 <= self.lauta[y+y_liike][x+x_liike] <= 12:
+                elif 4 <= nappula <= 6 and 7 <= self.lauta[y+y_liike][x+x_liike] <= 12: # valkoinen nappula, syödään vihollinen
                     self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
-                    if self.lauta[y+y_liike][x+x_liike] == 12:
+                    if self.lauta[y+y_liike][x+x_liike] == 12: # vihollisen kuningas shakissa
                         self.musta_shakissa = True
                         self.mustan_shakkaajat.append((nappula, y, x))
                     break
-                elif 10 <= nappula <= 12 and 1 <= self.lauta[y+y_liike][x+x_liike] <= 6:
+                elif 10 <= nappula <= 12 and 1 <= self.lauta[y+y_liike][x+x_liike] <= 6: # musta nappula, syödään vihollinen
                     self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
-                    if self.lauta[y+y_liike][x+x_liike] == 6:
+                    if self.lauta[y+y_liike][x+x_liike] == 6: # vihollisen kuningas shakissa
                         self.valkoinen_shakissa = True
                         self.valkoisen_shakkaajat.append((nappula, y, x))
                     break
                 else:
-                    self.edessa.append(((nappula, y, x), (y+y_liike, x+x_liike)))
+                    self.edessa.append(((nappula, y, x), (y+y_liike, x+x_liike))) # oma nappula edessä
                     break
                 x_liike += x_suunta
                 y_liike += y_suunta
-            if suunta == 0:
+            if suunta == 0: # vaihdetaan suuntaa
                 if x < y:
                     montako = x + 1
                 else:
@@ -256,7 +256,7 @@ class Tarkistaja:
                 y_suunta = -1
                 x_liike = -1
                 y_liike = -1
-            elif suunta == 1:
+            elif suunta == 1: # vaihdetaan suuntaa
                 if x < 7 - y:
                     montako = x + 1
                 else:
@@ -265,7 +265,7 @@ class Tarkistaja:
                 y_suunta = 1
                 x_liike = -1
                 y_liike = 1
-            elif suunta == 2:
+            elif suunta == 2: # vaihdetaan suuntaa
                 if 7 - x < y:
                     montako = 7 - x + 1
                 else:
@@ -283,8 +283,8 @@ class Tarkistaja:
             y (int): y koordinaatti laudalla
             x (int): x koordinaatti laudalla
         """
-        ehto_1 = y < 6
-        ehto_2 = x < 7
+        ehto_1 = y < 6 # pystyy liikkumaan 2 ruutua suuntaan
+        ehto_2 = x < 7 # pystyy liikkumaan 1 ruutua suuntaan
         ehto_3 = x > 0
         x_liike = 1
         y_liike = 2
@@ -292,38 +292,38 @@ class Tarkistaja:
             if ehto_1:
                 for x_suunta in range(2):
                     if ehto_2:
-                        if self.lauta[y+y_liike][x+x_liike] == 0:
+                        if self.lauta[y+y_liike][x+x_liike] == 0: # vapaa ruutu
                             self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
-                        elif nappula == 3 and 7 <= self.lauta[y+y_liike][x+x_liike] <= 12:
+                        elif nappula == 3 and 7 <= self.lauta[y+y_liike][x+x_liike] <= 12: # valkoinen nappula, syödään vihollinen
                             self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
-                            if self.lauta[y+y_liike][x+x_liike] == 12:
+                            if self.lauta[y+y_liike][x+x_liike] == 12: # vihollisen kuningas shakissa
                                 self.musta_shakissa = True
                                 self.mustan_shakkaajat.append((nappula, y, x))
-                        elif nappula == 9 and 1 <= self.lauta[y+y_liike][x+x_liike] <= 6:
+                        elif nappula == 9 and 1 <= self.lauta[y+y_liike][x+x_liike] <= 6: # musta nappula, syödään vihollinen
                             self.liikkeet.append(((nappula, y, x), (nappula, y+y_liike, x+x_liike)))
-                            if self.lauta[y+y_liike][x+x_liike] == 6:
+                            if self.lauta[y+y_liike][x+x_liike] == 6: # vihollisen kuningas shakissa
                                 self.valkoinen_shakissa = True
                                 self.valkoisen_shakkaajat.append((nappula, y, x))
                         else:
-                            self.edessa.append(((nappula, y, x), (y+y_liike, x+x_liike)))
+                            self.edessa.append(((nappula, y, x), (y+y_liike, x+x_liike))) # oma nappula edessä
                     ehto_2 = ehto_3
-                    if y_suunta < 2:
+                    if y_suunta < 2: # vaihdetaan suuntaa johon liikutaan vain yksi ruutu, pidetään kahden ruudun suunta
                         x_liike = -x_liike
                     else:
                         y_liike = -y_liike
-            if y_suunta == 0:
+            if y_suunta == 0: # vaihdetaan suuntaa
                 ehto_1 = y > 1
                 ehto_2 = x < 7
                 ehto_3 = x > 0
                 x_liike = 1
                 y_liike = -2
-            elif y_suunta == 1:
+            elif y_suunta == 1: # vaihdetaan suuntaa
                 ehto_1 = x > 1
                 ehto_2 = y < 7
                 ehto_3 = y > 0
                 x_liike = -2
                 y_liike = 1
-            elif y_suunta == 2:
+            elif y_suunta == 2: #vaihdetaan suuntaa
                 ehto_1 = x < 6
                 ehto_2 = y < 7
                 ehto_3 = y > 0

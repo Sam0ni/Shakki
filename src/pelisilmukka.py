@@ -86,8 +86,6 @@ class Pelisilmukka:
         if liike == "stalemate":
             self.patti = True
             return
-        if self._pelilauta.lauta[liike[1][1]][liike[1][2]] == 6:
-            self.m_voitto = True
         liikkeet = self._pelilauta.liiku(liike[0],
             liike[1], self.mahdolliset_liikkeet, self.edessa)
         uudet_mahdolliset_liikkeet = liikkeet[0]
@@ -95,8 +93,7 @@ class Pelisilmukka:
         self.mahdolliset_liikkeet = uudet_mahdolliset_liikkeet
         self.edessa = uudet_edessa
         self.vuoro_valkoinen = not self.vuoro_valkoinen
-        if not self.m_voitto:
-            self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
+        self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
 
     def valitse_nappula(self, y, x):
         """valitsee nappulan, mikäli hiiren x- ja y-koordinaatit ovat kelvolliset
@@ -133,7 +130,7 @@ class Pelisilmukka:
         else:
             return
         if not self.tarkista_liikkeen_laillisuus(self.valittu_nappula, loppu):
-            return
+            return # liike ei laillinen
         liikkeet = self._pelilauta.liiku(self.valittu_nappula,
             loppu, self.mahdolliset_liikkeet, self.edessa)
         uudet_mahdolliset_liikkeet = liikkeet[0]
@@ -143,7 +140,8 @@ class Pelisilmukka:
         self.vuoro_valkoinen = not self.vuoro_valkoinen
         self.valittu_nappula = ""
         self.matin_tarkistus(liikkeet[2], liikkeet[3], liikkeet[4], liikkeet[5])
-        self.patti = self.tarkista_pattitilanne()
+        if not self.v_voitto and not self.m_voitto:
+            self.patti = self.tarkista_pattitilanne()
 
     def matin_tarkistus(self, v_shakissa, m_shakissa, v_shakkaajat, m_shakkaajat):
         """tarkistaa onko shakkimatti
@@ -162,6 +160,16 @@ class Pelisilmukka:
                 return
 
     def tarkista_liikkeen_laillisuus(self, alku, loppu):
+        """tarkistetaan onko liike laillinen, eli
+        liike ei jätä omaa kuningasta shakkiin
+
+        Args:
+            alku (tuple): nappulan alkupaikka
+            loppu (tuple): nappulan loppupaikka
+
+        Returns:
+            bool: onko liike laillinen vai ei
+        """
         kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
         liikkeet = self._pelilauta.liiku(alku,
             loppu, self.mahdolliset_liikkeet, self.edessa)
@@ -177,17 +185,22 @@ class Pelisilmukka:
         return True
 
     def tarkista_pattitilanne(self):
+        """onko patti, eli kuningas ei shakissa, mutta ei ole myöskään laillisia liikkeitä
+
+        Returns:
+            bool: onko patissa vai ei
+        """
         patissa = True
         if self.vuoro_valkoinen:
             alaraja = 0
             ylaraja = 7
-            shakki_indx = 2
+            shakki_indx = 2 # indeksi shakkistatukselle liikkumismetodin tuplessa
         else:
             alaraja = 6
             ylaraja = 13
-            shakki_indx = 3
+            shakki_indx = 3 # indeksi shakkistatukselle liikkumismetodin tuplessa
         for liike in self.mahdolliset_liikkeet:
-            if alaraja < liike[0][0] < ylaraja:
+            if alaraja < liike[0][0] < ylaraja: # oikean värinen nappula
                 kopio_lauta = copy.deepcopy(self._pelilauta.lauta)
                 uudet = self._pelilauta.liiku(liike[0], liike[1], self.mahdolliset_liikkeet, self.edessa)
                 if not uudet[shakki_indx]:
