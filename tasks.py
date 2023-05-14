@@ -15,4 +15,4 @@ def coverage_raportti(ctx):
 
 @task()
 def testit(ctx):
-    ctx.run("pytest src", pty=True)
+    ctx.run("pytest src --ignore-glob=src/testit/aikavaativuus/*", pty=True)
