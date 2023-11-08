@@ -1,4 +1,4 @@
-![kattavuusraportti](https://user-images.githubusercontent.com/101888699/235369695-72d9accc-327f-4465-b09a-a319df21e200.png)
+![kattavuusraportti](https://github.com/Sam0ni/Shakki/assets/101888699/47561dec-3989-4f84-8a3e-4a80fabd4a92)
 
 
 Pelilogiikka, eli se että nappulat liikkuvat oikein, on testattu. Käytännössä ohjelmassa ylläpidetään kahta eri listaa, joista toisessa on kaikkien nappuloiden mahdolliset liikkeet sillä hetkellä, ja toisessa on nappuloiden liikkeiden edessä olevat nappulat. Yksikkötesteissä testataan jokaiselle nappulatyypille, että mahdolliset liikkeet ja edessä olevat nappulat tarkistetaan oikein. Myöskin testataan, että nappulat siirtyvät laudalla, ja että siirron jälkeen liikkeet päivittyvät oikein.
