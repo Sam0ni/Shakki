@@ -44,7 +44,14 @@ class Minimax:
                             liike[1], liikkeet, edessa)
                 uudet_mahdolliset_liikkeet = seuraavat_liikkeet[0]
                 uudet_edessa = seuraavat_liikkeet[1]
+                shakissa = False
                 if seuraavat_liikkeet[3]: # oma shakissa laiton liike
+                    continue
+                for mahis in uudet_mahdolliset_liikkeet:
+                    if self.valiaikainen_pelilauta.lauta[mahis[1][1]][mahis[1][2]] == 12:
+                        shakissa = True
+                        break
+                if shakissa:
                     continue
                 if seuraavat_liikkeet[2]: # valkoinen shakissa, tarkistetaan matti
                     voitto = self.valiaikainen_pelilauta.tarkista_matti(
